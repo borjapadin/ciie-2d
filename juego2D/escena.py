@@ -1,4 +1,4 @@
-
+# -*- encoding: utf-8 -*-
 import pygame
 
 ANCHO_PANTALLA = 800
