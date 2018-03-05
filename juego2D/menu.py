@@ -1,5 +1,6 @@
+# -*- encoding: utf-8 -*-
 import pygame
-import pyganim
+#import pyganim (?)
 from pygame.locals import *
 from gestorRecursos import *
 
@@ -21,8 +22,7 @@ class ElementoGUI:
 	#Te dice si se ha hecho clic en el
 	def posicionEnElemento(self, posicion):
 		(posicionx, posiciony) = posicion
-		if(posicionx >= self.rect.left) and (posicionx<=self.rect.rigth) 
-			and (posiciony>=self.rect.top) and (posiciony<=self.rect.bottom):
+		if(posicionx >= self.rect.left) and (posicionx<=self.rect.rigth) and (posiciony>=self.rect.top) and (posiciony<=self.rect.bottom):
 			return True
 		else:
 			return False
@@ -41,7 +41,7 @@ class Boton(ElementoGUI):
 		self.imagen = GestorRecursos.CargarImagen(nombreImagen,-1)
 		self.imagen = pygame.transform.scale(self.imagen,(20,20))
 		#Se llama al ´método de la clase padre con el rectángulo que ocupa el botón
-		ElementoGUI.__init__(self, pantallam self.imagen.get_rect())
+		ElementoGUI.__init__(self, pantalla, self.imagen.get_rect())
 		#Se coloca el rectángulo en su posición
 		self.establecerPosicion(posicion)
 
