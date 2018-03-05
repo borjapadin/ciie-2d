@@ -1,38 +1,24 @@
-#Importacion modulos
-import pygame, sys
-from pygame.locals import *
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-#Constantes
-ANCHO_PANTALLA = 800
-ALTO_PANTALLA = 600
+# Importar modulos
+# -*- encoding: utf-8 -*-
+import pygame
+import director
+from director import *
+from menu import *
 
+if __name__ == '__main__':
 
-#Inicializar pygame
-pygame.init()
-
-#Crear la pantalla
-pantalla = pygame.display.set_mode((ANCHO_PANTALLA,ALTO_PANTALLA))
-
-BLANCO  = (255,255,255)
-
-
-while True:
-
-	for evento in pygame.event.get():
-
-		if evento.type == KEYDOWN and evento.key == K_ESCAPE:
-			pygame.quit()
-			sys.exit()	
-
-
-	#Rellenamos pantalla color negro
-	pantalla.fill((0,0,0))
-
-	pygame.draw.circle(pantalla, BLANCO, (100,100),4,0)
-
-	pygame.display.update()
-
-	if evento.type == QUIT:
-		pygame.quit()
-		sys.exit()
-
+    # Inicializamos la libreria de pygame
+    pygame.init()
+    # Creamos el director
+    director = Director()
+    # Creamos la escena con la pantalla inicial
+    escena = Menu(director)
+    # Le decimos al director que apile esta escena
+    director.apilarEscena(escena)
+    # Y ejecutamos el juego
+    director.ejecutar()
+    # Cuando se termine la ejecución, finaliza la librería
+    pygame.quit()
