@@ -9,9 +9,11 @@ from director import *
 from menu import *
 
 if __name__ == '__main__':
+    
 
     # Inicializamos la libreria de pygame
     pygame.init()
+    
     # Creamos el director
     director = Director()
     # Creamos la escena con la pantalla inicial

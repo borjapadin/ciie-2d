@@ -4,7 +4,7 @@ import pygame, escena
 from escena import *
 from personajes import *
 from pygame.locals import *
-from animaciones import *
+#from animaciones import *
 
 # -------------------------------------------------
 # -------------------------------------------------
@@ -47,13 +47,13 @@ class Fase(Escena):
         #  Si ademas lo hubiese vertical, seria self.scroll = (0, 0)
 
         # Creamos los sprites de los jugadores
-        self.jugador1 = Jugador()
-        self.jugador2 = Jugador()
-        self.grupoJugadores = pygame.sprite.Group( self.jugador1, self.jugador2 )
+        #self.jugador1 = Jugador()
+        #self.jugador2 = Jugador()
+        #self.grupoJugadores = pygame.sprite.Group( self.jugador1, self.jugador2 )
 
         # Ponemos a los jugadores en sus posiciones iniciales
-        self.jugador1.establecerPosicion((200, 551))
-        self.jugador2.establecerPosicion((400, 551))
+        #self.jugador1.establecerPosicion((200, 551))
+        #self.jugador2.establecerPosicion((400, 551))
 
         # Creamos las plataformas del decorado
         # La plataforma que conforma todo el suelo

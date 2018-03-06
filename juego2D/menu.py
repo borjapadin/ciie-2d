@@ -5,9 +5,10 @@ from pygame.locals import *
 from gestorRecursos import *
 from escena import *
 from director import *
+#from fase import *
 
 ANCHO_PANTALLA = 800
-ALTO_PANTALLA =  600
+ALTO_PANTALLA =  400
 
 #Clase abstracta ElementoGUI
 class ElementoGUI:
@@ -24,7 +25,7 @@ class ElementoGUI:
 	#Te dice si se ha hecho clic en el
 	def posicionEnElemento(self, posicion):
 		(posicionx, posiciony) = posicion
-		if(posicionx >= self.rect.left) and (posicionx<=self.rect.rigth) and (posiciony>=self.rect.top) and (posiciony<=self.rect.bottom):
+		if (posicionx>=self.rect.left) and (posicionx<=self.rect.right) and (posiciony>=self.rect.top) and (posiciony<=self.rect.bottom):
 			return True
 		else:
 			return False
@@ -41,7 +42,7 @@ class Boton(ElementoGUI):
 	def __init__(self, pantalla, nombreImagen, posicion):
 		#Se carga la imagen del boton
 		self.imagen = GestorRecursos.CargarImagen(nombreImagen,-1)
-		self.imagen = pygame.transform.scale(self.imagen,(20,20))
+		self.imagen = pygame.transform.scale(self.imagen,(45,45))
 		#Se llama al ´método de la clase padre con el rectángulo que ocupa el botón
 		ElementoGUI.__init__(self, pantalla, self.imagen.get_rect())
 		#Se coloca el rectángulo en su posición
@@ -52,14 +53,14 @@ class Boton(ElementoGUI):
 
 class BotonJugar(Boton):
 	def __init__(self, pantalla):
-		Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (300,400))
+		Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (250,400))
 
 	def accion(self):
 		self.pantalla.menu.ejecutarJuego()
 
 class BotonSalir(Boton):
 	def __init__(self, pantalla):
-		Boton.__init__(self, pantalla, 'boton_rojo.png', (580,530))
+		Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (250,450))
 
 	def accion(self):
 		self.pantalla.menu.salirPrograma()
@@ -81,16 +82,16 @@ class  TextoGUI(ElementoGUI):
 class TextoJugar(TextoGUI):
 	def __init__(self, pantalla):
 		# La fuente la debería cargar el estor de recursos
-		fuente = pygame.font.SysFont('arial', 26);
-		TextoGUI.__init__(self, pantalla, fuente, (0, 0, 0), 'Jugar', (610, 535))
+		fuente = pygame.font.SysFont('impact', 30);
+		TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Empezar partida', (300, 400))
 	def accion(self):
 		self.pantalla.menu.ejecutarJuego()
 
 class TextoSalir(TextoGUI):
 	def __init__(self, pantalla):
 		# La fuente la debería cargar el estor de recursos
-		fuente = pygame.font.SysFont('arial', 26);
-		TextoGUI.__init__(self, pantalla, fuente, (0, 0, 0), 'Salir', (610, 565))
+		fuente = pygame.font.SysFont('impact', 30);
+		TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Salir', (300, 450))
 	def accion(self):
 		self.pantalla.menu.salirPrograma()
 
@@ -110,11 +111,11 @@ class PantallaGUI:
 		for evento in lista_eventos:
 			if evento.type == MOUSEBUTTONDOWN:
 				self.elementoClic = None
-				for elemento in self.elementoGUI:
+				for elemento in self.elementosGUI:
 					if elemento.posicionEnElemento(evento.pos):
 						self.elementoClic = elemento
 			if evento.type == MOUSEBUTTONUP:
-				for elemento in self.elementoGUI:
+				for elemento in self.elementosGUI:
 					if elemento.posicionEnElemento(evento.pos):
 						if(elemento == self.elementoClic):
 							elemento.accion()
@@ -135,14 +136,16 @@ class PantallaInicialGUI(PantallaGUI):
 		PantallaGUI.__init__(self, menu, 'Menu\PantallaInicio.jpg')
 		# Creamos los botones y los metemos en la lista
 		botonJugar = BotonJugar(self)
-		#botonSalir = BotonSalir(self)
+		botonSalir = BotonSalir(self)
+		
 		self.elementosGUI.append(botonJugar)
-		#self.elementosGUI.append(botonSalir)
+		self.elementosGUI.append(botonSalir)
+		
 		# Creamos el texto y lo metemos en la lista
 		textoJugar = TextoJugar(self)
 		textoSalir = TextoSalir(self)
-		#self.elementosGUI.append(textoJugar)
-		#self.elementosGUI.append(textoSalir)
+		self.elementosGUI.append(textoJugar)
+		self.elementosGUI.append(textoSalir)
 		
 # -------------------------------------------------
 # Clase Menu, la escena en sí
@@ -185,6 +188,8 @@ class Menu(Escena):
     
 	def ejecutarJuego(self):
 		fase = Fase(self.director)
+		#fase2Playa = Fase(self.director,"2-Playa")
+		#fase3Bunker = Fase(self.director,"3-Bunker")
 		self.director.apilarEscena(fase)
     
 	def mostrarPantallaInicial(self):
