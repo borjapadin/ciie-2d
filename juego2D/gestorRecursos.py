@@ -17,9 +17,10 @@ class GestorRecursos(object):
                 print 'No se ha podido cargar', nombreEntero
                 raise SystemExit, message
             imag = imag.convert()
-            if colorClave is -1:
-                colorClave = imag.get_at((0,0)) #obtenemos el color base
-            imag.set_colorkey(colorClave, RLEACCEL)
+            if colorClave is not None: #Puse esto (?) aunque no estaba (?) no se si no estaba por algo (?) pero Uxía me mando.
+                if colorClave is -1:
+                    colorClave = imag.get_at((0,0)) #obtenemos el color base
+                imag.set_colorkey(colorClave, RLEACCEL)
             cls.recursos[nombre] = imag #almacenamos
             return imag # lo devolvemos
 

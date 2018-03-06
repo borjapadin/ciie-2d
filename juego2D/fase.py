@@ -38,8 +38,8 @@ class Fase(Escena):
         Escena.__init__(self, director)
 
         # Creamos el decorado y el fondo
-        self.decorado = Decorado()
-        self.fondo = Cielo()
+        self.decorado = Decorado(nombreFase)
+        self.fondo = Cielo(nombreFase)
 
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
@@ -57,57 +57,57 @@ class Fase(Escena):
 
         # Creamos las plataformas del decorado
         # La plataforma que conforma todo el suelo
-        plataformaSuelo = Plataforma(pygame.Rect(0, 550, 1200, 15))
+        #plataformaSuelo = Plataforma(pygame.Rect(0, 550, 1200, 15))
         # La plataforma del techo del edificio
-        plataformaCasa = Plataforma(pygame.Rect(870, 417, 200, 10))
+        #plataformaCasa = Plataforma(pygame.Rect(870, 417, 200, 10))
         # y el grupo con las mismas
-        self.grupoPlataformas = pygame.sprite.Group( plataformaSuelo, plataformaCasa )
+        #self.grupoPlataformas = pygame.sprite.Group( plataformaSuelo, plataformaCasa )
 
         # Y los enemigos que tendran en este decorado
-        enemigo1 = Sniper()
-        enemigo1.establecerPosicion((1000, 418))
+        #enemigo1 = Sniper()
+        #enemigo1.establecerPosicion((1000, 418))
 
         # Creamos un grupo con los enemigos
-        self.grupoEnemigos = pygame.sprite.Group( enemigo1 )
+    #    self.grupoEnemigos = pygame.sprite.Group( enemigo1 )
 
         # Creamos un grupo con los Sprites que se mueven
         #  En este caso, solo los personajes, pero podría haber más (proyectiles, etc.)
-        self.grupoSpritesDinamicos = pygame.sprite.Group( self.jugador1, self.jugador2, enemigo1 )
+     #   self.grupoSpritesDinamicos = pygame.sprite.Group( self.jugador1, self.jugador2, enemigo1 )
         # Creamos otro grupo con todos los Sprites
-        self.grupoSprites = pygame.sprite.Group( self.jugador1, self.jugador2, enemigo1, plataformaSuelo, plataformaCasa )
+      #  self.grupoSprites = pygame.sprite.Group( self.jugador1, self.jugador2, enemigo1, plataformaSuelo, plataformaCasa )
 
         # Creamos las animaciones de fuego,
         #  las que estan detras del decorado, y delante
 
-        self.animacionesDetras = []
-        for i in range(9):
+       # self.animacionesDetras = []
+        #for i in range(9):
             # La animacion del fuego
-            animacionFuego = AnimacionFuego()
+         #   animacionFuego = AnimacionFuego()
             # Aumentamos un poco el tamaño de la animacion
-            animacionFuego.scale((400,400))
+          #  animacionFuego.scale((400,400))
             # La situamos en su posicion
-            animacionFuego.posicionx = 120*i - 200
-            animacionFuego.posiciony = 250
+        #    animacionFuego.posicionx = 120*i - 200
+        #    animacionFuego.posiciony = 250
             # Iniciamos la animacion
-            animacionFuego.play()
-            animacionFuego.nextFrame(i)
+        #    animacionFuego.play()
+        #    animacionFuego.nextFrame(i)
             # y la anadimos a la lista de animaciones detras
-            self.animacionesDetras.append(animacionFuego)
+        #    self.animacionesDetras.append(animacionFuego)
 
-        self.animacionesDelante = []
-        for i in range(11):
+       # self.animacionesDelante = []
+       # for i in range(11):
             # La animacion del fuego
-            animacionFuego = AnimacionFuego()
+        #    animacionFuego = AnimacionFuego()
             # Aumentamos un poco el tamaño de la animacion
-            animacionFuego.scale((450,450))
+        #    animacionFuego.scale((450,450))
             # La situamos en su posicion
-            animacionFuego.posicionx = 120*i - 200
-            animacionFuego.posiciony = 450
+        #    animacionFuego.posicionx = 120*i - 200
+        #    animacionFuego.posiciony = 450
             # Iniciamos la animacion
-            animacionFuego.play()
-            animacionFuego.nextFrame(i)
+        #    animacionFuego.play()
+        #    animacionFuego.nextFrame(i)
             # y la anadimos a la lista de animaciones delante
-            self.animacionesDelante.append(animacionFuego)
+        #    self.animacionesDelante.append(animacionFuego)
 
 
         
@@ -218,8 +218,8 @@ class Fase(Escena):
     def update(self, tiempo):
 
         # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
-        for enemigo in iter(self.grupoEnemigos):
-            enemigo.mover_cpu(self.jugador1, self.jugador2)
+        #for enemigo in iter(self.grupoEnemigos):
+        #    enemigo.mover_cpu(self.jugador1, self.jugador2)
         # Esta operación es aplicable también a cualquier Sprite que tenga algún tipo de IA
         # En el caso de los jugadores, esto ya se ha realizado
 
@@ -227,7 +227,7 @@ class Fase(Escena):
         # De esta forma, se simula que cambian todos a la vez
         # Esta operación de update ya comprueba que los movimientos sean correctos
         #  y, si lo son, realiza el movimiento de los Sprites
-        self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+        #self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
         # Dentro del update ya se comprueba que todos los movimientos son válidos
         #  (que no choque con paredes, etc.)
 
@@ -239,12 +239,12 @@ class Fase(Escena):
         # Comprobamos si hay colision entre algun jugador y algun enemigo
         # Se comprueba la colision entre ambos grupos
         # Si la hay, indicamos que se ha finalizado la fase
-        if pygame.sprite.groupcollide(self.grupoJugadores, self.grupoEnemigos, False, False)!={}:
+        #if pygame.sprite.groupcollide(self.grupoJugadores, self.grupoEnemigos, False, False)!={}:
             # Se le dice al director que salga de esta escena y ejecute la siguiente en la pila
-            self.director.salirEscena()
+        self.director.salirEscena()
 
         # Actualizamos el scroll
-        self.actualizarScroll(self.jugador1, self.jugador2)
+  #      self.actualizarScroll(self.jugador1, self.jugador2)
   
         # Actualizamos el fondo:
         #  la posicion del sol y el color del cielo
@@ -255,15 +255,15 @@ class Fase(Escena):
         # Ponemos primero el fondo
         self.fondo.dibujar(pantalla)
         # Despues, las animaciones que haya detras
-        for animacion in self.animacionesDetras:
-            animacion.dibujar(pantalla)
+ #       for animacion in self.animacionesDetras:
+  #          animacion.dibujar(pantalla)
         # Después el decorado
         self.decorado.dibujar(pantalla)
         # Luego los Sprites
-        self.grupoSprites.draw(pantalla)
+  #      self.grupoSprites.draw(pantalla)
         # Y por ultimo, dibujamos las animaciones por encima del decorado
-        for animacion in self.animacionesDelante:
-            animacion.dibujar(pantalla)
+  #      for animacion in self.animacionesDelante:
+  #          animacion.dibujar(pantalla)
 
 
     def eventos(self, lista_eventos):
@@ -274,32 +274,32 @@ class Fase(Escena):
                 self.director.salirPrograma()
 
         # Indicamos la acción a realizar segun la tecla pulsada para cada jugador
-        teclasPulsadas = pygame.key.get_pressed()
-        self.jugador1.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
-        self.jugador2.mover(teclasPulsadas, K_w,  K_s,    K_a,    K_d)
+        #teclasPulsadas = pygame.key.get_pressed()
+        #self.jugador1.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
+        #self.jugador2.mover(teclasPulsadas, K_w,  K_s,    K_a,    K_d)
 
 # -------------------------------------------------
 # Clase Plataforma
 
 #class Plataforma(pygame.sprite.Sprite):
-class Plataforma(MiSprite):
-    def __init__(self,rectangulo):
+#class Plataforma(MiSprite):
+#    def __init__(self,rectangulo):
         # Primero invocamos al constructor de la clase padre
-        MiSprite.__init__(self)
+#        MiSprite.__init__(self)
         # Rectangulo con las coordenadas en pantalla que ocupara
-        self.rect = rectangulo
+#        self.rect = rectangulo
         # Y lo situamos de forma global en esas coordenadas
-        self.establecerPosicion((self.rect.left, self.rect.bottom))
+#        self.establecerPosicion((self.rect.left, self.rect.bottom))
         # En el caso particular de este juego, las plataformas no se van a ver, asi que no se carga ninguna imagen
-        self.image = pygame.Surface((0, 0))
+#        self.image = pygame.Surface((0, 0))
 
 
 # -------------------------------------------------
 # Clase Cielo
 
 class Cielo:
-    def __init__(self):
-        self.sol = GestorRecursos.CargarImagen('sol.png', -1)
+    def __init__(self,nombreFase):
+        self.sol = GestorRecursos.CargarImagen('Fase'+nombreFase+'\sol.png', -1)
         self.sol = pygame.transform.scale(self.sol, (300, 200))
 
         self.rect = self.sol.get_rect()
@@ -329,8 +329,8 @@ class Cielo:
 # Clase Decorado
 
 class Decorado:
-    def __init__(self):
-        self.imagen = GestorRecursos.CargarImagen('decorado.png', -1)
+    def __init__(self,nombreFase):
+        self.imagen = GestorRecursos.CargarImagen('Fase'+nombreFase+'\decorado.png', -1)
         self.imagen = pygame.transform.scale(self.imagen, (1200, 300))
 
         self.rect = self.imagen.get_rect()

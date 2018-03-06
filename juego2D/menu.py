@@ -5,7 +5,7 @@ from pygame.locals import *
 from gestorRecursos import *
 from escena import *
 from director import *
-#from fase import *
+from fase import *
 
 ANCHO_PANTALLA = 800
 ALTO_PANTALLA =  400
@@ -187,10 +187,10 @@ class Menu(Escena):
 		self.director.salirPrograma()
     
 	def ejecutarJuego(self):
-		fase = Fase(self.director)
+		fase1Bosque = Fase(self.director,"/1-Bosque")
 		#fase2Playa = Fase(self.director,"2-Playa")
 		#fase3Bunker = Fase(self.director,"3-Bunker")
-		self.director.apilarEscena(fase)
+		self.director.apilarEscena(fase1Bosque)
     
 	def mostrarPantallaInicial(self):
 		self.pantallaActual = 0
