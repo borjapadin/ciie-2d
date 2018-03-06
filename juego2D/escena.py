@@ -5,7 +5,7 @@ ANCHO_PANTALLA = 800
 ALTO_PANTALLA =  600
 
 class Escena:
-    def _init_(self, director):
+    def __init__(self, director):
         self.director = director
 
     def update(self, *args):
