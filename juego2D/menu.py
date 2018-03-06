@@ -52,7 +52,7 @@ class Boton(ElementoGUI):
 
 class BotonJugar(Boton):
 	def __init__(self, pantalla):
-		Boton.__init__(self, pantalla, 'boton_verde.png', (580,530))
+		Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (300,400))
 
 	def accion(self):
 		self.pantalla.menu.ejecutarJuego()
@@ -78,8 +78,23 @@ class  TextoGUI(ElementoGUI):
 	def dibujar(self, pantalla):
 		pantalla.blit(self.imagen, self.rect)
 
-#Clase PantallaGUI y las distintas pantallas
+class TextoJugar(TextoGUI):
+	def __init__(self, pantalla):
+		# La fuente la debería cargar el estor de recursos
+		fuente = pygame.font.SysFont('arial', 26);
+		TextoGUI.__init__(self, pantalla, fuente, (0, 0, 0), 'Jugar', (610, 535))
+	def accion(self):
+		self.pantalla.menu.ejecutarJuego()
 
+class TextoSalir(TextoGUI):
+	def __init__(self, pantalla):
+		# La fuente la debería cargar el estor de recursos
+		fuente = pygame.font.SysFont('arial', 26);
+		TextoGUI.__init__(self, pantalla, fuente, (0, 0, 0), 'Salir', (610, 565))
+	def accion(self):
+		self.pantalla.menu.salirPrograma()
+
+#Clase PantallaGUI y las distintas pantallas
 class PantallaGUI:
 	def __init__(self, menu, nombreImagen):
 		self.menu = menu
@@ -87,7 +102,7 @@ class PantallaGUI:
 		self.imagen = GestorRecursos.CargarImagen(nombreImagen)
 		self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA, ALTO_PANTALLA))
 		#Se tiene una lista de elementos GUI
-		self.elementoGUI = []
+		self.elementosGUI = []
 		#Se tiene una lista de animaciones
 		self.animaciones = []
 
@@ -98,11 +113,12 @@ class PantallaGUI:
 				for elemento in self.elementoGUI:
 					if elemento.posicionEnElemento(evento.pos):
 						self.elementoClic = elemento
-			if elemento.type == MOUSEBUTTONUP:
+			if evento.type == MOUSEBUTTONUP:
 				for elemento in self.elementoGUI:
 					if elemento.posicionEnElemento(evento.pos):
 						if(elemento == self.elementoClic):
 							elemento.accion()
+	
 
 	def dibujar(self, pantalla):
 		#Dibujamos primero la imagen de fondo
@@ -111,7 +127,7 @@ class PantallaGUI:
 		for animacion in self.animaciones:
 			animacion.dibujar(pantalla)
 		#Después los botones
-		for elemento in self.elementoGUI:
+		for elemento in self.elementosGUI:
 			elemento.dibujar(pantalla)
 			
 class PantallaInicialGUI(PantallaGUI):
@@ -119,14 +135,14 @@ class PantallaInicialGUI(PantallaGUI):
 		PantallaGUI.__init__(self, menu, 'Menu\PantallaInicio.jpg')
 		# Creamos los botones y los metemos en la lista
 		botonJugar = BotonJugar(self)
-		botonSalir = BotonSalir(self)
+		#botonSalir = BotonSalir(self)
 		self.elementosGUI.append(botonJugar)
-		self.elementosGUI.append(botonSalir)
+		#self.elementosGUI.append(botonSalir)
 		# Creamos el texto y lo metemos en la lista
 		textoJugar = TextoJugar(self)
 		textoSalir = TextoSalir(self)
-		self.elementosGUI.append(textoJugar)
-		self.elementosGUI.append(textoSalir)
+		#self.elementosGUI.append(textoJugar)
+		#self.elementosGUI.append(textoSalir)
 		
 # -------------------------------------------------
 # Clase Menu, la escena en sí
