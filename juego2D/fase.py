@@ -39,12 +39,11 @@ class Fase(Escena):
 
         # Creamos el decorado y el fondo
         self.decorado = Decorado(nombreFase)
-        self.fondo = Cielo(nombreFase)
+       # self.fondo = Cielo(nombreFase)
 
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
         #  En ese caso solo hay scroll horizontal
-        #  Si ademas lo hubiese vertical, seria self.scroll = (0, 0)
 
         # Creamos los sprites de los jugadores
         #self.jugador1 = Jugador()
@@ -241,19 +240,19 @@ class Fase(Escena):
         # Si la hay, indicamos que se ha finalizado la fase
         #if pygame.sprite.groupcollide(self.grupoJugadores, self.grupoEnemigos, False, False)!={}:
             # Se le dice al director que salga de esta escena y ejecute la siguiente en la pila
-        self.director.salirEscena()
-
+            #self.director.salirEscena()
+        print('Por implementar')
         # Actualizamos el scroll
   #      self.actualizarScroll(self.jugador1, self.jugador2)
   
         # Actualizamos el fondo:
         #  la posicion del sol y el color del cielo
-        self.fondo.update(tiempo)
+       # self.fondo.update(tiempo)
 
         
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
-        self.fondo.dibujar(pantalla)
+        #self.fondo.dibujar(pantalla)
         # Despues, las animaciones que haya detras
  #       for animacion in self.animacionesDetras:
   #          animacion.dibujar(pantalla)
@@ -270,6 +269,12 @@ class Fase(Escena):
         # Miramos a ver si hay algun evento de salir del programa
         for evento in lista_eventos:
             # Si se quiere salir, se le indica al director
+            if evento.type == KEYDOWN: #Añadida también para salir dandole a escape
+                if evento.key == K_ESCAPE:
+                    self.director.salirPrograma()  
+                elif evento.key == K_p: #Aquí deberia hacer un menu de pausa que aparezca****
+                    print("Menu de pausa")
+                    self.director.salirEscena()                    
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
 

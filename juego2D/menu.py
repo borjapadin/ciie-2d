@@ -170,10 +170,11 @@ class Menu(Escena):
 		for evento in lista_eventos:
 		    # Si se quiere salir, se le indica al director
 			if evento.type == KEYDOWN:
-				if evento.key == K_ESCAPE:
+				if evento.key == K_ESCAPE: #Salir
 					self.salirPrograma()
-			elif evento.type == pygame.QUIT:
+			elif evento.type == pygame.QUIT: #Salir
 				self.director.salirPrograma()
+
 	
 		# Se pasa la lista de eventos a la pantalla actual
 		self.listaPantallas[self.pantallaActual].eventos(lista_eventos)
@@ -189,12 +190,13 @@ class Menu(Escena):
     
 	def ejecutarJuego(self):
 		fase1Bosque = Fase(self.director,"/1-Bosque")
-		#fase2Playa = Fase(self.director,"2-Playa")
+		fase2Playa = Fase(self.director,"/2-Playa")
 		#fase3Bunker = Fase(self.director,"3-Bunker")
+		self.director.apilarEscena(fase2Playa)
 		self.director.apilarEscena(fase1Bosque)
     
 	def mostrarPantallaInicial(self):
 		self.pantallaActual = 0
     
-	# def mostrarPantallaConfiguracion(self):
-	#    self.pantallaActual = ...
+	def mostrarPantallaConfiguracion(self):
+		self.pantallaActual = 1
