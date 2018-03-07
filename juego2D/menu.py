@@ -8,7 +8,7 @@ from director import *
 from fase import *
 
 ANCHO_PANTALLA = 800
-ALTO_PANTALLA =  400
+ALTO_PANTALLA =  600
 
 #Clase abstracta ElementoGUI
 class ElementoGUI:
@@ -53,14 +53,14 @@ class Boton(ElementoGUI):
 
 class BotonJugar(Boton):
 	def __init__(self, pantalla):
-		Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (250,400))
+		Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,400))
 
 	def accion(self):
 		self.pantalla.menu.ejecutarJuego()
 
 class BotonSalir(Boton):
 	def __init__(self, pantalla):
-		Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (250,450))
+		Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,450))
 
 	def accion(self):
 		self.pantalla.menu.salirPrograma()
@@ -83,7 +83,7 @@ class TextoJugar(TextoGUI):
 	def __init__(self, pantalla):
 		# La fuente la debería cargar el estor de recursos
 		fuente = pygame.font.SysFont('impact', 30);
-		TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Empezar partida', (300, 400))
+		TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Empezar partida', (60, 395))
 	def accion(self):
 		self.pantalla.menu.ejecutarJuego()
 
@@ -91,7 +91,7 @@ class TextoSalir(TextoGUI):
 	def __init__(self, pantalla):
 		# La fuente la debería cargar el estor de recursos
 		fuente = pygame.font.SysFont('impact', 30);
-		TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Salir', (300, 450))
+		TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Salir', (60, 445))
 	def accion(self):
 		self.pantalla.menu.salirPrograma()
 
@@ -133,7 +133,8 @@ class PantallaGUI:
 			
 class PantallaInicialGUI(PantallaGUI):
 	def __init__(self, menu):
-		PantallaGUI.__init__(self, menu, 'Menu\PantallaInicio.jpg')
+		PantallaGUI.__init__(self, menu, 'Menu/PantallaInicio.jpg')
+
 		# Creamos los botones y los metemos en la lista
 		botonJugar = BotonJugar(self)
 		botonSalir = BotonSalir(self)
