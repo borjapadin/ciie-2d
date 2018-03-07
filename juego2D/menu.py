@@ -100,7 +100,7 @@ class PantallaGUI:
 	def __init__(self, menu, nombreImagen):
 		self.menu = menu
 		#Se carga la imagen de fondo
-		self.imagen = GestorRecursos.CargarImagen(nombreImagen)
+		self.imagen = GestorRecursos.CargarImagen(nombreImagen,1)
 		self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA, ALTO_PANTALLA))
 		#Se tiene una lista de elementos GUI
 		self.elementosGUI = []
@@ -125,8 +125,8 @@ class PantallaGUI:
 		#Dibujamos primero la imagen de fondo
 		pantalla.blit(self.imagen, self.imagen.get_rect())
 		#Después las animaciones
-		for animacion in self.animaciones:
-			animacion.dibujar(pantalla)
+	#	for animacion in self.animaciones:
+	#		animacion.dibujar(pantalla)
 		#Después los botones
 		for elemento in self.elementosGUI:
 			elemento.dibujar(pantalla)
@@ -148,8 +148,10 @@ class PantallaInicialGUI(PantallaGUI):
 		self.elementosGUI.append(textoJugar)
 		self.elementosGUI.append(textoSalir)
 
-#class PantallaConfiguracionGUI(PantallaGUI):
-#	PantallaGUI.__init__(self,
+class PantallaConfiguracionGUI(PantallaGUI):
+	def __init__(self,menu):
+		PantallaGUI.__init__(self, menu, 'Menu/PantallaInicio.jpg')
+	
 # -------------------------------------------------
 # Clase Menu, la escena en sí
 class Menu(Escena):
@@ -161,6 +163,7 @@ class Menu(Escena):
 		# Creamos las pantallas que vamos a tener
 		#   y las metemos en la lista
 		self.listaPantallas.append(PantallaInicialGUI(self))
+		self.listaPantallas.append(PantallaConfiguracionGUI(self))
 		# En que pantalla estamos actualmente
 		self.mostrarPantallaInicial()
     
@@ -175,8 +178,9 @@ class Menu(Escena):
 				if evento.key == K_ESCAPE: #Salir
 					self.salirPrograma()
 				elif evento.key == K_p: #Aquí deberia hacer un menu de pausa que aparezca****
-					print("Menu de pausa")
-					self.mostrarPantallaConfiguracion()					
+					#print("Menu de pausa")
+					#self.mostrarPantallaConfiguracion()	
+					#self.apilarEscena(
 			elif evento.type == pygame.QUIT: #Salir
 				self.director.salirPrograma()
 
@@ -197,7 +201,7 @@ class Menu(Escena):
 		fase1Bosque = Fase(self.director,"/1-Bosque")
 		fase2Playa = Fase(self.director,"/2-Playa")
 		#fase3Bunker = Fase(self.director,"3-Bunker")
-		#self.director.apilarEscena(fase2Playa)
+		self.director.apilarEscena(fase2Playa)
 		self.director.apilarEscena(fase1Bosque)
     
 	def mostrarPantallaInicial(self):
@@ -205,3 +209,9 @@ class Menu(Escena):
     
 	def mostrarPantallaConfiguracion(self):
 		self.pantallaActual = 1
+	
+	def mostrarPantallaGameOver(self):
+		self.pantallaActual = 2
+	
+	def mostrarPantallaBomb(self):
+		self.pantallaActual = 3
