@@ -147,7 +147,9 @@ class PantallaInicialGUI(PantallaGUI):
 		textoSalir = TextoSalir(self)
 		self.elementosGUI.append(textoJugar)
 		self.elementosGUI.append(textoSalir)
-		
+
+#class PantallaConfiguracionGUI(PantallaGUI):
+#	PantallaGUI.__init__(self,
 # -------------------------------------------------
 # Clase Menu, la escena en sí
 class Menu(Escena):
@@ -172,6 +174,9 @@ class Menu(Escena):
 			if evento.type == KEYDOWN:
 				if evento.key == K_ESCAPE: #Salir
 					self.salirPrograma()
+				elif evento.key == K_p: #Aquí deberia hacer un menu de pausa que aparezca****
+					print("Menu de pausa")
+					self.mostrarPantallaConfiguracion()					
 			elif evento.type == pygame.QUIT: #Salir
 				self.director.salirPrograma()
 
@@ -192,7 +197,7 @@ class Menu(Escena):
 		fase1Bosque = Fase(self.director,"/1-Bosque")
 		fase2Playa = Fase(self.director,"/2-Playa")
 		#fase3Bunker = Fase(self.director,"3-Bunker")
-		self.director.apilarEscena(fase2Playa)
+		#self.director.apilarEscena(fase2Playa)
 		self.director.apilarEscena(fase1Bosque)
     
 	def mostrarPantallaInicial(self):
