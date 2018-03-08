@@ -22,7 +22,7 @@ class Menu(Escena):
 		# Creamos las pantallas que vamos a tener
 		#   y las metemos en la lista
 		self.listaPantallas.append(PantallaInicialGUI(self))
-		self.listaPantallas.append(PantallaConfiguracionGUI(self))
+		self.listaPantallas.append(PantallaConfiguracionGUI(self,director))
 		# En que pantalla estamos actualmente
 		self.mostrarPantallaInicial()
     
@@ -57,12 +57,11 @@ class Menu(Escena):
 		self.director.salirPrograma()
     
 	def ejecutarJuego(self):
-		fase = Fase(self.director,"/1-Bosque")
-		self.mostrarPantallaConfiguracion(fase) #Dejamos que esta sea la actual (si salimos de las fases entramos en esta)
-		#fase2Playa = Fase(self.director,"/2-Playa")
-		#fase3Bunker = Fase(self.director,"3-Bunker")
-		#self.director.apilarEscena(fase2Playa)
-		self.director.apilarEscena(fase)
+		self.mostrarPantallaConfiguracion() #Dejamos que esta sea la actual (si salimos de las fases entramos en esta)
+		#fase2 = Fase(self.director,2)
+		faseInicial = Fase(self.director,1)
+		#self.director.apilarEscena(fase2)
+		self.director.apilarEscena(faseInicial)
 	
 	def reanudarJuego(self,fase):
 		self.director.apilarEscena(fase)
@@ -70,9 +69,8 @@ class Menu(Escena):
 	def mostrarPantallaInicial(self):
 		self.pantallaActual = 0
     
-	def mostrarPantallaConfiguracion(self,fase):
+	def mostrarPantallaConfiguracion(self):
 		self.pantallaActual = 1
-		self.listaPantallas[self.pantallaActual].asociarFaseActual(fase)
 	
 	def mostrarPantallaGameOver(self):
 		self.pantallaActual = 2

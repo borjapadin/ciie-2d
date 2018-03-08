@@ -11,23 +11,17 @@ from PantallaGUI import *
 from Boton import *
 
 class PantallaConfiguracionGUI(PantallaGUI):
-    def __init__(self,menu):
+    def __init__(self,menu,director):
         PantallaGUI.__init__(self, menu, 'Menu/PantallaInicio.jpg')
-        #botonReanudar = BotonReanudar(self,fase)
-        #self.elementosGUI.append(botonReanudar)          
-      #  textoJugar = TextoJugar(self)
+        self.director = director #Para que indique en que fase esta
         
-        
-    def asociarFaseActual(self,fase): 
-        self.fase = fase
-        #No puedo anadir el boton sin saber a que fase debe transicionar
-        botonReanudar = BotonReanudar(self,fase)
+        botonReanudar = BotonReanudar(self,director)
         self.elementosGUI.append(botonReanudar)        
     
 class BotonReanudar(Boton):
-    def __init__(self, pantalla, fase):
+    def __init__(self, pantalla, director):
         Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,400))
-        self.fase = fase
+        self.director = director
         
     def accion(self):
-        self.pantalla.menu.reanudarJuego(self.fase)
+        self.pantalla.menu.reanudarJuego(self.director.devolverEscenaPausada())

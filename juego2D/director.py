@@ -80,4 +80,11 @@ class Director():
         # Ponemos la escena pasada en la cima de la pila
         #  (por encima de la actual)
         self.pila.append(escena)
+    
+    # --- Menu Pausa ---
+    def escenaPausada(self,escena):
+        self.escena = escena
+    
+    def devolverEscenaPausada(self):
+        return self.escena
 

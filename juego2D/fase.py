@@ -22,7 +22,7 @@ MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 # Clase Fase
 
 class Fase(Escena):
-    def __init__(self, director, nombreFase):
+    def __init__(self, director, numFase):
 
         # Habria que pasarle como parámetro el número de fase, a partir del cual se cargue
         #  un fichero donde este la configuracion de esa fase en concreto, con cosas como
@@ -34,12 +34,15 @@ class Fase(Escena):
         # Y cargar esa configuracion del archivo en lugar de ponerla a mano, como aqui abajo
         # De esta forma, se podrian tener muchas fases distintas con esta clase
 
+        self.numFase = str(numFase) #Necesito que sea string para ponerlo en la ruta.
+        self.numFaseSiguiente = numFase+1 #Para saber el numero de la fase siguiente 
+        
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
 
         # Creamos el decorado y el fondo
-        self.decorado = Decorado(nombreFase)
-        self.fondo = Cielo(nombreFase)
+        self.decorado = Decorado("/"+self.numFase)
+        self.fondo = Cielo("/"+self.numFase)
 
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
@@ -105,10 +108,10 @@ class Fase(Escena):
             if evento.type == KEYDOWN: #Añadida también para salir dandole a escape
                 if evento.key == K_ESCAPE:
                     self.director.salirPrograma()  
-                elif evento.key == K_f: #Trampa de salir de escena para cambiarla
-                    self.director.salirEscena()
+                elif evento.key == K_c: #Trampa de salir de escena para cambiarla
+                    self.crearFaseSiguiente()
                 elif evento.key == K_p: #Entrar en el menu de pausa
-                    self.director.apilarEscena(self) #Apilamos la escena para poder recuperarla.
+                    self.director.escenaPausada(self) #Informamos al director de cual es la escena pausada
                     self.director.salirEscena() #Salimos de la escena para poder entrar en el menu
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
@@ -117,7 +120,18 @@ class Fase(Escena):
         #teclasPulsadas = pygame.key.get_pressed()
         #self.jugador1.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
         #self.jugador2.mover(teclasPulsadas, K_w,  K_s,    K_a,    K_d)
-
+    def crearFaseSiguiente(self):
+        #faseInicial = Fase(self.director,1)
+        #self.director.apilarEscena(faseInicial)
+        
+        #faseSiguiente = Fase(self.director,self.numFaseSiguiente)
+        #self.director.apilarEscena(faseInicial)
+        self.director.salirEscena()
+        faseNueva = Fase(self.director,self.numFaseSiguiente)
+        self.director.apilarEscena(faseNueva)
+        
+        #self.director.cambiarEscena(self)
+        
 # -------------------------------------------------
 # Clase Plataforma
 
