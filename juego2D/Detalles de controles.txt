@@ -1,0 +1,19 @@
+Entrar desde el menu:
+- Clickando como una persona civilizada.
+
+Probar pausa:
+- Una vez dentro de una fase click en P 
+
+Salir pausa: 
+- Clicka en el botón terrible.
+
+Cambio de fase:
+- Una vez dentro de una fase click en C
+(en el código cada fase crea la siguiente cuando se cambia)
+
+1-2
+2-3
+PERO... la 3 no cambia a nada (debería cambiar a GameOver).
+
+Posdata: puse teclas más o menos explicativas (?) que creía que no iban a usarse para 
+el movimiento pero por mí las cambiamos por alguna más explicativa más adelante.

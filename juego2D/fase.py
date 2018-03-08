@@ -149,7 +149,7 @@ class Fase(Escena):
 
 
 # -------------------------------------------------
-# Clase Cielo
+# Clase Cielo: aún no tiene nada prácticamente, solo un background negro.
 
 class Cielo:
     def __init__(self,nombreFase):
@@ -172,7 +172,7 @@ class Cielo:
 class Decorado:
     def __init__(self,nombreFase):
         self.imagen = GestorRecursos.CargarImagen('Fase'+nombreFase+'\decorado.png', -1)
-        self.imagen = pygame.transform.scale(self.imagen, (1200, 300))
+        self.imagen = pygame.transform.scale(self.imagen, (1200, 400))
 
         self.rect = self.imagen.get_rect()
         self.rect.bottom = ALTO_PANTALLA

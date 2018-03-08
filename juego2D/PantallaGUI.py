@@ -21,9 +21,9 @@ class PantallaGUI:
         #Se tiene una lista de animaciones
        # self.animaciones = []
 
-    def eventos(self, lista_eventos):
+    def eventos(self, lista_eventos): #Actualmente no usa esto ninguna porque hay una clase que la sobreescribe, pero dejemoslo de momento
         for evento in lista_eventos:
-            if evento.type == MOUSEBUTTONDOWN:
+            if evento.type == MOUSEBUTTONDOWN: 
                 self.elementoClic = None
                 for elemento in self.elementosGUI:
                     if elemento.posicionEnElemento(evento.pos):

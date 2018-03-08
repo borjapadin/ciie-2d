@@ -36,10 +36,6 @@ class Menu(Escena):
 			if evento.type == KEYDOWN:
 				if evento.key == K_ESCAPE: #Salir
 					self.salirPrograma()
-				#elif evento.key == K_p: #Aquí deberia hacer un menu de pausa que aparezca****
-					#print("Menu de pausa")
-				#	self.mostrarPantallaConfiguracion()	
-					#self.apilarEscena(
 			elif evento.type == pygame.QUIT: #Salir
 				self.director.salirPrograma()
 
