@@ -105,11 +105,11 @@ class Fase(Escena):
             if evento.type == KEYDOWN: #Añadida también para salir dandole a escape
                 if evento.key == K_ESCAPE:
                     self.director.salirPrograma()  
-                elif evento.key == K_p: #Aquí deberia hacer un menu de pausa que aparezca****
-                    print("Menu de pausa")
-                    self.director.mostrarPantallaConfiguracion()
-                elif evento.key == K_c: #Cambiar de escena... CON TRAMPA muajaja...
-                    self.director.cambiarEscena()
+                elif evento.key == K_f: #Trampa de salir de escena para cambiarla
+                    self.director.salirEscena()
+                elif evento.key == K_p: #Entrar en el menu de pausa
+                    self.director.apilarEscena(self) #Apilamos la escena para poder recuperarla.
+                    self.director.salirEscena() #Salimos de la escena para poder entrar en el menu
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
 
