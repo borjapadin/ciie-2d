@@ -12,7 +12,7 @@ from pygame.locals import *
 # -------------------------------------------------
 # -------------------------------------------------
 
-VELOCIDAD_SOL = 0.1 # Pixeles por milisegundo
+ULTIMA_FASE = 3
 
 # Los bordes de la pantalla para hacer scroll horizontal
 MINIMO_X_JUGADOR = 50
@@ -106,13 +106,19 @@ class Fase(Escena):
         for evento in lista_eventos:
             # Si se quiere salir, se le indica al director
             if evento.type == KEYDOWN: #Añadida también para salir dandole a escape
+                #-------------SALIR PROGRAMA---------------------
                 if evento.key == K_ESCAPE:
-                    self.director.salirPrograma()  
+                    self.director.salirPrograma() 
+                #-------------CAMBIAR ESCENA---------------------
                 elif evento.key == K_c: #Trampa de salir de escena para cambiarla
                     self.crearFaseSiguiente()
-                elif evento.key == K_p: #Entrar en el menu de pausa
+                #--------------MENU PAUSA-------------------------
+                elif evento.key == K_p: 
                     self.director.escenaPausada(self) #Informamos al director de cual es la escena pausada
                     self.director.salirEscena() #Salimos de la escena para poder entrar en el menu
+                #--------------GAME_OVER-------------------------
+                elif evento.key == K_g:
+                    self.director.gameOver()
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
 
@@ -121,16 +127,10 @@ class Fase(Escena):
         #self.jugador1.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
         #self.jugador2.mover(teclasPulsadas, K_w,  K_s,    K_a,    K_d)
     def crearFaseSiguiente(self):
-        #faseInicial = Fase(self.director,1)
-        #self.director.apilarEscena(faseInicial)
-        
-        #faseSiguiente = Fase(self.director,self.numFaseSiguiente)
-        #self.director.apilarEscena(faseInicial)
         self.director.salirEscena()
         faseNueva = Fase(self.director,self.numFaseSiguiente)
         self.director.apilarEscena(faseNueva)
-        
-        #self.director.cambiarEscena(self)
+
         
 # -------------------------------------------------
 # Clase Plataforma
@@ -157,7 +157,6 @@ class Cielo:
         self.update(0)
 
     def update(self, tiempo):
-        self.posicionx += VELOCIDAD_SOL * tiempo
         # Calculamos el color del cielo
         self.colorCielo = (0, 0, 0)
         

@@ -1,5 +1,7 @@
 Entrar desde el menu:
-- Clickando como una persona civilizada.
+- Clickando como una persona civilizada ...mmm...
+- Enter para seleccionar
+- Mover con los controles de arriba abajo
 
 Probar pausa:
 - Una vez dentro de una fase click en P 

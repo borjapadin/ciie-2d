@@ -69,7 +69,7 @@ class Director():
         # Vaciamos la lista de escenas pendientes
         self.pila = []
         self.salir_escena = True
-
+    
     def cambiarEscena(self, escena):
         self.salirEscena()
         # Ponemos la escena pasada en la cima de la pila
@@ -82,9 +82,18 @@ class Director():
         self.pila.append(escena)
     
     # --- Menu Pausa ---
-    def escenaPausada(self,escena):
-        self.escena = escena
+    def escenaPausada(self,fase):
+        self.fase = fase
     
     def devolverEscenaPausada(self):
-        return self.escena
+        return self.fase
+    
+    #Mas que añadirla es toda la lógica de game over... es decir, poner una, luego otra, si quieres
+    #poner transicion entre ellas blablabla... 
+    def agregarEscenaGameOver(self,escena):
+        self.escena = escena
+    
+    def gameOver(self):
+        #self.pila = [self.escena]
+        self.apilarEscena(self.escena)
 

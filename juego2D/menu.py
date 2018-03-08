@@ -8,6 +8,8 @@ from director import *
 from fase import *
 from PantallaConfiguracion import *
 from pantallaInicial import *
+from PantallaGameOver import *
+from MenuGameOver import *
 
 ANCHO_PANTALLA = 800
 ALTO_PANTALLA =  600
@@ -23,9 +25,17 @@ class Menu(Escena):
 		#   y las metemos en la lista
 		self.listaPantallas.append(PantallaInicialGUI(self))
 		self.listaPantallas.append(PantallaConfiguracionGUI(self,director))
+		
+		self.agregarAlDirectorEscenaGameOver()
+		
 		# En que pantalla estamos actualmente
 		self.mostrarPantallaInicial()
-    
+		
+	# Como el Menu de Game Over también va a volver hasta aquí también lo necesita.
+	def agregarAlDirectorEscenaGameOver(self):
+		escenaGameOver = MenuGameOver(self.director)
+		self.director.agregarEscenaGameOver(escenaGameOver)
+		
 	def update(self, *args):
 		return
     
@@ -36,6 +46,9 @@ class Menu(Escena):
 			if evento.type == KEYDOWN:
 				if evento.key == K_ESCAPE: #Salir
 					self.salirPrograma()
+				elif evento.key == K_g:
+					self.mostrarPantallaGameOver()
+					self.director.salirEscena()
 			elif evento.type == pygame.QUIT: #Salir
 				self.director.salirPrograma()
 
@@ -68,8 +81,3 @@ class Menu(Escena):
 	def mostrarPantallaConfiguracion(self):
 		self.pantallaActual = 1
 	
-	def mostrarPantallaGameOver(self):
-		self.pantallaActual = 2
-	
-	def mostrarPantallaBomb(self):
-		self.pantallaActual = 3

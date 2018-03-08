@@ -33,6 +33,8 @@ class PantallaGUI:
                     if elemento.posicionEnElemento(evento.pos):
                         if(elemento == self.elementoClic) :
                             elemento.accion()
+                
+                
 
 
     def dibujar(self, pantalla):
