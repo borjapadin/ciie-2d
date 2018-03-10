@@ -42,7 +42,7 @@ class PantallaGameOverGUI(PantallaGUI):
                 if evento.key == K_RETURN: 
                     elemento = self.elementosGUI.pop()
                     elemento.accion()
-                    self.addBotonJugar() #Tienes que volver a poner el botón de jugar en su sitio por si vuelves a esta pantalla.
+                    self.elementosGUI.append(elemento)
                           
                 #Cambiar de opción
                 if evento.key == K_DOWN or evento.key == K_UP:
