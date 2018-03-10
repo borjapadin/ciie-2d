@@ -6,7 +6,7 @@ import sys
 #import escena
 from escena import *
 from pygame.locals import *
-
+from Constantes import *
 
 class Director():
 
@@ -69,6 +69,21 @@ class Director():
         # Vaciamos la lista de escenas pendientes
         self.pila = []
         self.salir_escena = True
+        
+    def cambiarAlMenu(self,escena,pantalla):
+        self.escenaPausada(escena)
+        self.salirEscena()
+        
+        #Modificar parámetro del menu.
+        menu = self.pila.pop() #Saco el menu para cambiar el parámetro
+        if (pantalla == PANTALLA_PAUSA): 
+            menu.mostrarPantallaConfiguracion()
+        elif (pantalla == PANTALLA_GAMEOVER):
+            menu.mostrarPantallaGameOver()            
+        self.pila.append(menu)
+        
+    def definirMenu(self,menu):
+        self.menu = menu
     
     def cambiarEscena(self, escena):
         self.salirEscena()
@@ -91,12 +106,4 @@ class Director():
     def devolverHoraReloj(self):
         return self.reloj
     
-    #Mas que añadirla es toda la lógica de game over... es decir, poner una, luego otra, si quieres
-    #poner transicion entre ellas blablabla... 
-    def agregarEscenaGameOver(self,escena):
-        self.escena = escena
-    
-    def gameOver(self):
-        #self.pila = [self.escena]
-        self.apilarEscena(self.escena)
         

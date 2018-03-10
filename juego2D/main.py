@@ -7,7 +7,6 @@ import pygame
 import director
 from director import *
 from menu import *
-from MenuGameOver import *
 
 if __name__ == '__main__':
     
@@ -20,6 +19,7 @@ if __name__ == '__main__':
     # Creamos la escena con la pantalla inicial y la de configuracion
     escena = Menu(director)
     # Le decimos al director que apile esta escena
+    director.definirMenu(escena)
     director.apilarEscena(escena)
     # Creamos también la escena con las pantallas de GameOver.
     #escena = MenuGameOver(director)

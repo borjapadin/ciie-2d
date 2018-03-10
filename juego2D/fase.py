@@ -4,8 +4,9 @@ import pygame, escena
 from escena import *
 from personajes import *
 from pygame.locals import *
+from Constantes import *
 #from animaciones import *
-from CutScene import *
+
 # -------------------------------------------------
 # -------------------------------------------------
 # Constantes
@@ -71,11 +72,11 @@ class Fase(Escena):
                     self.crearSceneSiguiente()              
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p: 
-                    self.director.escenaPausada(self) #Informamos al director de cual es la escena pausada
-                    self.director.salirEscena() #Salimos de la escena para poder entrar en el menu
+                    self.director.cambiarAlMenu(self,PANTALLA_PAUSA)
+                    #self.director.salirEscena() #Salimos de la escena para poder entrar en el menu
                 #--------------GAME_OVER-------------------------
                 elif evento.key == K_g:
-                    self.director.gameOver()
+                    self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
     

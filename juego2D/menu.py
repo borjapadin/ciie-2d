@@ -9,13 +9,12 @@ from fase import *
 from PantallaConfiguracion import *
 from pantallaInicial import *
 from PantallaGameOver import *
-from MenuGameOver import *
 from time import *
+from Constantes import *
 
 ANCHO_PANTALLA = 800
 ALTO_PANTALLA =  600
 
-NUM_FASE_INICIAL = 1
 
 # Clase Menu, la escena en sí
 class Menu(Escena):
@@ -28,16 +27,10 @@ class Menu(Escena):
 		#   y las metemos en la lista
 		self.listaPantallas.append(PantallaInicialGUI(self))
 		self.listaPantallas.append(PantallaConfiguracionGUI(self,director))
-		
-		self.agregarAlDirectorEscenaGameOver()
+		self.listaPantallas.append(PantallaGameOverGUI(self))
 		
 		# En que pantalla estamos actualmente
 		self.mostrarPantallaInicial()
-		
-	# Como el Menu de Game Over también va a volver hasta aquí también lo necesita.
-	def agregarAlDirectorEscenaGameOver(self):
-		escenaGameOver = MenuGameOver(self.director)
-		self.director.agregarEscenaGameOver(escenaGameOver)
 		
 	def update(self, *args):
 		return
@@ -85,8 +78,11 @@ class Menu(Escena):
 		self.director.apilarEscena(fase)
     
 	def mostrarPantallaInicial(self):
-		self.pantallaActual = 0
+		self.pantallaActual = PANTALLA_PRINCIPAL
     
 	def mostrarPantallaConfiguracion(self):
-		self.pantallaActual = 1
+		self.pantallaActual = PANTALLA_PAUSA
+
+	def mostrarPantallaGameOver(self):
+		self.pantallaActual = PANTALLA_GAMEOVER
 	
