@@ -10,9 +10,12 @@ from PantallaConfiguracion import *
 from pantallaInicial import *
 from PantallaGameOver import *
 from MenuGameOver import *
+from time import *
 
 ANCHO_PANTALLA = 800
 ALTO_PANTALLA =  600
+
+NUM_FASE_INICIAL = 1
 
 # Clase Menu, la escena en sí
 class Menu(Escena):
@@ -66,11 +69,17 @@ class Menu(Escena):
 		self.director.salirPrograma()
     
 	def ejecutarJuego(self):
-		self.mostrarPantallaConfiguracion() #Dejamos que esta sea la actual (si salimos de las fases entramos en esta)
+		
 		#fase2 = Fase(self.director,2)
-		faseInicial = Fase(self.director,1)
+		cutscene = CutScene(self.director,NUM_FASE_INICIAL)
+		#faseInicial = Fase(self.director,NUM_FASE_INICIAL)
+		
 		#self.director.apilarEscena(fase2)
-		self.director.apilarEscena(faseInicial)
+		self.director.apilarEscena(cutscene)
+		self.mostrarPantallaConfiguracion() #Dejamos que esta sea la actual (si salimos de las fases entramos en esta)
+		
+
+		#self.director.apilarEscena(cutscene)
 	
 	def reanudarJuego(self,fase):
 		self.director.apilarEscena(fase)

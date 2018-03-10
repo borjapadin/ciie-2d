@@ -25,7 +25,12 @@ class ElementoGUI:
             return True
         else:
             return False
-
+        
+    def devolverCenterX(self):
+        return self.rect.centerx
+   
+    def moverIp(self):
+        return self.rect.move_ip(-5, 0)  
     #Métodos abstractos
     def dibujar(self):
         raise NotImplemented("Tiene que implementar el metodo dibujar")

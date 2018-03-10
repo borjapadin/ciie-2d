@@ -22,3 +22,6 @@ class  TextoGUI(ElementoGUI):
         pantalla.blit(self.imagen, self.rect)
     
     
+    
+    
+    

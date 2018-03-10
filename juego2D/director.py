@@ -88,6 +88,9 @@ class Director():
     def devolverEscenaPausada(self):
         return self.fase
     
+    def devolverHoraReloj(self):
+        return self.reloj
+    
     #Mas que añadirla es toda la lógica de game over... es decir, poner una, luego otra, si quieres
     #poner transicion entre ellas blablabla... 
     def agregarEscenaGameOver(self,escena):
@@ -96,4 +99,4 @@ class Director():
     def gameOver(self):
         #self.pila = [self.escena]
         self.apilarEscena(self.escena)
-
+        

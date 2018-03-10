@@ -5,7 +5,7 @@ from escena import *
 from personajes import *
 from pygame.locals import *
 #from animaciones import *
-
+from CutScene import *
 # -------------------------------------------------
 # -------------------------------------------------
 # Constantes
@@ -22,8 +22,8 @@ MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 # Clase Fase
 
 class Fase(Escena):
+    #Crear Escenas habituales
     def __init__(self, director, numFase):
-
         # Habria que pasarle como parámetro el número de fase, a partir del cual se cargue
         #  un fichero donde este la configuracion de esa fase en concreto, con cosas como
         #   - Nombre del archivo con el decorado
@@ -34,8 +34,8 @@ class Fase(Escena):
         # Y cargar esa configuracion del archivo en lugar de ponerla a mano, como aqui abajo
         # De esta forma, se podrian tener muchas fases distintas con esta clase
 
-        self.numFase = str(numFase) #Necesito que sea string para ponerlo en la ruta.
-        self.numFaseSiguiente = numFase+1 #Para saber el numero de la fase siguiente 
+        self.numFase = numFase #Necesito que sea string para ponerlo en la ruta. 
+        self.numFaseSiguiente = int(numFase)+1
         
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
@@ -47,59 +47,16 @@ class Fase(Escena):
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
         #  En ese caso solo hay scroll horizontal
-
-        
    
     def update(self, tiempo):
-
-        # Primero, se indican las acciones que van a hacer los enemigos segun como esten los jugadores
-        #for enemigo in iter(self.grupoEnemigos):
-        #    enemigo.mover_cpu(self.jugador1, self.jugador2)
-        # Esta operación es aplicable también a cualquier Sprite que tenga algún tipo de IA
-        # En el caso de los jugadores, esto ya se ha realizado
-
-        # Actualizamos los Sprites dinamicos
-        # De esta forma, se simula que cambian todos a la vez
-        # Esta operación de update ya comprueba que los movimientos sean correctos
-        #  y, si lo son, realiza el movimiento de los Sprites
-        #self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
-        # Dentro del update ya se comprueba que todos los movimientos son válidos
-        #  (que no choque con paredes, etc.)
-
-        # Los Sprites que no se mueven no hace falta actualizarlos,
-        #  si se actualiza el scroll, sus posiciones en pantalla se actualizan más abajo
-        # En cambio, sí haría falta actualizar los Sprites que no se mueven pero que tienen que
-        #  mostrar alguna animación
-
-        # Comprobamos si hay colision entre algun jugador y algun enemigo
-        # Se comprueba la colision entre ambos grupos
-        # Si la hay, indicamos que se ha finalizado la fase
-        #if pygame.sprite.groupcollide(self.grupoJugadores, self.grupoEnemigos, False, False)!={}:
-            # Se le dice al director que salga de esta escena y ejecute la siguiente en la pila
-            #self.director.salirEscena()
-        print('Por implementar')
-        # Actualizamos el scroll
-  #      self.actualizarScroll(self.jugador1, self.jugador2)
-  
-        # Actualizamos el fondo:
         #  la posicion del sol y el color del cielo
-        self.fondo.update(tiempo)
+            self.fondo.update(tiempo)
 
         
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
-        self.fondo.dibujar(pantalla)
-        # Despues, las animaciones que haya detras
- #       for animacion in self.animacionesDetras:
-  #          animacion.dibujar(pantalla)
-        # Después el decorado
-        self.decorado.dibujar(pantalla)
-        # Luego los Sprites
-  #      self.grupoSprites.draw(pantalla)
-        # Y por ultimo, dibujamos las animaciones por encima del decorado
-  #      for animacion in self.animacionesDelante:
-  #          animacion.dibujar(pantalla)
-
+            self.fondo.dibujar(pantalla)
+            self.decorado.dibujar(pantalla)   
 
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
@@ -109,9 +66,9 @@ class Fase(Escena):
                 #-------------SALIR PROGRAMA---------------------
                 if evento.key == K_ESCAPE:
                     self.director.salirPrograma() 
-                #-------------CAMBIAR ESCENA---------------------
+                #-------------CAMBIAR ESCENA (a una cutScena)---------------------
                 elif evento.key == K_c: #Trampa de salir de escena para cambiarla
-                    self.crearFaseSiguiente()
+                    self.crearSceneSiguiente()              
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p: 
                     self.director.escenaPausada(self) #Informamos al director de cual es la escena pausada
@@ -121,17 +78,12 @@ class Fase(Escena):
                     self.director.gameOver()
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
-
-        # Indicamos la acción a realizar segun la tecla pulsada para cada jugador
-        #teclasPulsadas = pygame.key.get_pressed()
-        #self.jugador1.mover(teclasPulsadas, K_UP, K_DOWN, K_LEFT, K_RIGHT)
-        #self.jugador2.mover(teclasPulsadas, K_w,  K_s,    K_a,    K_d)
-    def crearFaseSiguiente(self):
+    
+    def crearSceneSiguiente(self):
         self.director.salirEscena()
-        faseNueva = Fase(self.director,self.numFaseSiguiente)
+        faseNueva = CutScene(self.director,self.numFaseSiguiente)
         self.director.apilarEscena(faseNueva)
-
-        
+       
 # -------------------------------------------------
 # Clase Plataforma
 
@@ -185,3 +137,58 @@ class Decorado:
 
     def dibujar(self, pantalla):
         pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
+        
+   
+        
+class CutScene(Escena):
+    #Crear cutScenas
+    def __init__(self, director, numFase):
+        Escena.__init__(self, director)
+        #NumFase
+        self.numFase = str(numFase) #Necesito que sea string para ponerlo en la ruta.
+        # self.numFaseSiguiente = numFase+1 #Para saber el numero de la fase siguiente         
+        # Primero invocamos al constructor de la clase padr
+    
+        # Creamos el decorado y el fondo
+        self.fondoCutScene = FondoCutScene("/"+self.numFase)     
+    
+    def eventos(self, lista_eventos):
+        # Miramos a ver si hay algun evento de salir del programa
+        for evento in lista_eventos:
+            # Si se quiere salir, se le indica al director
+            if evento.type == KEYDOWN: #Añadida también para salir dandole a escape
+                #-------------SALIR PROGRAMA---------------------
+                if evento.key == K_ESCAPE:
+                    self.director.salirPrograma() 
+                #-------------CAMBIAR ESCENA ---------------------
+                elif evento.key == K_RETURN: #Trampa de salir de escena para cambiarla
+                    self.crearSceneSiguiente()                
+            if evento.type == pygame.QUIT:
+                self.director.salirPrograma()    
+                
+    def update(self, tiempo):
+        print('Sin implementar')
+    
+    def dibujar(self, pantalla):
+        # Ponemos primero el fondo
+        self.fondoCutScene.dibujar(pantalla) 
+    
+    def crearSceneSiguiente(self):
+        self.director.salirEscena()
+        faseNueva = Fase(self.director,self.numFase)
+        self.director.apilarEscena(faseNueva)        
+        
+        
+class FondoCutScene:
+    def __init__(self,nombreFase):
+        self.imagen = GestorRecursos.CargarImagen('Cutscene'+nombreFase+'/Nivel.jpg', 1)
+        self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA, ALTO_PANTALLA))
+    
+    def update(self, scrollx):
+        print("No hace nada update")
+        #self.rectSubimagen.left = scrollx
+
+    def dibujar(self, pantalla):
+        #Dibujamos primero la imagen de fondo
+        pantalla.blit(self.imagen, self.imagen.get_rect())   
+    

@@ -1,21 +1,31 @@
 Entrar desde el menu:
-- Clickando como una persona civilizada ...mmm...
 - Enter para seleccionar
 - Mover con los controles de arriba abajo
 
 Probar pausa:
 - Una vez dentro de una fase click en P 
+- Esto no sirve si estas en una CutScene
 
 Salir pausa: 
 - Clicka en el botón terrible.
+- Nota mental: cambiar ese botón terrible
+
+*********************-Teclas de atajo-****************
+GameOver
+- Cuando estes en una fase (no cutscene) darle a G  
 
 Cambio de fase:
 - Una vez dentro de una fase click en C
 (en el código cada fase crea la siguiente cuando se cambia)
 
+Salir de CutScene:
+- Enter 
+
+*********************-Teclas de atajo-****************
+
 1-2
 2-3
-PERO... la 3 no cambia a nada (debería cambiar a GameOver).
+PERO... la 3 no cambia a nada (debería cambiar a algo de haber ganado)
 
 Posdata: puse teclas más o menos explicativas (?) que creía que no iban a usarse para 
 el movimiento pero por mí las cambiamos por alguna más explicativa más adelante.
