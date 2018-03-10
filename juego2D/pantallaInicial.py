@@ -25,23 +25,16 @@ class PantallaInicialGUI(PantallaGUI):
         self.botonJugar = BotonJugar(self)
         self.botonSalir = BotonSalir(self)
     
-        self.elementosGUI.append(self.botonJugar)
-        self.eventoSeleccionado = "jugar"
-        #  self.elementosGUI.append(botonSalir)
+        self.addBotonJugar()
     
     def addBotonJugar(self):
-        self.elementosGUI.pop()
         self.elementosGUI.append(self.botonJugar)
         self.eventoSeleccionado = "jugar"        
         
     def addBotonSalir(self):
-        self.elementosGUI.pop()
         self.elementosGUI.append(self.botonSalir)
         self.eventoSeleccionado = "salir"   
     
-    def eliminarUltimosDosElementos(self):
-        self.elementosGUI.pop()
-        self.elementosGUI.pop()
 
     #Sobreescribir
     def eventos(self, lista_eventos):
@@ -49,14 +42,17 @@ class PantallaInicialGUI(PantallaGUI):
             if evento.type == KEYDOWN: 
                 #Aceptar acción
                 if evento.key == K_RETURN: 
-                    elemento = self.elementosGUI.pop()
+                    elemento = self.elementosGUI.pop() #Desaparece al clickarlo
                     elemento.accion()
+                    self.addBotonJugar() #Tienes que volver a poner el botón de jugar en su sitio por si vuelves a esta pantalla.
                           
                 #Cambiar de opción
                 if evento.key == K_DOWN or evento.key == K_UP:
                     if self.eventoSeleccionado == "jugar":
+                        self.elementosGUI.pop()
                         self.addBotonSalir()
                     elif self.eventoSeleccionado == "salir":
+                        self.elementosGUI.pop()
                         self.addBotonJugar() 
                        
                 if evento.type == pygame.QUIT: #EHHHHHHHHHHHHHHHHH... si?
