@@ -1,0 +1,23 @@
+Que un alma caritativo e ingenioso ponga aquí una 
+descripción preciosa para la introducción porque
+me apetece 0 hacer esto.
+
+
+Supongo que servirá ponerle algo de la memoria no?
+Bueno, es que aún da para extenderse bastante este
+espacio...
+
+
+Posdata: para pasar de escena hay que darle ENTER*
+habrá que ponerle alguna condición de parada normal
+o algo... 
+imagenes/Cutscene/1/texto.txt
+
+
+
+
+
+
+
+
+

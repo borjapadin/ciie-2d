@@ -26,11 +26,12 @@ class ElementoGUI:
         else:
             return False
         
-    def devolverCenterX(self):
-        return self.rect.centerx
-   
-    def moverIp(self):
-        return self.rect.move_ip(-5, 0)  
+    def moverPosicion(self,x=0,y=0):
+        posicionx = self.rect.left+x
+        posiciony = self.rect.bottom+y
+        self.establecerPosicion((posicionx,posiciony))
+        return ((posicionx,posiciony))
+
     #Métodos abstractos
     def dibujar(self):
         raise NotImplemented("Tiene que implementar el metodo dibujar")

@@ -5,6 +5,7 @@ from escena import *
 from personajes import *
 from pygame.locals import *
 from Constantes import *
+from TextoGUI import *
 #from animaciones import *
 
 # -------------------------------------------------
@@ -111,11 +112,12 @@ class Cielo:
 
     def update(self, tiempo):
         # Calculamos el color del cielo
-        self.colorCielo = (0, 0, 0)
+        self.colorCielo = NEGRO
         
     def dibujar(self,pantalla):
         # Dibujamos el color del cielo
         pantalla.fill(self.colorCielo)
+        self.colorCielo = NEGRO
 
 
 # -------------------------------------------------
@@ -151,7 +153,9 @@ class CutScene(Escena):
         # Primero invocamos al constructor de la clase padr
     
         # Creamos el decorado y el fondo
-        self.fondoCutScene = FondoCutScene("/"+self.numFase)     
+        self.fondoCutScene = FondoCutScene("/"+self.numFase)   
+        self.texto = TITULO
+        self.movimientoPosicion = 2 #Velocidad a la que ira el texto de titulo.
     
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
@@ -168,7 +172,7 @@ class CutScene(Escena):
                 self.director.salirPrograma()    
                 
     def update(self, tiempo):
-        print('Sin implementar')
+        self.actualizarTextoTituloNivel()
     
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
@@ -177,19 +181,71 @@ class CutScene(Escena):
     def crearSceneSiguiente(self):
         self.director.salirEscena()
         faseNueva = Fase(self.director,self.numFase)
-        self.director.apilarEscena(faseNueva)        
+        self.director.apilarEscena(faseNueva)      
+    
+    def actualizarTextoTituloNivel(self):
         
+
+        (posicion,_) = self.fondoCutScene.update(self.movimientoPosicion,self.texto) #Actualizar el texto que corresponda.
+        if posicion > 400: #Cuando llega más o menos a la mitad del texto el titulo...:
+            self.mostrarTexto() #Se muestra el otro texto.
+            self.movimientoPosicion = 1 #Se baja la velocidad
+            
+    #Dependiendo de cual de estas funciones sean se muestra el texto texto o texto de titulo.
+    def mostrarTexto(self):
+        self.texto = TEXTO
+    
+    def mostrarTitulo(self):
+        self.texto = TITULO
+    
         
 class FondoCutScene:
     def __init__(self,nombreFase):
         self.imagen = GestorRecursos.CargarImagen('Cutscene'+nombreFase+'/Nivel.jpg', 1)
         self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA, ALTO_PANTALLA))
-    
-    def update(self, scrollx):
-        print("No hace nada update")
-        #self.rectSubimagen.left = scrollx
-
+        self.textoTitulo = TextoTituloNivel(self,nombreFase)
+        
+        self.textoNivel = []
+        
+        textoLargo = self.leerArchivo(nombreFase) #Leer texto, separado por líneas.
+        coordenada = -(len(textoLargo)-1)*70 #Espacio para que empiece la primera coordenada del texto.
+        for linea in textoLargo: #Ir leyendo línea a línea.
+            self.textoNivel.append(TextoNivel(self,linea,coordenada)) #Creo una nueva clase de textoNivel con coordenadas
+            coordenada += 70 #Separación entre líneas.
+        
+            
+        self.texto = TITULO
+        
+    def leerArchivo(self,nombreFase):
+        datos = GestorRecursos.CargarArchivoCoordenadas('CutScene'+nombreFase+'/Texto.txt')
+        datos = datos.splitlines()
+        return datos[::-1] #Hacerla reverse porque se lee del reves.
+         
+    def update(self,movimientoPosicion,texto):
+        self.texto = texto
+        if self.texto == TITULO:      
+            return self.textoTitulo.moverPosicion(x=movimientoPosicion)
+        elif self.texto == TEXTO:
+            for lineaTextoNivel in self.textoNivel:
+                lineaTextoNivel.moverPosicion(y=movimientoPosicion)
+            return (0,0)
+        
     def dibujar(self, pantalla):
         #Dibujamos primero la imagen de fondo
-        pantalla.blit(self.imagen, self.imagen.get_rect())   
-    
+        pantalla.blit(self.imagen, self.imagen.get_rect())  
+        if self.texto == TITULO:      
+            self.textoTitulo.dibujar(pantalla)
+        elif self.texto == TEXTO:       
+            for lineaTextoNivel in self.textoNivel:
+                lineaTextoNivel.dibujar(pantalla)
+        
+class TextoTituloNivel(TextoGUI):
+    def __init__(self, pantalla, nombreFase):
+        # La fuente la debería cargar el estor de recursos
+        fuente = pygame.font.SysFont('impact', 50);
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Nivel '+nombreFase, (100, 250))
+
+class TextoNivel(TextoGUI):
+    def __init__(self, pantalla, nombreFase, coordenada):
+        fuente = pygame.font.SysFont('impact', 30);
+        TextoGUI.__init__(self, pantalla, fuente, NEGRO, nombreFase, (40, coordenada))

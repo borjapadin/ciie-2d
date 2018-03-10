@@ -9,6 +9,7 @@ from fase import *
 from PantallaGUI import *
 from TextoGUI import *
 from Boton import *
+from Constantes import *
 
 class PantallaGameOverGUI(PantallaGUI):
     def __init__(self, menu):
@@ -61,7 +62,7 @@ class TextoSalir(TextoGUI):
     def __init__(self, pantalla):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Salir', (65, 445))
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Salir', (65, 445))
 
 
 class BotonSalir(Boton):
@@ -75,7 +76,7 @@ class TextoVolverJuego(TextoGUI):
     def __init__(self, pantalla):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Volver a jugar', (65, 500))
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Volver a jugar', (65, 500))
 
 
 class BotonVolverJuego(Boton):

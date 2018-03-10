@@ -63,7 +63,7 @@ class TextoJugar(TextoGUI):
     def __init__(self, pantalla):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Empezar partida', (65, 395))
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Empezar partida', (65, 395))
     def accion(self):
         self.pantalla.menu.ejecutarJuego()
 
@@ -71,7 +71,7 @@ class TextoSalir(TextoGUI):
     def __init__(self, pantalla):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, (255, 255, 255), 'Salir', (65, 445))
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Salir', (65, 445))
     def accion(self):
         self.pantalla.menu.salirPrograma()
         

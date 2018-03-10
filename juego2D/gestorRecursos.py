@@ -30,7 +30,7 @@ class GestorRecursos(object):
             return cls.recursos[nombre] #se devuelve
         else: #si no ha sido cargado
             nombreEntero = os.path.join('imagenes', nombre)#se carga
-            pathfile = open(fullname, 'r') #lo abrimos
+            pathfile = open(nombreEntero, 'r') #lo abrimos
             datos = pathfile.read() #lo leemos
             pathfile.close() #lo cerramos
             cls.recursos[nombre] = datos #almacenamos

@@ -6,3 +6,9 @@ PANTALLA_GAMEOVER = 2
 NUM_FASE_INICIAL = 1    
 NUM_FASE_FINAL = 3 #Sin usar de momento
 
+BLANCO = (255, 255, 255)
+NEGRO = (0,0,0)
+
+TEXTO = 1
+TITULO = 2
+

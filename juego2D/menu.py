@@ -65,14 +65,8 @@ class Menu(Escena):
 		
 		#fase2 = Fase(self.director,2)
 		cutscene = CutScene(self.director,NUM_FASE_INICIAL)
-		#faseInicial = Fase(self.director,NUM_FASE_INICIAL)
-		
-		#self.director.apilarEscena(fase2)
 		self.director.apilarEscena(cutscene)
 		self.mostrarPantallaConfiguracion() #Dejamos que esta sea la actual (si salimos de las fases entramos en esta)
-		
-
-		#self.director.apilarEscena(cutscene)
 	
 	def reanudarJuego(self,fase):
 		self.director.apilarEscena(fase)
