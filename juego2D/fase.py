@@ -201,7 +201,7 @@ class CutScene(Escena):
         
 class FondoCutScene:
     def __init__(self,nombreFase):
-        self.imagen = GestorRecursos.CargarImagen('Cutscene'+nombreFase+'/Nivel.jpg', 1)
+        self.imagen = GestorRecursos.CargarImagen('Cutscene'+nombreFase+'\Nivel.jpg', 1)
         self.imagen = pygame.transform.scale(self.imagen, (ANCHO_PANTALLA, ALTO_PANTALLA))
         self.textoTitulo = TextoTituloNivel(self,nombreFase)
         
@@ -217,7 +217,7 @@ class FondoCutScene:
         self.texto = TITULO
         
     def leerArchivo(self,nombreFase):
-        datos = GestorRecursos.CargarArchivoCoordenadas('CutScene'+nombreFase+'/Texto.txt')
+        datos = GestorRecursos.CargarArchivoCoordenadas('CutScene'+nombreFase+'\Texto.txt')
         datos = datos.splitlines()
         return datos[::-1] #Hacerla reverse porque se lee del reves.
          
