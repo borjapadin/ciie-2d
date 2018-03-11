@@ -1,22 +1,17 @@
-Que un alma caritativo e ingenioso ponga aquí una 
-descripción preciosa para la introducción porque
-me apetece 0 hacer esto.
+William, nuestro protagonista, se ha desmayado.
 
+Cuando empieza a recuperar la consciencia se da
+cuenta de que todo su equipo ha sido abatido por 
+los japones y decide vengar a sus compañeros y 
+conseguir realizar la misión previamente asignada.
 
-Supongo que servirá ponerle algo de la memoria no?
-Bueno, es que aún da para extenderse bastante este
-espacio...
+Tiene que conseguir los documentos.
 
+Las instalaciones se encuentran en un profundo
+bosque de Hiroshima del cual tiene que conseguir
+salir lo más rápido posible.
 
-Posdata: para pasar de escena hay que darle ENTER*
-habrá que ponerle alguna condición de parada normal
-o algo... 
-imagenes/Cutscene/1/texto.txt
-
-
-
-
-
+El tiempo se acaba.
 
 
 
