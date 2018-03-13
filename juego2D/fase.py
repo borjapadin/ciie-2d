@@ -234,9 +234,9 @@ class FondoCutScene:
     def dibujar(self, pantalla):
         #Dibujamos primero la imagen de fondo
         pantalla.blit(self.imagen, self.imagen.get_rect())  
-        if self.texto == TITULO:      
-            self.textoTitulo.dibujar(pantalla)
-        elif self.texto == TEXTO:       
+        #if self.texto == TITULO:      
+        #    self.textoTitulo.dibujar(pantalla)    			yo esto lo quitaría porque se ve el nombre del fichero
+        if self.texto == TEXTO:       
             for lineaTextoNivel in self.textoNivel:
                 lineaTextoNivel.dibujar(pantalla)
         
@@ -249,4 +249,4 @@ class TextoTituloNivel(TextoGUI):
 class TextoNivel(TextoGUI):
     def __init__(self, pantalla, nombreFase, coordenada):
         fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, NEGRO, nombreFase, (40, coordenada))
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, nombreFase, (40, coordenada))
