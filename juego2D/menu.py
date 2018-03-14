@@ -11,6 +11,7 @@ from pantallaInicial import *
 from PantallaGameOver import *
 from time import *
 from Constantes import *
+from PantallaVictoria import *
 
 ANCHO_PANTALLA = 800
 ALTO_PANTALLA =  600
@@ -28,6 +29,7 @@ class Menu(Escena):
 		self.listaPantallas.append(PantallaInicialGUI(self))
 		self.listaPantallas.append(PantallaConfiguracionGUI(self,director))
 		self.listaPantallas.append(PantallaGameOverGUI(self))
+		self.listaPantallas.append(PantallaVictoriaGUI(self))
 		
 		# En que pantalla estamos actualmente
 		self.mostrarPantallaInicial()
@@ -42,9 +44,6 @@ class Menu(Escena):
 			if evento.type == KEYDOWN:
 				if evento.key == K_ESCAPE: #Salir
 					self.salirPrograma()
-				elif evento.key == K_g:
-					self.mostrarPantallaGameOver()
-					self.director.salirEscena()
 			elif evento.type == pygame.QUIT: #Salir
 				self.director.salirPrograma()
 
@@ -79,4 +78,7 @@ class Menu(Escena):
 
 	def mostrarPantallaGameOver(self):
 		self.pantallaActual = PANTALLA_GAMEOVER
+	
+	def mostrarPantallaVictoria(self):
+		self.pantallaActual = PANTALLA_VICTORIA
 	

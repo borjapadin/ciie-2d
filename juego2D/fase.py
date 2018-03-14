@@ -160,6 +160,8 @@ class Fase(Escena):
                 elif evento.key == K_p:
                     self.director.cambiarAlMenu(self,PANTALLA_PAUSA)
                     #self.director.salirEscena() #Salimos de la escena para poder entrar en el menu
+		elif evento.key == K_v:
+		    self.director.cambiarAlMenu(self,PANTALLA_VICTORIA)
                 #--------------GAME_OVER-------------------------
                 elif evento.key == K_g:
                     self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)

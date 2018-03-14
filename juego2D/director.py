@@ -79,7 +79,9 @@ class Director():
         if (pantalla == PANTALLA_PAUSA): 
             menu.mostrarPantallaConfiguracion()
         elif (pantalla == PANTALLA_GAMEOVER):
-            menu.mostrarPantallaGameOver()            
+            menu.mostrarPantallaGameOver()  
+        elif (pantalla == PANTALLA_VICTORIA):
+            menu.mostrarPantallaVictoria()
         self.pila.append(menu)
         
     def definirMenu(self,menu):
