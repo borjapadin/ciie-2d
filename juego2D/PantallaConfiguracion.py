@@ -12,7 +12,7 @@ from Boton import *
 
 class PantallaConfiguracionGUI(PantallaGUI):
     def __init__(self,menu,director):
-        PantallaGUI.__init__(self, menu, 'Menu/PantallaInicio.jpg')
+        PantallaGUI.__init__(self, menu, 'Menu/Pausa/PantallaPausa.png')
         self.director = director #Para que indique en que fase esta
         
         botonReanudar = BotonReanudar(self,director)

@@ -12,7 +12,7 @@ from Boton import *
 
 class PantallaInicialGUI(PantallaGUI):
     def __init__(self, menu):
-        PantallaGUI.__init__(self, menu, 'Menu/PantallaInicio.jpg')
+        PantallaGUI.__init__(self, menu, 'Menu/Inicio/PantallaInicio.jpg')
 
         # Creamos el texto y lo metemos en la lista
         textoJugar = TextoJugar(self)

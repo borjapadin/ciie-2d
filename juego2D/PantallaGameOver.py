@@ -13,7 +13,7 @@ from Constantes import *
 
 class PantallaGameOverGUI(PantallaGUI):
     def __init__(self, menu):
-        PantallaGUI.__init__(self, menu, 'Menu/PantallaGameOver_2.jpg')
+        PantallaGUI.__init__(self, menu, 'Menu/GameOver/PantallaGameOver_2.jpg')
         
         # Creamos el texto y lo metemos en la lista
         textoSalir = TextoSalir(self)
