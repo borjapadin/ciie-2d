@@ -30,6 +30,8 @@ VELOCIDAD_SNIPER = 0.12 # Pixeles por milisegundo
 VELOCIDAD_SALTO_SNIPER = 0.27 # Pixeles por milisegundo
 RETARDO_ANIMACION_SNIPER = 5 # updates que durará cada imagen del personaje
 
+GRAVEDAD = 0.0003 # Píxeles / ms2
+
 #----------------------------
 # Clase MiSprite
 class MiSprite(pygame.sprite.Sprite):
@@ -145,10 +147,10 @@ class Personaje(MiSprite):
             self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
             # Si esta mirando a la izquiera, cogemos la porcion de la hoja
-            if self.mirando == IZQUIERDA:
+            if self.mirando == DERECHA:
                 self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
             #  Si no, si mira a la derecha, invertimos esa imagen
-            elif self.mirando == DERECHA:
+            elif self.mirando == IZQUIERDA:
                 self.image = pygame.transform.flip(self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
 
 
@@ -233,8 +235,8 @@ class Jugador(Personaje):
     "Cualquier personaje del juego"
     def __init__(self):
         # Invocamos al constructor de la clase padre con la configuracion de este personaje concreto
-        Personaje.__init__(self,'Jugador.png','coordJugador.txt', [6, 12, 6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
-
+        #Personaje.__init__(self,'Fase/1/Jugador.png','Fase/1/coordJugador.txt', [6,12,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
+        Personaje.__init__(self,'Fase/1/HeroePistola.png','Fase/1/offsetsSoldado.txt', [1,4,4,6,8], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         # Indicamos la acción a realizar segun la tecla pulsada para el jugador

@@ -10,7 +10,7 @@ class GestorRecursos(object):
         if nombre in cls.recursos: #Si ya está cargado
             return cls.recursos[nombre] #Se devuelve
         else: #si no
-            nombreEntero = os.path.join('imagenes', nombre) #Se carga
+            nombreEntero = os.path.join('imagenes/', nombre) #Se carga
             try:
                 imag = pygame.image.load(nombreEntero) #intentamos cargar
                 print(nombreEntero)
