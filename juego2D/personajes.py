@@ -237,7 +237,7 @@ class Jugador(Personaje):
     def __init__(self):
         # Invocamos al constructor de la clase padre con la configuracion de este personaje concreto
         #Personaje.__init__(self,'Fase/1/Jugador.png','Fase/1/coordJugador.txt', [6,12,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
-        Personaje.__init__(self,'Fase/1/rossi.png','Fase/1/offsetsSoldado.txt', [1,4,4,6,8], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
+        Personaje.__init__(self,'Fase/1/rossi.png','Fase/1/offsetRossi.txt', [1,4,4,6,8], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         # Indicamos la acción a realizar segun la tecla pulsada para el jugador
