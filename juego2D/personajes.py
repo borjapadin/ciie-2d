@@ -18,7 +18,7 @@ SPRITE_QUIETO = 0
 SPRITE_ANDANDO = 1
 SPRITE_SALTANDO = 2
 SPRITE_DISPARANDO = 3
-SPRITE_AGACHAnDO = 4
+SPRITE_AGACHANDO = 4
 SPRITE_MURIENDO = 5
 
 # Velocidades protagonista
@@ -96,7 +96,7 @@ class Personaje(MiSprite):
         self.numImagenPostura = 0;
         cont = 0;
         self.coordenadasHoja = [];
-        for linea in range(0, 3):
+        for linea in range(0, 6):
             self.coordenadasHoja.append([])
             tmp = self.coordenadasHoja[linea]
             for postura in range(1, numImagenes[linea]+1):
@@ -131,7 +131,6 @@ class Personaje(MiSprite):
                 self.movimiento = QUIETO
             else:
                 self.movimiento = ARRIBA
-                #self.retardoAnimacion = RETARDO_ANIMACION_JUGADOR_SALTAR
         else:
             self.movimiento = movimiento
 
@@ -194,6 +193,14 @@ class Personaje(MiSprite):
             # Le imprimimos una velocidad en el eje y
             velocidady = -self.velocidadSalto
 
+        elif self.movimiento == ABAJO:
+            #velocidady += GRAVEDAD * tiempo
+            self.numPostura = SPRITE_AGACHANDO
+
+            #plataforma = pygame.sprite.spritecollideany(self, grupoPlataformas)
+            #if plataforma.rect.bottom<self.rect.bottom:
+            self.establecerPosicion((self.posicion[0], 401))
+
         # Si no se ha pulsado ninguna tecla
         elif self.movimiento == QUIETO:
             # Si no estamos saltando, la postura actual será estar quieto
@@ -254,6 +261,8 @@ class Jugador(Personaje):
             Personaje.mover(self,IZQUIERDA)
         elif teclasPulsadas[derecha]:
             Personaje.mover(self,DERECHA)
+        elif teclasPulsadas[abajo]:
+            Personaje.mover(self,ABAJO)
         else:
             Personaje.mover(self,QUIETO)
 
