@@ -65,6 +65,7 @@ class MiSprite(pygame.sprite.Sprite):
         incrementox = self.velocidad[0]*tiempo
         incrementoy = self.velocidad[1]*tiempo
         self.incrementarPosicion((incrementox, incrementoy))
+
 #---------------------------
 # Clases Personaje
 class Personaje(MiSprite):
@@ -193,13 +194,13 @@ class Personaje(MiSprite):
             # Le imprimimos una velocidad en el eje y
             velocidady = -self.velocidadSalto
 
-        elif self.movimiento == ABAJO:
+        """elif self.movimiento == ABAJO:
             #velocidady += GRAVEDAD * tiempo
             self.numPostura = SPRITE_AGACHANDO
 
             #plataforma = pygame.sprite.spritecollideany(self, grupoPlataformas)
             #if plataforma.rect.bottom<self.rect.bottom:
-            self.establecerPosicion((self.posicion[0], 401))
+            self.establecerPosicion((self.posicion[0], 401))"""
 
         # Si no se ha pulsado ninguna tecla
         elif self.movimiento == QUIETO:
@@ -266,6 +267,7 @@ class Jugador(Personaje):
         else:
             Personaje.mover(self,QUIETO)
 
+
 #--------------------------------------------------
 # Clase NoJugador
 class NoJugador(Personaje):
@@ -289,3 +291,58 @@ class NoJugador(Personaje):
 
 #---------------------------
 # Clase Jefe
+
+#----------------------------
+# Clase MiSpriteBala
+class MiSpriteBala(pygame.sprite.Sprite):
+
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self):
+        self.posicion = (0, 0)
+        self.velocidad = (0, 0)
+
+    def establecerPosicion(self, posicion, personaje):
+        self.posicion = posicion
+        self.rect.left = personaje.posicion[0] - personaje.scroll[0]
+
+    def incrementarPosicion(self, incremento):
+        (posx, posy) = self.posicion
+        (incrementox, incrementoy) = incremento
+        self.establecerPosicion((posx+incrementox, posy+incrementoy))
+
+    def update(self, tiempo):
+        incrementox = self.velocidad[0]*tiempo
+        incrementoy = self.velocidad[1]*tiempo
+        self.incrementarPosicion((incrementox, incrementoy))
+
+#---------------------------
+# Clase BalaHeroe
+class BalaHeroe(MiSpriteBala):
+
+    def __init__(self, archivoImagen, archivoCoordenadas, velocidad, direccion):
+
+        MiSpriteBala.__init__(self);
+
+        self.hoja = GestorRecursos.CargarImagen(archivoImagen, -1)
+        self.hoja.convert_alpha()
+
+        self.mirando = direccion
+
+        datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
+        datos = datos.split()
+        self.numPostura = 1;
+        self.numImagenPostura = 0;
+        self.coordenadasHoja = [];
+        self.coordenadasHoja.append([])
+        self.coordenadasHoja.append(pygame.Rect((int(datos[cont]), int(datos[cont+1])), (int(datos[cont+2]), int(datos[cont+3]))))
+        self.retardoMovimiento = 0;
+        self.rect = pygame.Rect(100,100,self.coordenadasHoja[self.numPostura][self.numImagenPostura][2],self.coordenadasHoja[self.numPostura][self.numImagenPostura][3])
+        self.velocidad = velocidad
+        self.retardoAnimacion = 5
+        self.actualizarPostura()
+
+    def update(self, tiempo, direccion):
+        (velocidadx, velocidady) = self.velocidad
+
+        if direccion == IZQUIERDA:
+            self.image = self.hoja.subsurface()
