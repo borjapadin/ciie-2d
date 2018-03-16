@@ -26,12 +26,13 @@ VELOCIDAD_JUGADOR = 0.2 # Pixeles por milisegundo
 VELOCIDAD_SALTO_JUGADOR = 0.3 # Pixeles por milisegundo
 RETARDO_ANIMACION_JUGADOR = 5 # updates que durará cada imagen del personaje
                               # debería de ser un valor distinto para cada postura
+RETARDO_ANIMACION_JUGADOR_SALTAR = 20
 # velocidades de enemigos
 VELOCIDAD_SNIPER = 0.12 # Pixeles por milisegundo
 VELOCIDAD_SALTO_SNIPER = 0.27 # Pixeles por milisegundo
 RETARDO_ANIMACION_SNIPER = 5 # updates que durará cada imagen del personaje
 
-GRAVEDAD = 0.0003 # Píxeles / ms2
+GRAVEDAD = 0.0006 # Píxeles / ms2
 
 #----------------------------
 # Clase MiSprite
@@ -130,6 +131,7 @@ class Personaje(MiSprite):
                 self.movimiento = QUIETO
             else:
                 self.movimiento = ARRIBA
+                #self.retardoAnimacion = RETARDO_ANIMACION_JUGADOR_SALTAR
         else:
             self.movimiento = movimiento
 
@@ -159,6 +161,11 @@ class Personaje(MiSprite):
 
         # Las velocidades a las que iba hasta este momento
         (velocidadx, velocidady) = self.velocidad
+
+        if self.numPostura == SPRITE_SALTANDO :
+            self.retardoAnimacion = GRAVEDAD * 25000
+        else:
+            self.retardoAnimacion = 5
 
         # Si vamos a la izquierda o a la derecha
         if (self.movimiento == IZQUIERDA) or (self.movimiento == DERECHA):
@@ -237,7 +244,7 @@ class Jugador(Personaje):
     def __init__(self):
         # Invocamos al constructor de la clase padre con la configuracion de este personaje concreto
         #Personaje.__init__(self,'Fase/1/Jugador.png','Fase/1/coordJugador.txt', [6,12,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
-        Personaje.__init__(self,'Fase/1/rossi.png','Fase/1/offsetRossi.txt', [1,4,4,6,8], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
+        Personaje.__init__(self,'Fase/1/rossi.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         # Indicamos la acción a realizar segun la tecla pulsada para el jugador
