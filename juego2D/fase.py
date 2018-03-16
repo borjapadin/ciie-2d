@@ -169,7 +169,7 @@ class Fase(Escena):
                 self.director.salirPrograma()
 
         teclasPulsadas = pygame.key.get_pressed()
-        self.jugador.mover(teclasPulsadas, K_w,  K_s,    K_a,    K_d)
+        self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
 
     def crearSceneSiguiente(self):
         self.director.salirEscena()
