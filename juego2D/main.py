@@ -21,8 +21,6 @@ if __name__ == '__main__':
     # Le decimos al director que apile esta escena
     director.definirMenu(escena)
     director.apilarEscena(escena)
-    # Creamos también la escena con las pantallas de GameOver.
-    #escena = MenuGameOver(director)
     # Y ejecutamos el juego
     director.ejecutar()
     # Cuando se termine la ejecución, finaliza la librería

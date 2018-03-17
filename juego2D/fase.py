@@ -6,6 +6,7 @@ from personajes import *
 from pygame.locals import *
 from Constantes import *
 from TextoGUI import *
+from Objetos import *
 #from animaciones import *
 
 # -------------------------------------------------
@@ -35,7 +36,7 @@ class Fase(Escena):
         #  etc.
         # Y cargar esa configuracion del archivo en lugar de ponerla a mano, como aqui abajo
         # De esta forma, se podrian tener muchas fases distintas con esta clase
-
+	self.pasarFase = False
         self.numFase = numFase #Necesito que sea string para ponerlo en la ruta.
         self.numFaseSiguiente = int(numFase)+1
 
@@ -58,10 +59,18 @@ class Fase(Escena):
         #Ponemos al jugador en la posición inicial
         self.jugador.establecerPosicion((5, 401))
 
-        self.grupoSpritesDinamicos = pygame.sprite.Group( self.jugador)
+        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
+	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
+	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
+	#Eduardo Penas.
+	self.crearObjetoPrincipal()
+        self.grupoSprites = pygame.sprite.Group(self.jugador,plataformaSuelo,self.objeto)
+    
+    #De momento esto de generico tiene una mierda pero dejemoslo asi.
+    def crearObjetoPrincipal(self):
+	self.objeto = BidonGasolina()
+	self.objeto.establecerPosicion((1000,401))
 	
-        self.grupoSprites = pygame.sprite.Group(self.jugador,plataformaSuelo)
-
 #TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
 
@@ -108,8 +117,9 @@ class Fase(Escena):
 
                 # En su lugar, colocamos al jugador que esté más a la derecha a la derecha de todo
                 jugador.establecerPosicion((self.scrollx+MAXIMO_X_JUGADOR-jugador.rect.width, jugador.posicion[1]))
-		# Si hemos llegado a la derecha de todo creamos la escena siguiente.
-		self.crearSceneSiguiente()
+		if (self.pasarFase == True): #Si hemos recogido el objeto principal podemos pasar de fase (si no pos no)    
+		    # Si hemos llegado a la derecha de todo creamos la escena siguiente.
+		    self.crearSceneSiguiente()
                 return False; # No se ha actualizado el scroll
 
             # Si se puede hacer scroll a la derecha
@@ -137,6 +147,12 @@ class Fase(Escena):
     def update(self, tiempo):
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+	
+	# Comprobamos si hay colision entre algun jugador y el objeto principal
+	if pygame.sprite.collide_rect(self.jugador, self.objeto):
+	    self.objeto.kill()
+	    self.pasarFase = True
+	    
         self.actualizarScroll(self.jugador)
         #TODO detectar que se acabo la fase y cambiarla
 
