@@ -36,7 +36,7 @@ class Fase(Escena):
         #  etc.
         # Y cargar esa configuracion del archivo en lugar de ponerla a mano, como aqui abajo
         # De esta forma, se podrian tener muchas fases distintas con esta clase
-	self.pasarFase = False
+    	self.pasarFase = False
         self.numFase = numFase #Necesito que sea string para ponerlo en la ruta.
         self.numFaseSiguiente = int(numFase)+1
 
@@ -60,17 +60,17 @@ class Fase(Escena):
         self.jugador.establecerPosicion((5, 401))
 
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
-	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
-	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
-	#Eduardo Penas.
-	self.crearObjetoPrincipal()
+    	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
+    	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
+    	#Eduardo Penas.
+    	self.crearObjetoPrincipal()
         self.grupoSprites = pygame.sprite.Group(self.jugador,plataformaSuelo,self.objeto)
-    
+
     #De momento esto de generico tiene una mierda pero dejemoslo asi.
     def crearObjetoPrincipal(self):
-	self.objeto = BidonGasolina()
-	self.objeto.establecerPosicion((1000,401))
-	
+    	self.objeto = BidonGasolina()
+    	self.objeto.establecerPosicion((1000,401))
+
 #TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
 
@@ -104,7 +104,7 @@ class Fase(Escena):
                 self.scrollx = self.scrollx - desplazamiento;
 
                 return True; # Se ha actualizado el scroll
-	
+
 	#Si el jugador se encuentra más allá de la derecha.
         if (jugador.rect.right>MAXIMO_X_JUGADOR):
 
@@ -117,11 +117,11 @@ class Fase(Escena):
 
                 # En su lugar, colocamos al jugador que esté más a la derecha a la derecha de todo
                 jugador.establecerPosicion((self.scrollx+MAXIMO_X_JUGADOR-jugador.rect.width, jugador.posicion[1]))
-		if (self.pasarFase == True): #Si hemos recogido el objeto principal podemos pasar de fase (si no pos no)    
-		    
+		if (self.pasarFase == True): #Si hemos recogido el objeto principal podemos pasar de fase (si no pos no)
+
 		    # Si hemos llegado a la derecha de todo creamos la escena siguiente.
 		    self.director.cambiarAlMenu(self,PANTALLA_CUTSCENE)
-		    
+
                 return False; # No se ha actualizado el scroll
 
             # Si se puede hacer scroll a la derecha
@@ -149,12 +149,12 @@ class Fase(Escena):
     def update(self, tiempo):
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
-	
+
 	# Comprobamos si hay colision entre algun jugador y el objeto principal
 	if pygame.sprite.collide_rect(self.jugador, self.objeto):
 	    self.objeto.kill()
 	    self.pasarFase = True
-	    
+
         self.actualizarScroll(self.jugador)
         #TODO detectar que se acabo la fase y cambiarla
 
@@ -168,12 +168,12 @@ class Fase(Escena):
 	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
 	# pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
 	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
-	balas = self.jugador.balasLanzar() 
-	if balas != None:	        
+	balas = self.jugador.balasLanzar()
+	if balas != None:
 	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
 
 	# Finalmente se pinta el grupo de sprites.
-	self.grupoSprites.draw(pantalla)	
+	self.grupoSprites.draw(pantalla)
 
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
@@ -200,10 +200,10 @@ class Fase(Escena):
 
         teclasPulsadas = pygame.key.get_pressed()
         self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
-    
+
     def obtenerNumeroFaseSiguiente(self):
 	return self.numFaseSiguiente
-    
+
     def crearSceneSiguiente(self):
         self.director.salirEscena()
         faseNueva = CutScene(self.director,self.numFaseSiguiente)

@@ -34,6 +34,7 @@ VELOCIDAD_SALTO_SNIPER = 0.27 # Pixeles por milisegundo
 RETARDO_ANIMACION_SNIPER = 5 # updates que durará cada imagen del personaje
 
 GRAVEDAD = 0.0006 # Píxeles / ms2
+VELOCIDAD_BALAS = 5
 
 #----------------------------
 # Clase MiSprite
@@ -90,10 +91,10 @@ class Personaje(MiSprite):
         self.movimiento = QUIETO
         # Lado hacia el que esta mirando
         self.mirando = DERECHA
-        
+
         #self.balas = BalaHeroe('Fase/1/MANCHONNEGRO.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], 1)
         self.balas = None
-        
+
         # Leemos las coordenadas de un archivo de texto
         datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
         datos = datos.split()
@@ -126,7 +127,7 @@ class Personaje(MiSprite):
 
         # Y actualizamos la postura del Sprite inicial, llamando al metodo correspondiente
         self.actualizarPostura()
-        
+
     def balasLanzar(self):
         return self.balas
 
@@ -216,12 +217,20 @@ class Personaje(MiSprite):
             if not self.numPostura == SPRITE_SALTANDO:
                 self.numPostura = SPRITE_QUIETO
             velocidadx = 0
-        
+
         # Si se ha pulsado que quieres disparar
         elif self.movimiento == DISPARAR:
-            self.bala = BalaHeroe('Fase/1/MANCHONNEGRO.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], 1)
+            self.bala = BalaHeroe('Fase/1/playerBullet.png','Fase/1/offsetBala.txt', [1], 1)
             print('disparar')
-            self.bala.establecerPosicion((5, 401)) #Ponemos la bala en la posicion actual del heroe.  
+            if self.mirando == IZQUIERDA:
+                self.bala.establecerPosicion((self.posicion[0]-10, self.posicion[1]-21))
+                velocidadBalax = -5
+                velocidadBalay = 0
+                self.velocidadBala = (velocidadBalax, velocidadBalay)
+                MiSpriteBala.update(self.bala,tiempo)
+                self.bala.actualizarPostura()
+            else:
+                self.bala.establecerPosicion((self.posicion[0]+40, self.posicion[1]-21)) #Ponemos la bala en la posicion actual del heroe.
             self.balas = self.bala
 
 
@@ -282,7 +291,7 @@ class Jugador(Personaje):
             Personaje.mover(self,DISPARAR)
         else:
             Personaje.mover(self,QUIETO)
-    
+
 
 
 #--------------------------------------------------
@@ -316,28 +325,30 @@ class MiSpriteBala(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.posicion = (0, 0)
-        self.velocidad = (0, 0)
+        self.velocidadBala = (0, 0)
+        self.scroll = (0, 0)
 
     def establecerPosicion(self, posicion, personaje = None): #Yo creo que no hay que meterle personaje, con tal de saber la posición inicial ya va.
         self.posicion = posicion
         print(posicion)
-    #    self.rect.left = personaje.posicion[0] - personaje.scroll[0]
-    
+        self.rect.left = self.posicion[0] - self.scroll[0]
+        self.rect.bottom = self.posicion[1] - self.scroll[1]
+
     def establecerPosicionPantalla(self, scrollDecorado):
         self.scroll = scrollDecorado;
         (scrollx, scrolly) = self.scroll;
         (posx, posy) = self.posicion;
         self.rect.left = posx - scrollx;
         self.rect.bottom = posy - scrolly;
-        
+
     def incrementarPosicion(self, incremento):
         (posx, posy) = self.posicion
         (incrementox, incrementoy) = incremento
         self.establecerPosicion((posx+incrementox, posy+incrementoy))
 
     def update(self, tiempo):
-        incrementox = self.velocidad[0]*tiempo
-        incrementoy = self.velocidad[1]*tiempo
+        incrementox = self.velocidadBala[0]*tiempo
+        incrementoy = self.velocidadBala[1]*tiempo
         self.incrementarPosicion((incrementox, incrementoy))
 
 #---------------------------
@@ -349,18 +360,21 @@ class BalaHeroe(MiSpriteBala):
         MiSpriteBala.__init__(self);
 
         self.mirando = direccion
-        
+
         self.velocidad = velocidad #No le pondria la velocidad porque todas las balas tendran la misma (?)
         self.retardoAnimacion = 5 #No le pondría el retardo de la animación.
-        
-        
+
+
         self.hoja = GestorRecursos.CargarImagen(archivoImagen, -1)
-        self.hoja.convert_alpha()        
+        self.hoja.convert_alpha()
         #Carga un rectángulo en el cual va a dibujar la imagen.
-        self.rect = pygame.Rect((0,20),[30,30])
-        self.image = self.hoja.subsurface(0,0,200,200)
-        
-        
+        self.rect = pygame.Rect((5,20),[7,7])
+        self.image = self.hoja.subsurface(0,0,7,7)
+
+    def actualizarPostura(self):
+        self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
+
+
 
     def update(self, tiempo, direccion):
         (velocidadx, velocidady) = self.velocidad
