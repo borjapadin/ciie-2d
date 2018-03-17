@@ -90,7 +90,10 @@ class Personaje(MiSprite):
         self.movimiento = QUIETO
         # Lado hacia el que esta mirando
         self.mirando = DERECHA
-
+        
+        #self.balas = BalaHeroe('Fase/1/MANCHONNEGRO.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], 1)
+        self.balas = None
+        
         # Leemos las coordenadas de un archivo de texto
         datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
         datos = datos.split()
@@ -123,7 +126,9 @@ class Personaje(MiSprite):
 
         # Y actualizamos la postura del Sprite inicial, llamando al metodo correspondiente
         self.actualizarPostura()
-
+        
+    def balasLanzar(self):
+        return self.balas
 
     # Metodo base para realizar el movimiento: simplemente se le indica cual va a hacer, y lo almacena
     def mover(self, movimiento):
@@ -217,7 +222,7 @@ class Personaje(MiSprite):
             self.bala = BalaHeroe('Fase/1/MANCHONNEGRO.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], 1)
             print('disparar')
             self.bala.establecerPosicion((5, 401)) #Ponemos la bala en la posicion actual del heroe.  
-
+            self.balas = self.bala
 
 
         # Además, si estamos en el aire
@@ -277,6 +282,7 @@ class Jugador(Personaje):
             Personaje.mover(self,DISPARAR)
         else:
             Personaje.mover(self,QUIETO)
+    
 
 
 #--------------------------------------------------
@@ -316,7 +322,14 @@ class MiSpriteBala(pygame.sprite.Sprite):
         self.posicion = posicion
         print(posicion)
     #    self.rect.left = personaje.posicion[0] - personaje.scroll[0]
-
+    
+    def establecerPosicionPantalla(self, scrollDecorado):
+        self.scroll = scrollDecorado;
+        (scrollx, scrolly) = self.scroll;
+        (posx, posy) = self.posicion;
+        self.rect.left = posx - scrollx;
+        self.rect.bottom = posy - scrolly;
+        
     def incrementarPosicion(self, incremento):
         (posx, posy) = self.posicion
         (incrementox, incrementoy) = incremento

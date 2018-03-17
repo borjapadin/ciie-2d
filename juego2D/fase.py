@@ -59,7 +59,7 @@ class Fase(Escena):
         self.jugador.establecerPosicion((5, 401))
 
         self.grupoSpritesDinamicos = pygame.sprite.Group( self.jugador)
-
+	
         self.grupoSprites = pygame.sprite.Group(self.jugador,plataformaSuelo)
 
 #TODO repasar los comentarios por que no corresponden de los scrolls
@@ -141,9 +141,19 @@ class Fase(Escena):
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
         self.fondo.dibujar(pantalla)
+	# Luego el decorado.
         self.decorado.dibujar(pantalla)
+	# Luego pintamos la plataforma
         self.grupoPlataformas.draw(pantalla)
-        self.grupoSprites.draw(pantalla)
+	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
+	# pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
+	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
+	balas = self.jugador.balasLanzar() 
+	if balas != None:	        
+	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
+
+	# Finalmente se pinta el grupo de sprites.
+	self.grupoSprites.draw(pantalla)	
 
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
