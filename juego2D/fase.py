@@ -118,8 +118,10 @@ class Fase(Escena):
                 # En su lugar, colocamos al jugador que esté más a la derecha a la derecha de todo
                 jugador.establecerPosicion((self.scrollx+MAXIMO_X_JUGADOR-jugador.rect.width, jugador.posicion[1]))
 		if (self.pasarFase == True): #Si hemos recogido el objeto principal podemos pasar de fase (si no pos no)    
+		    
 		    # Si hemos llegado a la derecha de todo creamos la escena siguiente.
-		    self.crearSceneSiguiente()
+		    self.director.cambiarAlMenu(self,PANTALLA_CUTSCENE)
+		    
                 return False; # No se ha actualizado el scroll
 
             # Si se puede hacer scroll a la derecha
