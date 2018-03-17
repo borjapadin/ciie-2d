@@ -167,7 +167,7 @@ class Fase(Escena):
                     self.director.salirPrograma()
                 #-------------CAMBIAR ESCENA (a una cutScena)---------------------
                 elif evento.key == K_c: #Trampa de salir de escena para cambiarla
-                    self.crearSceneSiguiente()
+                    self.director.cambiarAlMenu(self,PANTALLA_CUTSCENE)
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p:
                     self.director.cambiarAlMenu(self,PANTALLA_PAUSA)
@@ -182,7 +182,10 @@ class Fase(Escena):
 
         teclasPulsadas = pygame.key.get_pressed()
         self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
-
+    
+    def obtenerNumeroFaseSiguiente(self):
+	return self.numFaseSiguiente
+    
     def crearSceneSiguiente(self):
         self.director.salirEscena()
         faseNueva = CutScene(self.director,self.numFaseSiguiente)

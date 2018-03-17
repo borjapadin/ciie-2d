@@ -70,8 +70,8 @@ class Director():
         self.pila = []
         self.salir_escena = True
         
-    def cambiarAlMenu(self,escena,pantalla):
-        self.escenaPausada(escena)
+    def cambiarAlMenu(self,fase,pantalla):
+        self.escenaPausada(fase)
         self.salirEscena()
         
         #Modificar parámetro del menu.
@@ -82,8 +82,14 @@ class Director():
             menu.mostrarPantallaGameOver()  
         elif (pantalla == PANTALLA_VICTORIA):
             menu.mostrarPantallaVictoria()
+        elif (pantalla == PANTALLA_CUTSCENE):
+            menu.mostrarPantallaCutScene()
+            menu.setNumFaseSiguiente(fase.obtenerNumeroFaseSiguiente())#El director le da a menu el número de fase indicado por la fase 
+            #Esto es así porque el número de fase es necesario para saber que cutScene crear, y la cutScene
+            #a su vez tiene el control de que fase llevar.
+            
         self.pila.append(menu)
-        
+    
     def definirMenu(self,menu):
         self.menu = menu
     
@@ -91,6 +97,7 @@ class Director():
         self.salirEscena()
         # Ponemos la escena pasada en la cima de la pila
         self.pila.append(escena)
+    
 
     def apilarEscena(self, escena):
         self.salir_escena = True
