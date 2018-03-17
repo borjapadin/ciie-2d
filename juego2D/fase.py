@@ -95,7 +95,8 @@ class Fase(Escena):
                 self.scrollx = self.scrollx - desplazamiento;
 
                 return True; # Se ha actualizado el scroll
-
+	
+	#Si el jugador se encuentra más allá de la derecha.
         if (jugador.rect.right>MAXIMO_X_JUGADOR):
 
             # Se calcula cuantos pixeles esta fuera del borde
@@ -107,7 +108,8 @@ class Fase(Escena):
 
                 # En su lugar, colocamos al jugador que esté más a la derecha a la derecha de todo
                 jugador.establecerPosicion((self.scrollx+MAXIMO_X_JUGADOR-jugador.rect.width, jugador.posicion[1]))
-
+		# Si hemos llegado a la derecha de todo creamos la escena siguiente.
+		self.crearSceneSiguiente()
                 return False; # No se ha actualizado el scroll
 
             # Si se puede hacer scroll a la derecha
