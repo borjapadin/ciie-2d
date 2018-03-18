@@ -181,6 +181,7 @@ class Fase(Escena):
             balas.mirando = self.jugador.mirando
     	    self.grupoBalas.add(balas)
     	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
+	    self.jugador.balas = None
 
 	# Finalmente se pinta el grupo de sprites.
     	self.grupoSprites.draw(pantalla)
@@ -205,12 +206,15 @@ class Fase(Escena):
                 #--------------GAME_OVER-------------------------
                 elif evento.key == K_g:
                     self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
+		#---------------DISPARAR--------------------------
+		elif evento.key == K_t:
+		    self.jugador.dispararBala()
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
 
         teclasPulsadas = pygame.key.get_pressed()
         pygame.key.set_repeat(1000, 1000)
-        self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
+        self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d)
 
     def obtenerNumeroFaseSiguiente(self):
     	return self.numFaseSiguiente
