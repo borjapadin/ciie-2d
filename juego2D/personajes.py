@@ -353,11 +353,11 @@ class MiSpriteBala(pygame.sprite.Sprite):
 
 #---------------------------
 # Clase BalaHeroe
-class BalaHeroe(MiSpriteBala):
+class BalaHeroe(MiSprite):
 
     def __init__(self, archivoImagen, archivoCoordenadas, velocidad, direccion):
 
-        MiSpriteBala.__init__(self);
+        MiSprite.__init__(self);
 
         self.mirando = direccion
 
@@ -375,9 +375,5 @@ class BalaHeroe(MiSpriteBala):
         self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
 
-
-    def update(self, tiempo, direccion):
-        (velocidadx, velocidady) = self.velocidad
-
-        if direccion == IZQUIERDA:
-            self.image = self.hoja.subsurface()
+    def moverBala(self):
+        self.incrementarPosicion((1,1)) #jojoojjojoojoj... efecto rayo laser!!

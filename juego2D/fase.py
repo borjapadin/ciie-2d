@@ -58,6 +58,9 @@ class Fase(Escena):
         self.jugador = Jugador()
         #Ponemos al jugador en la posición inicial
         self.jugador.establecerPosicion((5, 401))
+	
+	# Creamos un grupo con las balas.
+	self.grupoBalas = pygame.sprite.Group()	
 
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
     	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
@@ -147,6 +150,11 @@ class Fase(Escena):
 
 
     def update(self, tiempo):
+	# Primero, se indican las acciones que van a hacer las balas.
+	if self.grupoBalas != None:
+	    for bala in iter(self.grupoBalas):
+		bala.moverBala()
+	    
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
@@ -170,6 +178,7 @@ class Fase(Escena):
 	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
 	balas = self.jugador.balasLanzar()
 	if balas != None:
+	    self.grupoBalas.add(balas)
 	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
 
 	# Finalmente se pinta el grupo de sprites.
