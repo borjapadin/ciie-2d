@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-import pygame, sys, os
+import pygame, sys, os, time
 from pygame.locals import *
 from escena import *
 from gestorRecursos import *
@@ -224,11 +224,11 @@ class Personaje(MiSprite):
             print('disparar')
             if self.mirando == IZQUIERDA:
                 self.bala.establecerPosicion((self.posicion[0]-10, self.posicion[1]-21))
-                velocidadBalax = -5
+                """velocidadBalax = -5
                 velocidadBalay = 0
                 self.velocidadBala = (velocidadBalax, velocidadBalay)
                 MiSpriteBala.update(self.bala,tiempo)
-                self.bala.actualizarPostura()
+                self.bala.actualizarPostura()"""
             else:
                 self.bala.establecerPosicion((self.posicion[0]+40, self.posicion[1]-21)) #Ponemos la bala en la posicion actual del heroe.
             self.balas = self.bala
@@ -328,7 +328,7 @@ class MiSpriteBala(pygame.sprite.Sprite):
         self.velocidadBala = (0, 0)
         self.scroll = (0, 0)
 
-    def establecerPosicion(self, posicion, personaje = None): #Yo creo que no hay que meterle personaje, con tal de saber la posición inicial ya va.
+    def establecerPosicion(self, posicion):
         self.posicion = posicion
         print(posicion)
         self.rect.left = self.posicion[0] - self.scroll[0]
@@ -353,11 +353,11 @@ class MiSpriteBala(pygame.sprite.Sprite):
 
 #---------------------------
 # Clase BalaHeroe
-class BalaHeroe(MiSprite):
+class BalaHeroe(MiSpriteBala):
 
     def __init__(self, archivoImagen, archivoCoordenadas, velocidad, direccion):
 
-        MiSprite.__init__(self);
+        MiSpriteBala.__init__(self);
 
         self.mirando = direccion
 
@@ -371,9 +371,13 @@ class BalaHeroe(MiSprite):
         self.rect = pygame.Rect((5,20),[7,7])
         self.image = self.hoja.subsurface(0,0,7,7)
 
-    def actualizarPostura(self):
-        self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
+        self.mirando = 0
 
+    def obtenermovimiento(self,jugador):
+        self.mirando = jugador.mirando
 
     def moverBala(self):
-        self.incrementarPosicion((1,1)) #jojoojjojoojoj... efecto rayo laser!!
+        if self.mirando == DERECHA:
+            self.incrementarPosicion((1,0)) #jojoojjojoojoj... efecto rayo laser!!
+        else:
+            self.incrementarPosicion((-1,0))

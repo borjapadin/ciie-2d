@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import pygame, escena
+import pygame, escena, time
 from escena import *
 from personajes import *
 from pygame.locals import *
@@ -58,9 +58,9 @@ class Fase(Escena):
         self.jugador = Jugador()
         #Ponemos al jugador en la posición inicial
         self.jugador.establecerPosicion((5, 401))
-	
-	# Creamos un grupo con las balas.
-	self.grupoBalas = pygame.sprite.Group()	
+
+	    # Creamos un grupo con las balas.
+        self.grupoBalas = pygame.sprite.Group()
 
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
     	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
@@ -151,20 +151,20 @@ class Fase(Escena):
 
     def update(self, tiempo):
 	# Primero, se indican las acciones que van a hacer las balas.
-	if self.grupoBalas != None:
-	    for bala in iter(self.grupoBalas):
-		bala.moverBala()
-	    
+        if self.grupoBalas != None:
+            for bala in iter(self.grupoBalas):
+                bala.moverBala()
+
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
 	# Comprobamos si hay colision entre algun jugador y el objeto principal
-	if pygame.sprite.collide_rect(self.jugador, self.objeto):
-	    self.objeto.kill()
-	    self.pasarFase = True
+    	if pygame.sprite.collide_rect(self.jugador, self.objeto):
+    	    self.objeto.kill()
+    	    self.pasarFase = True
 
-        self.actualizarScroll(self.jugador)
-        #TODO detectar que se acabo la fase y cambiarla
+            self.actualizarScroll(self.jugador)
+            #TODO detectar que se acabo la fase y cambiarla
 
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
@@ -176,13 +176,14 @@ class Fase(Escena):
 	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
 	# pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
 	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
-	balas = self.jugador.balasLanzar()
-	if balas != None:
-	    self.grupoBalas.add(balas)
-	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
+    	balas = self.jugador.balasLanzar()
+    	if balas != None:
+            balas.mirando = self.jugador.mirando
+    	    self.grupoBalas.add(balas)
+    	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
 
 	# Finalmente se pinta el grupo de sprites.
-	self.grupoSprites.draw(pantalla)
+    	self.grupoSprites.draw(pantalla)
 
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
@@ -208,10 +209,11 @@ class Fase(Escena):
                 self.director.salirPrograma()
 
         teclasPulsadas = pygame.key.get_pressed()
+        pygame.key.set_repeat(1000, 1000)
         self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
 
     def obtenerNumeroFaseSiguiente(self):
-	return self.numFaseSiguiente
+    	return self.numFaseSiguiente
 
     def crearSceneSiguiente(self):
         self.director.salirEscena()
