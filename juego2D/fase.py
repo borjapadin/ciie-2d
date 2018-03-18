@@ -163,9 +163,9 @@ class Fase(Escena):
     	    self.objeto.kill()
     	    self.pasarFase = True
 
-            self.actualizarScroll(self.jugador)
+        self.actualizarScroll(self.jugador)
             #TODO detectar que se acabo la fase y cambiarla
-
+        #self.actualizarScroll(self.jugador)
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
         self.fondo.dibujar(pantalla)
