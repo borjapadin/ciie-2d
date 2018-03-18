@@ -46,14 +46,9 @@ class MiSprite(pygame.sprite.Sprite):
         self.velocidad = (0, 0)
         self.scroll   = (0, 0)
 
-    def establecerPosicionBala(self, jugador):
-        self.posicion = jugador.posicion
-        self.rect.left = self.posicion[0] - self.scroll[0]
-        self.rect.bottom = self.posicion[1] - self.scroll[1]
-
     def establecerPosicion(self, posicion):
         self.posicion = posicion
-        self.rect.left = (self.posicion[0]-10) - (self.scroll[0]-21)
+        self.rect.left = self.posicion[0] - self.scroll[0]
         self.rect.bottom = self.posicion[1] - self.scroll[1]
 
     def establecerPosicionPantalla(self, scrollDecorado):
@@ -137,10 +132,8 @@ class Personaje(MiSprite):
         return self.balas
 
     # Metodo base para realizar el movimiento: simplemente se le indica cual va a hacer, y lo almacena
-    def mover(self, movimiento, bala):
-        if bala:
-            self.bala.movimiento = movimiento
-        elif movimiento == ARRIBA:
+    def mover(self, movimiento):
+        if movimiento == ARRIBA:
             # Si estamos en el aire y el personaje quiere saltar, ignoramos este movimiento
             if self.numPostura == SPRITE_SALTANDO:
                 self.movimiento = QUIETO
@@ -148,7 +141,6 @@ class Personaje(MiSprite):
                 self.movimiento = ARRIBA
         elif movimiento == DISPARAR: #Si quieres disparar tienes que estar quieto (inicialmente)
             self.movimiento = DISPARAR
-
         else:
             self.movimiento = movimiento
 
@@ -228,16 +220,18 @@ class Personaje(MiSprite):
 
         # Si se ha pulsado que quieres disparar
         elif self.movimiento == DISPARAR:
-            self.bala = Bala()
-            #self.bala = BalaHeroe()
+            self.bala = BalaHeroe('Fase/1/playerBullet.png','Fase/1/offsetBala.txt', [1], 1)
             print('disparar')
             if self.mirando == IZQUIERDA:
                 self.bala.establecerPosicion((self.posicion[0]-10, self.posicion[1]-21))
-                self.bala.mover(IZQUIERDA,1)
+                velocidadBalax = -5
+                velocidadBalay = 0
+                self.velocidadBala = (velocidadBalax, velocidadBalay)
+                MiSpriteBala.update(self.bala,tiempo)
+                self.bala.actualizarPostura()
             else:
                 self.bala.establecerPosicion((self.posicion[0]+40, self.posicion[1]-21)) #Ponemos la bala en la posicion actual del heroe.
-
-
+            self.balas = self.bala
 
 
         # Además, si estamos en el aire
@@ -270,7 +264,6 @@ class Personaje(MiSprite):
 
         # Y llamamos al método de la superclase para que, según la velocidad y el tiempo
         #  calcule la nueva posición del Sprite
-
         MiSprite.update(self, tiempo)
 
         return
@@ -287,17 +280,17 @@ class Jugador(Personaje):
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, disparar):
         # Indicamos la acción a realizar segun la tecla pulsada para el jugador
         if teclasPulsadas[arriba]:
-            Personaje.mover(self,ARRIBA,0)
+            Personaje.mover(self,ARRIBA)
         elif teclasPulsadas[izquierda]:
-            Personaje.mover(self,IZQUIERDA,0)
+            Personaje.mover(self,IZQUIERDA)
         elif teclasPulsadas[derecha]:
-            Personaje.mover(self,DERECHA,0)
+            Personaje.mover(self,DERECHA)
         elif teclasPulsadas[abajo]:
-            Personaje.mover(self,ABAJO,0)
+            Personaje.mover(self,ABAJO)
         elif teclasPulsadas[disparar]:
-            Personaje.mover(self,DISPARAR,0)
+            Personaje.mover(self,DISPARAR)
         else:
-            Personaje.mover(self,QUIETO,0)
+            Personaje.mover(self,QUIETO)
 
 
 
@@ -362,9 +355,7 @@ class MiSpriteBala(pygame.sprite.Sprite):
 # Clase BalaHeroe
 class BalaHeroe(MiSpriteBala):
 
-    def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, direccion):
-    #def __init__(self):
-        #BalaHeroe.__init__(self,'Fase/1/playerBullet.png','Fase/1/offsetBala.txt',[1], [1], 1)
+    def __init__(self, archivoImagen, archivoCoordenadas, velocidad, direccion):
 
         MiSpriteBala.__init__(self);
 
@@ -380,21 +371,6 @@ class BalaHeroe(MiSpriteBala):
         self.rect = pygame.Rect((5,20),[7,7])
         self.image = self.hoja.subsurface(0,0,7,7)
 
-        datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
-        datos = datos.split()
-
-        self.numPostura = 0;
-        self.numImagenPostura = 0;
-        cont = 0;
-
-        self.coordenadasHoja = [];
-        for linea in range(0, 1):
-            self.coordenadasHoja.append([])
-            tmp = self.coordenadasHoja[linea]
-            for postura in range(1, numImagenes[linea]+1):
-                tmp.append(pygame.Rect((int(datos[cont]), int(datos[cont+1])), (int(datos[cont+2]), int(datos[cont+3]))))
-                cont += 4
-
     def actualizarPostura(self):
         self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
@@ -405,14 +381,3 @@ class BalaHeroe(MiSpriteBala):
 
         if direccion == IZQUIERDA:
             self.image = self.hoja.subsurface()
-
-class Bala(Personaje):
-
-    def __init__(self):
-        Personaje.__init__(self, 'Fase/1/playerBullet.png', 'Fase/1/offsetBalaPrueba.txt', [1,1,1,1,1,1], 5, 0, RETARDO_ANIMACION_JUGADOR);
-
-    def mover(self, movimiento, bala):
-        if Personaje.mirando == IZQUIERDA:
-            Personaje.mover(self,IZQUIERDA, bala)
-        else:
-            Personaje.mover(self,DERECHA, bala)

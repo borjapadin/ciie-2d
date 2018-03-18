@@ -59,10 +59,6 @@ class Fase(Escena):
         #Ponemos al jugador en la posición inicial
         self.jugador.establecerPosicion((5, 401))
 
-        """bala = Bala()
-        bala.establecerPosicionBala(self.jugador)
-        self.grupoBalas =  pygame.sprite.Group(bala)"""
-
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
     	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
     	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
