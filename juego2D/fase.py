@@ -120,14 +120,14 @@ class Fase(Escena):
 
                 # En su lugar, colocamos al jugador que esté más a la derecha a la derecha de todo
                 jugador.establecerPosicion((self.scrollx+MAXIMO_X_JUGADOR-jugador.rect.width, jugador.posicion[1]))
-		if (self.pasarFase == True): #Si hemos recogido el objeto principal podemos pasar de fase (si no pos no)
+    		if (self.pasarFase == True): #Si hemos recogido el objeto principal podemos pasar de fase (si no pos no)
 
-		    # Si hemos llegado a la derecha de todo creamos la escena siguiente.
-		    self.director.cambiarAlMenu(self,PANTALLA_CUTSCENE)
+    		    # Si hemos llegado a la derecha de todo creamos la escena siguiente.
+    		    self.director.cambiarAlMenu(self,PANTALLA_CUTSCENE)
 
-                return False; # No se ha actualizado el scroll
+                    return False; # No se ha actualizado el scroll
 
-            # Si se puede hacer scroll a la derecha
+                # Si se puede hacer scroll a la derecha
             else:
 
                 # Calculamos el nivel de scroll actual: el anterior + desplazamiento
@@ -165,7 +165,6 @@ class Fase(Escena):
 
         self.actualizarScroll(self.jugador)
             #TODO detectar que se acabo la fase y cambiarla
-        #self.actualizarScroll(self.jugador)
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
         self.fondo.dibujar(pantalla)
