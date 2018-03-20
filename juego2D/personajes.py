@@ -182,14 +182,14 @@ class Personaje(MiSprite):
                 self.bala.actualizarPostura()"""
             else:
                 self.bala.establecerPosicion((self.posicion[0]+40, self.posicion[1]-21)) #Ponemos la bala en la posicion actual del heroe.
-            self.balas = self.bala   
-            
+            self.balas = self.bala
+
     def update(self, grupoPlataformas, tiempo):
 
         # Las velocidades a las que iba hasta este momento
         (velocidadx, velocidady) = self.velocidad
         #Funcion que dispara una bala si esta t pulsado
-        
+
         if self.numPostura == SPRITE_SALTANDO :
             self.retardoAnimacion = GRAVEDAD * 25000
         else:
@@ -280,7 +280,7 @@ class Jugador(Personaje):
         #Personaje.__init__(self,'Fase/1/Jugador.png','Fase/1/coordJugador.txt', [6,12,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
         Personaje.__init__(self,'Fase/1/rossi.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
         self.disparar = OFF
-        
+
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
         # Indicamos la acción a realizar segun la tecla pulsada para el jugador
         if teclasPulsadas[arriba]:
@@ -293,7 +293,7 @@ class Jugador(Personaje):
             Personaje.mover(self,ABAJO)
         else:
             Personaje.mover(self,QUIETO)
-    
+
     def dispararBala(self):
         self.disparar = ON
         Personaje.mover(self,QUIETO)
@@ -382,8 +382,6 @@ class BalaHeroe(MiSpriteBala):
 
     def moverBala(self):
         if self.mirando == DERECHA:
-            self.incrementarPosicion((1,0)) #jojoojjojoojoj... efecto rayo laser!!
+            self.incrementarPosicion((3,0)) #jojoojjojoojoj... efecto rayo laser!!
         else:
-            self.incrementarPosicion((-1,0))
-
-
+            self.incrementarPosicion((-3,0))
