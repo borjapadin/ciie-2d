@@ -59,15 +59,19 @@ class Fase(Escena):
         #Ponemos al jugador en la posición inicial
         self.jugador.establecerPosicion((5, 401))
 
+        self.enemigo = Soldado()
+        self.enemigo.establecerPosicion((500, 401))
+        self.grupoEnemigos = pygame.sprite.Group( self.enemigo )
+
 	    # Creamos un grupo con las balas.
         self.grupoBalas = pygame.sprite.Group()
 
-        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador)
+        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador, self.enemigo)
     	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
     	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
     	#Eduardo Penas.
     	self.crearObjetoPrincipal()
-        self.grupoSprites = pygame.sprite.Group(self.jugador,plataformaSuelo,self.objeto)
+        self.grupoSprites = pygame.sprite.Group(self.jugador,plataformaSuelo,self.objeto, self.enemigo)
 
     #De momento esto de generico tiene una mierda pero dejemoslo asi.
     def crearObjetoPrincipal(self):
@@ -154,7 +158,8 @@ class Fase(Escena):
         if self.grupoBalas != None:
             for bala in iter(self.grupoBalas):
                 bala.moverBala()
-
+        for enemigo in iter(self.grupoEnemigos):
+            enemigo.mover_cpu(self.jugador)
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
@@ -181,6 +186,12 @@ class Fase(Escena):
     	    self.grupoBalas.add(balas)
     	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
 	    self.jugador.balas = None
+        if self.enemigo != None:
+            balasenemigo = self.enemigo.balasLanzar()
+            if balasenemigo != None:
+                self.grupoBalas.add(balasenemigo)
+            	self.grupoSprites.add(balasenemigo)
+            self.enemigo.balas = None
 
 	# Finalmente se pinta el grupo de sprites.
     	self.grupoSprites.draw(pantalla)
@@ -210,6 +221,11 @@ class Fase(Escena):
 		    self.jugador.dispararBala()
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
+
+        #elif self.enemigo.rect.left>0 and self.enemigo.rect.right<ANCHO_PANTALLA and self.enemigo.rect.bottom>0 and self.enemigo.rect.top<ALTO_PANTALLA:
+        #if self.jugador.posicion[0]<self.enemigo.posicion[0]:
+        self.enemigo.dispararBala()
+
 
         teclasPulsadas = pygame.key.get_pressed()
         pygame.key.set_repeat(1000, 1000)
