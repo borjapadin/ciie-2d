@@ -3,6 +3,7 @@ import pygame, sys, os, time
 from pygame.locals import *
 from escena import *
 from gestorRecursos import *
+from random import randint
 
 # Constantes--------------
 GRAVEDAD = 0.003 # Píxeles / ms2
@@ -13,6 +14,8 @@ DERECHA = 2
 ARRIBA = 3
 ABAJO = 4
 DISPARAR = 5
+
+VELOCIDAD_RECARGA_BALA = 30
 
 ON = 1
 OFF = 0
@@ -332,13 +335,28 @@ class NoJugador(Personaje):
 
 #---------------------------
 # Clase Soldado
-class Soldado(Personaje):
+class Soldado(NoJugador):
     def __init__(self):
-        Personaje.__init__(self,'Fase/1/SpriteSoldadoFilas.png','Fase/1/offsetsSoldado.txt', [2, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
+        NoJugador.__init__(self,'Fase/1/SpriteSoldadoFilas.png','Fase/1/offsetsSoldado.txt', [2, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
         self.disparar = OFF
+        self.inicializarCountDisparar()
 
     def mover_cpu(self, jugador):
+        
         if self.rect.left>0 and self.rect.right<ANCHO_PANTALLA and self.rect.bottom>0 and self.rect.top<ALTO_PANTALLA:
+            #------------- HEY --------------------
+            #Esto no se puede hacer todo en una funcion?
+            #Le metes que el personaje/soldado este mirando
+            #Para el mismo sitio que el jugaor... self.mirando = jugador.mirando (?)
+            #Yo spameo esto de comentarios porque me hace gracia
+            #Ahora en serio...
+            #Por favor, Borja borra esto.
+            #Fijate en una cosa por cierto, mira a toda leche al mismo momento que el jugador cuando tiene que hacerlo.
+            #(este a la distancia que este)
+            #Pero para el movimiento no tiene porque ser asi (no debería... esto basarse en el ejemplo de ellos*)
+            #Creo que esto es algo que en general podemos complciar una barbaridad.
+            
+            #-----------------------------Mirar-----------------------------
             if jugador.posicion[0]<self.posicion[0]:
                 #Personaje.mover(self,IZQUIERDA)
                 self.mirando = IZQUIERDA
@@ -349,14 +367,31 @@ class Soldado(Personaje):
                 #Personaje.mover(self,DERECHA)
                 self.mirando = DERECHA
                 Personaje.mover(self,QUIETO)
-                #self.dispararBala()
-
+                #self.dispararBalar
+        
         # Si este personaje no esta en pantalla, no hara nada
         else:
             Personaje.mover(self,QUIETO)
-
+        
+        #--------------------------Disparar----------------
+        self.decidirSiDisparar()
+      
+    def decidirSiDisparar(self): 
+        if (self.count_disparar == VELOCIDAD_RECARGA_BALA):
+            self.dispararBala()
+            self.inicializarCountDisparar()
+        else:
+            self.aumentarContadorDisparo()
+            
+    def inicializarCountDisparar(self):
+        self.count_disparar = 0
+    
+    def aumentarContadorDisparo(self):
+        self.count_disparar += 1
+            
+            
     def dispararBala(self):
-        self.disparar = ON
+        self.disparar = randint(OFF,ON) #Vamos a meterle aletoriedad para que no sea tan mecanico y resulte más natural.
         Personaje.mover(self,QUIETO)
 #---------------------------
 # Clase Jefe

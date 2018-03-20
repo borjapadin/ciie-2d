@@ -158,8 +158,10 @@ class Fase(Escena):
         if self.grupoBalas != None:
             for bala in iter(self.grupoBalas):
                 bala.moverBala()
+		
         for enemigo in iter(self.grupoEnemigos):
             enemigo.mover_cpu(self.jugador)
+	    
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
@@ -180,14 +182,18 @@ class Fase(Escena):
 	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
 	# pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
 	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
+	
+	#Cortar esto en una función aparte.
     	balas = self.jugador.balasLanzar()
     	if balas != None:
             balas.mirando = self.jugador.mirando
     	    self.grupoBalas.add(balas)
     	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
 	    self.jugador.balas = None
+       
+       #Cortar esto en una función aparte.
         if self.enemigo != None:
-            balasenemigo = self.enemigo.balasLanzar()
+            balasenemigo = self.enemigo.balasLanzar() #A partir de aqui es como la de arriba. GENERALIZAR.
             if balasenemigo != None:
                 self.grupoBalas.add(balasenemigo)
             	self.grupoSprites.add(balasenemigo)
@@ -224,8 +230,6 @@ class Fase(Escena):
 
         #elif self.enemigo.rect.left>0 and self.enemigo.rect.right<ANCHO_PANTALLA and self.enemigo.rect.bottom>0 and self.enemigo.rect.top<ALTO_PANTALLA:
         #if self.jugador.posicion[0]<self.enemigo.posicion[0]:
-        self.enemigo.dispararBala()
-
 
         teclasPulsadas = pygame.key.get_pressed()
         pygame.key.set_repeat(1000, 1000)
