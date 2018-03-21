@@ -3,6 +3,7 @@ import pygame, sys, os, time
 from pygame.locals import *
 from escena import *
 from gestorRecursos import *
+from random import randint
 
 # Constantes--------------
 GRAVEDAD = 0.003 # Píxeles / ms2
@@ -13,6 +14,8 @@ DERECHA = 2
 ARRIBA = 3
 ABAJO = 4
 DISPARAR = 5
+
+VELOCIDAD_RECARGA_BALA = 30
 
 ON = 1
 OFF = 0
@@ -32,9 +35,9 @@ RETARDO_ANIMACION_JUGADOR = 5 # updates que durará cada imagen del personaje
                               # debería de ser un valor distinto para cada postura
 RETARDO_ANIMACION_JUGADOR_SALTAR = 20
 # velocidades de enemigos
-VELOCIDAD_SNIPER = 0.12 # Pixeles por milisegundo
-VELOCIDAD_SALTO_SNIPER = 0.27 # Pixeles por milisegundo
-RETARDO_ANIMACION_SNIPER = 5 # updates que durará cada imagen del personaje
+VELOCIDAD_SOLDADO = 0.12 # Pixeles por milisegundo
+VELOCIDAD_SALTO_SOLDADO = 0.27 # Pixeles por milisegundo
+RETARDO_ANIMACION_SOLDADO = 5 # updates que durará cada imagen del personaje
 
 GRAVEDAD = 0.0006 # Píxeles / ms2
 VELOCIDAD_BALAS = 5
@@ -93,10 +96,12 @@ class Personaje(MiSprite):
         # El movimiento que esta realizando
         self.movimiento = QUIETO
         # Lado hacia el que esta mirando
-        self.mirando = DERECHA
+        #self.mirando = DERECHA
 
         #self.balas = BalaHeroe('Fase/1/MANCHONNEGRO.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], 1)
         self.balas = None
+
+        self.archivoImagen = archivoImagen
 
         # Leemos las coordenadas de un archivo de texto
         datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas)
@@ -105,7 +110,16 @@ class Personaje(MiSprite):
         self.numImagenPostura = 0;
         cont = 0;
         self.coordenadasHoja = [];
-        for linea in range(0, 6):
+        variable = 0
+
+        if archivoImagen == 'Fase/1/rossi.png':
+            variable  = 6
+            self.mirando = DERECHA
+        elif archivoImagen == 'Fase/1/SpriteSoldadoFilas.png':
+            variable = 4
+            self.mirando = IZQUIERDA
+
+        for linea in range(0, variable):
             self.coordenadasHoja.append([])
             tmp = self.coordenadasHoja[linea]
             for postura in range(1, numImagenes[linea]+1):
@@ -160,12 +174,18 @@ class Personaje(MiSprite):
             self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
             # Si esta mirando a la izquiera, cogemos la porcion de la hoja
-            if self.mirando == DERECHA:
-                self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
-            #  Si no, si mira a la derecha, invertimos esa imagen
-            elif self.mirando == IZQUIERDA:
-                self.image = pygame.transform.flip(self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
-
+            if self.archivoImagen == 'Fase/1/rossi.png':
+                if self.mirando == DERECHA:
+                    self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
+                #  Si no, si mira a la derecha, invertimos esa imagen
+                elif self.mirando == IZQUIERDA:
+                    self.image = pygame.transform.flip(self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
+            elif self.archivoImagen == 'Fase/1/SpriteSoldadoFilas.png':
+                if self.mirando == IZQUIERDA:
+                    self.image = self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura])
+                #  Si no, si mira a la derecha, invertimos esa imagen
+                elif self.mirando == DERECHA:
+                    self.image = pygame.transform.flip(self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
     def crearBala(self):
         # Si se ha pulsado que quieres disparar
         print(self.dispararBala)
@@ -175,11 +195,6 @@ class Personaje(MiSprite):
             self.disparar = OFF
             if self.mirando == IZQUIERDA:
                 self.bala.establecerPosicion((self.posicion[0]-10, self.posicion[1]-21))
-                """velocidadBalax = -5
-                velocidadBalay = 0
-                self.velocidadBala = (velocidadBalax, velocidadBalay)
-                MiSpriteBala.update(self.bala,tiempo)
-                self.bala.actualizarPostura()"""
             else:
                 self.bala.establecerPosicion((self.posicion[0]+40, self.posicion[1]-21)) #Ponemos la bala en la posicion actual del heroe.
             self.balas = self.bala
@@ -306,20 +321,78 @@ class NoJugador(Personaje):
     def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto, retardoAnimacion):
         # Primero invocamos al constructor de la clase padre con los parametros pasados
         Personaje.__init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto, retardoAnimacion);
-
     # Aqui vendria la implementacion de la IA segun las posiciones de los jugadores
     # La implementacion por defecto, este metodo deberia de ser implementado en las clases inferiores
     #  mostrando la personalidad de cada enemigo
-    def mover_cpu(self, jugador1, jugador2):
+    def mover_cpu(self, jugador):
         # Por defecto un enemigo no hace nada
         #  (se podria programar, por ejemplo, que disparase al jugador por defecto)
         return
+
+
 #---------------------------
 # Clase Zombi
 
 #---------------------------
 # Clase Soldado
+class Soldado(NoJugador):
+    def __init__(self):
+        NoJugador.__init__(self,'Fase/1/SpriteSoldadoFilas.png','Fase/1/offsetsSoldado.txt', [2, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
+        self.disparar = OFF
+        self.inicializarCountDisparar()
 
+    def mover_cpu(self, jugador):
+        
+        if self.rect.left>0 and self.rect.right<ANCHO_PANTALLA and self.rect.bottom>0 and self.rect.top<ALTO_PANTALLA:
+            #------------- HEY --------------------
+            #Esto no se puede hacer todo en una funcion?
+            #Le metes que el personaje/soldado este mirando
+            #Para el mismo sitio que el jugaor... self.mirando = jugador.mirando (?)
+            #Yo spameo esto de comentarios porque me hace gracia
+            #Ahora en serio...
+            #Por favor, Borja borra esto.
+            #Fijate en una cosa por cierto, mira a toda leche al mismo momento que el jugador cuando tiene que hacerlo.
+            #(este a la distancia que este)
+            #Pero para el movimiento no tiene porque ser asi (no debería... esto basarse en el ejemplo de ellos*)
+            #Creo que esto es algo que en general podemos complciar una barbaridad.
+            
+            #-----------------------------Mirar-----------------------------
+            if jugador.posicion[0]<self.posicion[0]:
+                #Personaje.mover(self,IZQUIERDA)
+                self.mirando = IZQUIERDA
+                Personaje.mover(self,QUIETO)
+                #self.dispararBala()
+
+            else:
+                #Personaje.mover(self,DERECHA)
+                self.mirando = DERECHA
+                Personaje.mover(self,QUIETO)
+                #self.dispararBalar
+        
+        # Si este personaje no esta en pantalla, no hara nada
+        else:
+            Personaje.mover(self,QUIETO)
+        
+        #--------------------------Disparar----------------
+        self.decidirSiDisparar()
+      
+    def decidirSiDisparar(self): 
+        if (self.count_disparar == VELOCIDAD_RECARGA_BALA):
+            self.dispararBala()
+            self.inicializarCountDisparar()
+        else:
+            self.aumentarContadorDisparo()
+            
+    def inicializarCountDisparar(self):
+        self.count_disparar = 0
+    
+    def aumentarContadorDisparo(self):
+        self.count_disparar += 1
+            
+            
+    def dispararBala(self):
+        self.disparar = randint(OFF,ON) #Vamos a meterle aletoriedad para que no sea tan mecanico y resulte más natural.
+        Personaje.mover(self,QUIETO)
 #---------------------------
 # Clase Jefe
 
