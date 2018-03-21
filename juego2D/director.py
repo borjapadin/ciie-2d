@@ -24,6 +24,9 @@ class Director():
 
     def bucle(self, escena):
 
+        # Cogemos el reloj de pygame
+        #reloj = pygame.time.Clock()
+
         self.salir_escena = False
 
         # Eliminamos todos los eventos producidos antes de entrar en el bucle

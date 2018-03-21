@@ -6,6 +6,9 @@ from gestorRecursos import *
 from escena import *
 from director import *
 
+
+################################################ YO METERIA TODO LO GUI EN UN MISMO .py
+
 #Clase abstracta ElementoGUI
 class ElementoGUI:
     def __init__(self, pantalla, rectangulo):
@@ -38,3 +41,5 @@ class ElementoGUI:
 
     def accion(self):
         raise NotImplemented("Tiene que implementar el metodo de accion")
+
+

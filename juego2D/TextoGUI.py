@@ -6,7 +6,7 @@ from pygame.locals import *
 from gestorRecursos import *
 from escena import *
 from director import *
-from ElementoGUI import *
+from elementoGUI import *
 #Clase TextoGUI y los distintos textos
 
 class  TextoGUI(ElementoGUI):
@@ -24,4 +24,46 @@ class  TextoGUI(ElementoGUI):
     
     
     
-    
+################################################################################################3    
+
+class TextoJugar(TextoGUI):
+    def __init__(self, pantalla):
+        # La fuente la debería cargar el estor de recursos
+        fuente = pygame.font.SysFont('impact', 30);
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Empezar partida', (65, 395))
+    def accion(self):
+        self.pantalla.menu.ejecutarJuego()
+
+
+class TextoSalir(TextoGUI):
+    def __init__(self, pantalla):
+        # La fuente la debería cargar el estor de recursos
+        fuente = pygame.font.SysFont('impact', 30);
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Salir', (65, 445))
+
+
+class TextoContinuar(TextoGUI):
+    def __init__(self, pantalla):
+        # La fuente la debería cargar el estor de recursos
+        fuente = pygame.font.SysFont('impact', 30);
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Continuar', (65, 500))
+
+
+
+class TextoVolverJuego(TextoGUI):
+    def __init__(self, pantalla):
+        # La fuente la debería cargar el estor de recursos
+        fuente = pygame.font.SysFont('impact', 30);
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Volver a jugar', (65, 500))
+
+
+class TextoTituloNivel(TextoGUI):
+    def __init__(self, pantalla, nombreFase):
+        # La fuente la debería cargar el estor de recursos
+        fuente = pygame.font.SysFont('impact', 50);
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Nivel '+nombreFase, (100, 250))
+
+class TextoNivel(TextoGUI):
+    def __init__(self, pantalla, nombreFase, coordenada):
+        fuente = pygame.font.SysFont('impact', 30);
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, nombreFase, (40, coordenada))

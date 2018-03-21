@@ -15,7 +15,7 @@ class GestorRecursos(object):
                 imag = pygame.image.load(nombreEntero) #intentamos cargar
                 print(nombreEntero)
             except pygame.error, message:
-                print 'No se ha podido cargar', nombreEntero
+                print 'No se ha podido cargar la imagen: ', nombreEntero
                 raise SystemExit, message
             imag = imag.convert()
             if colorClave is not None: #Puse esto (?) aunque no estaba (?) no se si no estaba por algo (?) pero Uxía me mando.
@@ -37,3 +37,18 @@ class GestorRecursos(object):
             pathfile.close() #lo cerramos
             cls.recursos[nombre] = datos #almacenamos
             return datos #lo devolvemos
+
+
+    @classmethod
+    def CargarSonido(cls, nombre):
+        if nombre in cls.recursos:
+                return cls.recursos[nombre]
+        else:
+            nombreEntero = os.path.join('sounds', nombre)
+            try:
+                sound = pygame.mixer.Sound(nombreEntero)
+            except pygame.error, message:
+                print 'Cannot load sound:', nombreEntero
+                raise SystemExit, message
+            cls.recursos[nombre] = sound
+            return sound

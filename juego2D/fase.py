@@ -5,8 +5,8 @@ from escena import *
 from personajes import *
 from pygame.locals import *
 from Constantes import *
-from TextoGUI import *
-from Objetos import *
+from textoGUI import *
+from objetos import *
 #from animaciones import *
 
 # -------------------------------------------------
@@ -158,10 +158,8 @@ class Fase(Escena):
         if self.grupoBalas != None:
             for bala in iter(self.grupoBalas):
                 bala.moverBala()
-		
         for enemigo in iter(self.grupoEnemigos):
             enemigo.mover_cpu(self.jugador)
-	    
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
@@ -182,18 +180,14 @@ class Fase(Escena):
 	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
 	# pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
 	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
-	
-	#Cortar esto en una función aparte.
     	balas = self.jugador.balasLanzar()
     	if balas != None:
             balas.mirando = self.jugador.mirando
     	    self.grupoBalas.add(balas)
     	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
 	    self.jugador.balas = None
-       
-       #Cortar esto en una función aparte.
         if self.enemigo != None:
-            balasenemigo = self.enemigo.balasLanzar() #A partir de aqui es como la de arriba. GENERALIZAR.
+            balasenemigo = self.enemigo.balasLanzar()
             if balasenemigo != None:
                 self.grupoBalas.add(balasenemigo)
             	self.grupoSprites.add(balasenemigo)
@@ -230,6 +224,8 @@ class Fase(Escena):
 
         #elif self.enemigo.rect.left>0 and self.enemigo.rect.right<ANCHO_PANTALLA and self.enemigo.rect.bottom>0 and self.enemigo.rect.top<ALTO_PANTALLA:
         #if self.jugador.posicion[0]<self.enemigo.posicion[0]:
+        self.enemigo.dispararBala()
+
 
         teclasPulsadas = pygame.key.get_pressed()
         pygame.key.set_repeat(1000, 1000)
@@ -242,6 +238,18 @@ class Fase(Escena):
         self.director.salirEscena()
         faseNueva = CutScene(self.director,self.numFaseSiguiente)
         self.director.apilarEscena(faseNueva)
+
+
+
+
+
+
+
+
+
+############################################################## tener como ejemplo el escenario.py del juego de Javi
+
+
 
 # -------------------------------------------------
 # Clase Plataforma
@@ -398,13 +406,16 @@ class FondoCutScene:
             for lineaTextoNivel in self.textoNivel:
                 lineaTextoNivel.dibujar(pantalla)
 
-class TextoTituloNivel(TextoGUI):
-    def __init__(self, pantalla, nombreFase):
-        # La fuente la debería cargar el estor de recursos
-        fuente = pygame.font.SysFont('impact', 50);
-        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Nivel '+nombreFase, (100, 250))
 
-class TextoNivel(TextoGUI):
-    def __init__(self, pantalla, nombreFase, coordenada):
-        fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, BLANCO, nombreFase, (40, coordenada))
+###############################################################################################################################
+
+# class TextoTituloNivel(textoGUI):
+#     def __init__(self, pantalla, nombreFase):
+#         # La fuente la debería cargar el estor de recursos
+#         fuente = pygame.font.SysFont('impact', 50);
+#         textoGUI.__init__(self, pantalla, fuente, BLANCO, 'Nivel '+nombreFase, (100, 250))
+
+# class TextoNivel(textoGUI):
+#     def __init__(self, pantalla, nombreFase, coordenada):
+#         fuente = pygame.font.SysFont('impact', 30);
+#         textoGUI.__init__(self, pantalla, fuente, BLANCO, nombreFase, (40, coordenada))

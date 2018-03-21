@@ -6,9 +6,9 @@ from gestorRecursos import *
 from escena import *
 from director import *
 from fase import *
-from PantallaGUI import *
-from TextoGUI import *
-from Boton import *
+from pantallaGUI import *
+from textoGUI import *
+from boton import *
 
 class PantallaInicialGUI(PantallaGUI):
     def __init__(self, menu):
@@ -59,33 +59,35 @@ class PantallaInicialGUI(PantallaGUI):
                     self.director.salirPrograma()                     
     
         
-class TextoJugar(TextoGUI):
-    def __init__(self, pantalla):
-        # La fuente la debería cargar el estor de recursos
-        fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Empezar partida', (65, 395))
-    def accion(self):
-        self.pantalla.menu.ejecutarJuego()
+# class TextoJugar(textoGUI):
+#     def __init__(self, pantalla):
+#         # La fuente la debería cargar el estor de recursos
+#         fuente = pygame.font.SysFont('impact', 30);
+#         textoGUI.__init__(self, pantalla, fuente, BLANCO, 'Empezar partida', (65, 395))
+#     def accion(self):
+#         self.pantalla.menu.ejecutarJuego()
 
-class TextoSalir(TextoGUI):
-    def __init__(self, pantalla):
-        # La fuente la debería cargar el estor de recursos
-        fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Salir', (65, 445))
-    def accion(self):
-        self.pantalla.menu.salirPrograma()
+# class TextoSalir(textoGUI):
+#     def __init__(self, pantalla):
+#         # La fuente la debería cargar el estor de recursos
+#         fuente = pygame.font.SysFont('impact', 30);
+#         textoGUI.__init__(self, pantalla, fuente, BLANCO, 'Salir', (65, 445))
+#     def accion(self):
+#         self.pantalla.menu.salirPrograma()
+
         
-class BotonJugar(Boton):
-    def __init__(self, pantalla):
-        Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,400))
+############################################################################################      
+# class BotonJugar(boton):
+#     def __init__(self, pantalla):
+#         boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,400))
 
-    def accion(self):
-        self.pantalla.menu.ejecutarJuego()
+#     def accion(self):
+#         self.pantalla.menu.ejecutarJuego()
 
-class BotonSalir(Boton):
-    def __init__(self, pantalla):
-        Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,450))
+# class BotonSalir(Boton):
+#     def __init__(self, pantalla):
+#         boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,450))
 
-    def accion(self):
-        self.pantalla.menu.salirPrograma()
-
+#     def accion(self):
+#         self.pantalla.menu.salirPrograma()
+############################################################################################
