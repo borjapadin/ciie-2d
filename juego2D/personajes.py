@@ -16,6 +16,7 @@ ABAJO = 4
 DISPARAR = 5
 
 VELOCIDAD_RECARGA_BALA = 30
+VELOCIDAD_RECARGA_BALA_SOLDADO = 400
 
 ON = 1
 OFF = 0
@@ -111,6 +112,7 @@ class Personaje(MiSprite):
         cont = 0;
         self.coordenadasHoja = [];
         variable = 0
+        self.inicializarCountDisparar()
 
         if archivoImagen == 'Fase/1/rossi.png':
             variable  = 6
@@ -188,10 +190,10 @@ class Personaje(MiSprite):
                     self.image = pygame.transform.flip(self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
     def crearBala(self):
         # Si se ha pulsado que quieres disparar
-        print(self.dispararBala)
+        #print(self.dispararBala)
         if self.disparar == ON:
             self.bala = BalaHeroe('Fase/1/playerBullet.png','Fase/1/offsetBala.txt', [1], 1)
-            print('dispararBala')
+            #print('dispararBala')
             self.disparar = OFF
             if self.mirando == IZQUIERDA:
                 self.bala.establecerPosicion((self.posicion[0]-10, self.posicion[1]-21))
@@ -251,6 +253,12 @@ class Personaje(MiSprite):
             if not self.numPostura == SPRITE_SALTANDO:
                 self.numPostura = SPRITE_QUIETO
             velocidadx = 0
+        elif self.movimiento == DISPARAR:
+            # La postura actual sera estar saltando
+            if self.numPostura != SPRITE_DISPARANDO:
+                self.numPostura = SPRITE_DISPARANDO
+                self.decidirSiDisparar()
+                print(self.numPostura)
 
         # Además, si estamos en el aire
         if self.numPostura == SPRITE_SALTANDO:
@@ -273,6 +281,9 @@ class Personaje(MiSprite):
             # Si no caemos en una plataforma, aplicamos el efecto de la gravedad
             else:
                 velocidady += GRAVEDAD * tiempo
+
+
+
         self.crearBala()
         # Actualizamos la imagen a mostrar
         self.actualizarPostura()
@@ -285,6 +296,21 @@ class Personaje(MiSprite):
         MiSprite.update(self, tiempo)
 
         return
+
+    def decidirSiDisparar(self):
+        if (self.count_disparar == VELOCIDAD_RECARGA_BALA_SOLDADO):
+            print(self.count_disparar)
+            self.dispararBala()
+            self.inicializarCountDisparar()
+        else:
+            self.aumentarContadorDisparo()
+            self.disparar = OFF
+
+    def inicializarCountDisparar(self):
+        self.count_disparar = 0
+
+    def aumentarContadorDisparo(self):
+        self.count_disparar += 1
 #---------------------------
 # Clase Jugador
 
@@ -296,8 +322,9 @@ class Jugador(Personaje):
         Personaje.__init__(self,'Fase/1/rossi.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
         self.disparar = OFF
 
-    def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha):
+    def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, disparar):
         # Indicamos la acción a realizar segun la tecla pulsada para el jugador
+
         if teclasPulsadas[arriba]:
             Personaje.mover(self,ARRIBA)
         elif teclasPulsadas[izquierda]:
@@ -306,6 +333,9 @@ class Jugador(Personaje):
             Personaje.mover(self,DERECHA)
         elif teclasPulsadas[abajo]:
             Personaje.mover(self,ABAJO)
+        elif teclasPulsadas[disparar]:
+            self.disparar = ON
+            Personaje.mover(self,DISPARAR)
         else:
             Personaje.mover(self,QUIETO)
 
@@ -342,7 +372,7 @@ class Soldado(NoJugador):
         self.inicializarCountDisparar()
 
     def mover_cpu(self, jugador):
-        
+
         if self.rect.left>0 and self.rect.right<ANCHO_PANTALLA and self.rect.bottom>0 and self.rect.top<ALTO_PANTALLA:
             #------------- HEY --------------------
             #Esto no se puede hacer todo en una funcion?
@@ -355,7 +385,7 @@ class Soldado(NoJugador):
             #(este a la distancia que este)
             #Pero para el movimiento no tiene porque ser asi (no debería... esto basarse en el ejemplo de ellos*)
             #Creo que esto es algo que en general podemos complciar una barbaridad.
-            
+
             #-----------------------------Mirar-----------------------------
             if jugador.posicion[0]<self.posicion[0]:
                 #Personaje.mover(self,IZQUIERDA)
@@ -368,31 +398,31 @@ class Soldado(NoJugador):
                 self.mirando = DERECHA
                 Personaje.mover(self,QUIETO)
                 #self.dispararBalar
-        
+
         # Si este personaje no esta en pantalla, no hara nada
         else:
             Personaje.mover(self,QUIETO)
-        
+
         #--------------------------Disparar----------------
         self.decidirSiDisparar()
-      
-    def decidirSiDisparar(self): 
+
+    def decidirSiDisparar(self):
         if (self.count_disparar == VELOCIDAD_RECARGA_BALA):
             self.dispararBala()
             self.inicializarCountDisparar()
         else:
             self.aumentarContadorDisparo()
-            
+
     def inicializarCountDisparar(self):
         self.count_disparar = 0
-    
+
     def aumentarContadorDisparo(self):
         self.count_disparar += 1
-            
-            
+
+
     def dispararBala(self):
         self.disparar = randint(OFF,ON) #Vamos a meterle aletoriedad para que no sea tan mecanico y resulte más natural.
-        Personaje.mover(self,QUIETO)
+        Personaje.mover(self,DISPARAR)
 #---------------------------
 # Clase Jefe
 

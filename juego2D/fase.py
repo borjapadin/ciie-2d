@@ -158,10 +158,10 @@ class Fase(Escena):
         if self.grupoBalas != None:
             for bala in iter(self.grupoBalas):
                 bala.moverBala()
-		
+
         for enemigo in iter(self.grupoEnemigos):
             enemigo.mover_cpu(self.jugador)
-	    
+
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
@@ -182,7 +182,7 @@ class Fase(Escena):
 	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
 	# pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
 	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
-	
+
 	#Cortar esto en una función aparte.
     	balas = self.jugador.balasLanzar()
     	if balas != None:
@@ -190,7 +190,7 @@ class Fase(Escena):
     	    self.grupoBalas.add(balas)
     	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
 	    self.jugador.balas = None
-       
+
        #Cortar esto en una función aparte.
         if self.enemigo != None:
             balasenemigo = self.enemigo.balasLanzar() #A partir de aqui es como la de arriba. GENERALIZAR.
@@ -223,17 +223,13 @@ class Fase(Escena):
                 elif evento.key == K_g:
                     self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
 		#---------------DISPARAR--------------------------
-		elif evento.key == K_t:
-		    self.jugador.dispararBala()
+		"""elif evento.key == K_t:
+		    self.jugador.dispararBala()"""
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
 
-        #elif self.enemigo.rect.left>0 and self.enemigo.rect.right<ANCHO_PANTALLA and self.enemigo.rect.bottom>0 and self.enemigo.rect.top<ALTO_PANTALLA:
-        #if self.jugador.posicion[0]<self.enemigo.posicion[0]:
-
         teclasPulsadas = pygame.key.get_pressed()
-        pygame.key.set_repeat(1000, 1000)
-        self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d)
+        self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
 
     def obtenerNumeroFaseSiguiente(self):
     	return self.numFaseSiguiente
