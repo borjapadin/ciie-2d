@@ -74,6 +74,7 @@ class Fase(Escena):
         self.grupoSprites = pygame.sprite.Group(self.jugador,self.plataformaSuelo,self.objeto, self.enemigo)
     def condicionesPasarFase(self):
 	return self.pasarFase
+    
     #TODO: generalizar.
     def crearPersonajePrincipal(self):
 	self.jugador = Jugador()
@@ -191,11 +192,18 @@ class Fase(Escena):
 
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
-
+	
+	# Comprobamos si hay colisión entre algún jugador y una bala enemiga
+	for bala in self.grupoBalas:
+	    if pygame.sprite.collide_rect(self.jugador, bala):
+		bala.kill()
+		self.vida.perderVida(25) #De momento pierde vida 25 porque me da pereza otra cosa
+		
 	# Comprobamos si hay colision entre algun jugador y el objeto principal
     	if pygame.sprite.collide_rect(self.jugador, self.objeto):
     	    self.objeto.kill()
     	    self.pasarFase = True
+	
 
         self.actualizarScroll(self.jugador)
             #TODO detectar que se acabo la fase y cambiarla
@@ -212,28 +220,26 @@ class Fase(Escena):
         self.grupoPlataformas.draw(pantalla)
 	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
 	# pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
-	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
-
-	#Cortar esto en una función aparte.
-    	balas = self.jugador.balasLanzar()
-    	if balas != None:
-            balas.mirando = self.jugador.mirando
-    	    self.grupoBalas.add(balas)
-    	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
-	    self.jugador.balas = None
-
-       #Cortar esto en una función aparte.
-        if self.enemigo != None:
-            balasenemigo = self.enemigo.balasLanzar() #A partir de aqui es como la de arriba. GENERALIZAR.
-            if balasenemigo != None:
-                balasenemigo.mirando = self.enemigo.mirando
-                self.grupoBalas.add(balasenemigo)
-            	self.grupoSprites.add(balasenemigo)
-            self.enemigo.balas = None
+	
+	#En caso de existir disparos por parte del jugador se dibujan.
+	self.agregarDisparosEscena(self.jugador)
+	
+	#En caso de que los enemigos tengan disparos que dar se dibujan.
+	for enemigo in self.grupoEnemigos:
+	    self.agregarDisparosEscena(enemigo)
 
 	# Finalmente se pinta el grupo de sprites.
     	self.grupoSprites.draw(pantalla)
-
+	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
+    
+    def agregarDisparosEscena(self,pistolero):
+	if (pistolero.tieneBalas()): #Si hay balas.
+	    balas = pistolero.balasLanzar()
+	    balas.mirando = pistolero.mirando #Su dirección va a ser hacia donde este mirando el pistolero.
+	    disparo = pistolero.vaciarPistola()
+	    self.grupoBalas.add(disparo)
+	    self.grupoSprites.add(disparo)
+	    
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
         for evento in lista_eventos:

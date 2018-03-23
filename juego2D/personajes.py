@@ -357,8 +357,17 @@ class Jugador(Personaje):
     def dispararBala(self):
         self.disparar = ON
         Personaje.mover(self,DISPARAR)
-
-
+    
+    def vaciarPistola(self):
+        self.disparar = OFF
+        return self.balas
+    
+    def tieneBalas(self):
+        return (self.balas != None)   
+    
+    def balasLanzar(self):
+        return self.balas    
+    
 #--------------------------------------------------
 # Clase NoJugador
 class NoJugador(Personaje):
@@ -424,8 +433,12 @@ class NoJugador(Personaje):
         self.disparar = randint(OFF,ON) #Vamos a meterle aletoriedad para que no sea tan mecanico y resulte más natural.
         Personaje.mover(self,DISPARAR)
     
-
-
+    def tieneBalas(self): #Nuestro soldado enemigo siempre tiene balas.
+        return self.balas != None
+    
+    def vaciarPistola(self):
+        self.disparar = None
+        return self.balas   
 #---------------------------
 # Clase Zombi
 
@@ -474,3 +487,5 @@ class BalaHeroe(MiSprite):
             self.incrementarPosicion((3,0)) #jojoojjojoojoj... efecto rayo laser!!
         else:
             self.incrementarPosicion((-3,0))
+    def destruirBala(self):
+        self.hoja.kill()

@@ -40,8 +40,8 @@ class Objetos(MiSprite):
         self.rect = pygame.Rect((0,20),[34,40])
         self.image = self.hoja.subsurface(0,0,34,40)
     
-    def desaparecerObjeto():
-        self.objeto.kill()   
+    def obtenerObjeto():
+        return imagen
 
 #---------------------------
 
