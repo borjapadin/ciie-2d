@@ -91,7 +91,7 @@ class Director():
             		a su vez tiene el control de que fase llevar."""
 
 	menu.mostrarPantalla(pantalla)
-	if (pantalla != PANTALLA_CUTSCENE):
+	if (pantalla == PANTALLA_CUTSCENE):
 		menu.setNumFaseSiguiente(fase.obtenerNumeroFaseSiguiente())
             
         self.pila.append(menu)
