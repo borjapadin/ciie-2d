@@ -7,6 +7,11 @@ from pygame.locals import *
 from constantes import *
 from textoGUI import *
 from objetos import *
+from Cielo import *
+from decorado import *
+from constantes import *
+from careto import *
+from vida import *
 #from animaciones import *
 
 # -------------------------------------------------
@@ -42,38 +47,59 @@ class Fase(Escena):
 
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
-
+	
+	#  En ese caso solo hay scroll horizontal
+	self.crearElementosBordeSuperior("/"+self.numFase)
+	
         # Creamos el decorado y el fondo
         self.decorado = Decorado("/"+self.numFase)
         self.fondo = Cielo("/"+self.numFase)
 
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
-        #  En ese caso solo hay scroll horizontal
 
-        plataformaSuelo = Plataforma(pygame.Rect(0, 400, 1200, 15))
+	self.crearPlataformas()
+	self.crearPersonajePrincipal()
+	self.crearEnemigos()
+        self.crearObjetoPrincipal()
 
-        self.grupoPlataformas = pygame.sprite.Group( plataformaSuelo)
-        #iniciamos el jugador
-        self.jugador = Jugador()
-        #Ponemos al jugador en la posición inicial
-        self.jugador.establecerPosicion((5, 401))
-
-        self.enemigo = Soldado()
-        self.enemigo.establecerPosicion((500, 401))
-        self.grupoEnemigos = pygame.sprite.Group( self.enemigo )
-
-	    # Creamos un grupo con las balas.
+	# Creamos un grupo con las balas.
         self.grupoBalas = pygame.sprite.Group()
 
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador, self.enemigo)
     	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
     	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
     	#Eduardo Penas.
-    	self.crearObjetoPrincipal()
-        self.grupoSprites = pygame.sprite.Group(self.jugador,plataformaSuelo,self.objeto, self.enemigo)
-
-    #De momento esto de generico tiene una mierda pero dejemoslo asi.
+    	
+        self.grupoSprites = pygame.sprite.Group(self.jugador,self.plataformaSuelo,self.objeto, self.enemigo)
+    def condicionesPasarFase(self):
+	return self.pasarFase
+    #TODO: generalizar.
+    def crearPersonajePrincipal(self):
+	self.jugador = Jugador()
+	#Ponemos al jugador en la posición inicial
+	self.jugador.establecerPosicion((5, 401))
+   
+    #TODO: generalizar.
+   # def crearPlataformasSecundarias():
+    
+    #TODO: generalizar
+    def crearElementosBordeSuperior(self,nombreFase):
+	self.careto = Careto(nombreFase)
+	self.vida = listaVidas()
+	
+    #TODO: generalizar.
+    def crearEnemigos(self):
+	self.enemigo = Soldado()
+	self.enemigo.establecerPosicion((500, 401))
+	self.grupoEnemigos = pygame.sprite.Group( self.enemigo )	
+    
+    #TODO: generalizar.
+    def crearPlataformas(self):
+	self.plataformaSuelo = Plataforma(pygame.Rect(0, 400, 1200, 15))
+	self.grupoPlataformas = pygame.sprite.Group(self.plataformaSuelo)	
+    
+    #TODO: generalizar. De momento esto de generico tiene una mierda pero dejemoslo asi.
     def crearObjetoPrincipal(self):
     	self.objeto = BidonGasolina()
     	self.objeto.establecerPosicion((1000,401))
@@ -124,7 +150,7 @@ class Fase(Escena):
 
                 # En su lugar, colocamos al jugador que esté más a la derecha a la derecha de todo
                 jugador.establecerPosicion((self.scrollx+MAXIMO_X_JUGADOR-jugador.rect.width, jugador.posicion[1]))
-    		if (self.pasarFase == True): #Si hemos recogido el objeto principal podemos pasar de fase (si no pos no)
+    		if (self.condicionesPasarFase()): #Si se cumplen las condiciones para pasar fase
 
     		    # Si hemos llegado a la derecha de todo creamos la escena siguiente.
     		    self.director.cambiarAlMenu(self,PANTALLA_CUTSCENE)
@@ -177,6 +203,10 @@ class Fase(Escena):
         self.fondo.dibujar(pantalla)
 	# Luego el decorado.
         self.decorado.dibujar(pantalla)
+	# Dibujamos el menu
+	self.careto.dibujar(pantalla)
+	self.vida.dibujar(pantalla)
+	
 	# Luego pintamos la plataforma
         self.grupoPlataformas.draw(pantalla)
 	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
@@ -257,45 +287,6 @@ class Plataforma(MiSprite):
 
 
 # -------------------------------------------------
-# Clase Cielo: aún no tiene nada prácticamente, solo un background negro.
-
-class Cielo:
-    def __init__(self,nombreFase):
-        self.posicionx = 0 # El lado izquierdo de la subimagen que se esta visualizando
-        self.update(0)
-
-    def update(self, tiempo):
-        # Calculamos el color del cielo
-        self.colorCielo = NEGRO
-
-    def dibujar(self,pantalla):
-        # Dibujamos el color del cielo
-        pantalla.fill(self.colorCielo)
-        self.colorCielo = NEGRO
-
-
-# -------------------------------------------------
-# Clase Decorado
-
-class Decorado:
-    def __init__(self,nombreFase):
-        self.imagen = GestorRecursos.CargarImagen('Fase'+nombreFase+'/decorado.png', -1)
-        self.imagen = pygame.transform.scale(self.imagen, (1200, 400))
-
-        self.rect = self.imagen.get_rect()
-        self.rect.bottom = ALTO_PANTALLA
-
-        # La subimagen que estamos viendo
-        self.rectSubimagen = pygame.Rect(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)
-        self.rectSubimagen.left = 0 # El scroll horizontal empieza en la posicion 0 por defecto
-
-    def update(self, scrollx):
-        self.rectSubimagen.left = scrollx
-
-    def dibujar(self, pantalla):
-        pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
-
-
 
 class CutScene(Escena):
     #Crear cutScenas
