@@ -16,7 +16,7 @@ ABAJO = 4
 DISPARAR = 5
 
 VELOCIDAD_RECARGA_BALA = 30
-VELOCIDAD_RECARGA_BALA_SOLDADO = 400
+VELOCIDAD_RECARGA_BALA_SOLDADO = 80
 
 ON = 1
 OFF = 0
@@ -112,7 +112,6 @@ class Personaje(MiSprite):
         cont = 0;
         self.coordenadasHoja = [];
         variable = 0
-        self.inicializarCountDisparar()
 
         if archivoImagen == 'Fase/1/rossi.png':
             variable  = 6
@@ -146,6 +145,8 @@ class Personaje(MiSprite):
 
         # Y actualizamos la postura del Sprite inicial, llamando al metodo correspondiente
         self.actualizarPostura()
+
+        self.count_disparar = 0
 
     def balasLanzar(self):
         return self.balas
@@ -255,11 +256,16 @@ class Personaje(MiSprite):
             velocidadx = 0
         elif self.movimiento == DISPARAR:
             # La postura actual sera estar saltando
-            if self.numPostura != SPRITE_DISPARANDO:
-                self.numPostura = SPRITE_DISPARANDO
-                self.decidirSiDisparar()
-                print(self.numPostura)
-
+            if self.numPostura != SPRITE_SALTANDO:
+                if self.archivoImagen == 'Fase/1/rossi.png':
+                    self.decidirSiDisparar(tiempo)
+                    print(self.numPostura)
+                else:
+                    self.decidirSiDisparar()
+            else:
+                self.decidirSiDisparar(tiempo)
+                self.numPostura = SPRITE_SALTANDO
+                self.retardoAnimacion = GRAVEDAD * 25000
         # Además, si estamos en el aire
         if self.numPostura == SPRITE_SALTANDO:
 
@@ -297,20 +303,7 @@ class Personaje(MiSprite):
 
         return
 
-    def decidirSiDisparar(self):
-        if (self.count_disparar == VELOCIDAD_RECARGA_BALA_SOLDADO):
-            print(self.count_disparar)
-            self.dispararBala()
-            self.inicializarCountDisparar()
-        else:
-            self.aumentarContadorDisparo()
-            self.disparar = OFF
 
-    def inicializarCountDisparar(self):
-        self.count_disparar = 0
-
-    def aumentarContadorDisparo(self):
-        self.count_disparar += 1
 #---------------------------
 # Clase Jugador
 
@@ -321,6 +314,7 @@ class Jugador(Personaje):
         #Personaje.__init__(self,'Fase/1/Jugador.png','Fase/1/coordJugador.txt', [6,12,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
         Personaje.__init__(self,'Fase/1/rossi.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
         self.disparar = OFF
+        self.inicializarCountDisparar()
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, disparar):
         # Indicamos la acción a realizar segun la tecla pulsada para el jugador
@@ -338,6 +332,22 @@ class Jugador(Personaje):
             Personaje.mover(self,DISPARAR)
         else:
             Personaje.mover(self,QUIETO)
+
+    def decidirSiDisparar(self,tiempo):
+        if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_SOLDADO):
+            print(self.count_disparar)
+            self.dispararBala()
+            self.inicializarCountDisparar()
+            self.numPostura = SPRITE_DISPARANDO
+        else:
+            self.aumentarContadorDisparo(tiempo)
+            self.disparar = OFF
+
+    def inicializarCountDisparar(self):
+        self.count_disparar = 0
+
+    def aumentarContadorDisparo(self,tiempo):
+        self.count_disparar += tiempo
 
     def dispararBala(self):
         self.disparar = ON
@@ -371,7 +381,7 @@ class Soldado(NoJugador):
         self.disparar = OFF
         self.inicializarCountDisparar()
 
-    def mover_cpu(self, jugador):
+    def mover_cpu(self, jugador,tiempo):
 
         if self.rect.left>0 and self.rect.right<ANCHO_PANTALLA and self.rect.bottom>0 and self.rect.top<ALTO_PANTALLA:
             #------------- HEY --------------------

@@ -160,7 +160,7 @@ class Fase(Escena):
                 bala.moverBala()
 
         for enemigo in iter(self.grupoEnemigos):
-            enemigo.mover_cpu(self.jugador)
+            enemigo.mover_cpu(self.jugador,tiempo)
 
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
