@@ -96,10 +96,6 @@ class Personaje(MiSprite):
         self.hoja = self.hoja.convert_alpha()
         # El movimiento que esta realizando
         self.movimiento = QUIETO
-        # Lado hacia el que esta mirando
-        #self.mirando = DERECHA
-
-        #self.balas = BalaHeroe('Fase/1/MANCHONNEGRO.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], 1)
         self.balas = None
 
         self.archivoImagen = archivoImagen
@@ -112,7 +108,7 @@ class Personaje(MiSprite):
         cont = 0;
         self.coordenadasHoja = [];
         variable = 0
-        self. vida = 100
+        self.vida = 100
 
         if archivoImagen == 'Fase/1/rossi.png':
             variable  = 6
@@ -254,7 +250,7 @@ class Personaje(MiSprite):
 
             #plataforma = pygame.sprite.spritecollideany(self, grupoPlataformas)
             #if plataforma.rect.bottom<self.rect.bottom:
-      #      self.establecerPosicion((self.posicion[0], 401))
+            #self.establecerPosicion((self.posicion[0], 401))
 
         # Si no se ha pulsado ninguna tecla
         elif self.movimiento == QUIETO:
@@ -311,26 +307,7 @@ class Personaje(MiSprite):
         MiSprite.update(self, tiempo)
 
         return
-    def decidirSiDisparar(self,tiempo):
-        if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_SOLDADO):
-            print(self.count_disparar)
-            self.dispararBala()
-            self.inicializarCountDisparar()
-            self.numPostura = SPRITE_DISPARANDO
-        else:
-            self.aumentarContadorDisparo(tiempo)
-            self.disparar = OFF
-
-    def inicializarCountDisparar(self):
-        self.count_disparar = 0
-        self.disparado = 0
-
-    def aumentarContadorDisparo(self,tiempo):
-        self.count_disparar += tiempo
-
-    def dispararBala(self):
-        self.disparar = ON
-        Personaje.mover(self,DISPARAR)
+    
 
 #---------------------------
 # Clase Jugador
@@ -389,41 +366,16 @@ class NoJugador(Personaje):
     def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto, retardoAnimacion):
         # Primero invocamos al constructor de la clase padre con los parametros pasados
         Personaje.__init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto, retardoAnimacion);
+        self.disparar = OFF
+        self.inicializarCountDisparar()
     # Aqui vendria la implementacion de la IA segun las posiciones de los jugadores
     # La implementacion por defecto, este metodo deberia de ser implementado en las clases inferiores
     #  mostrando la personalidad de cada enemigo
-    def mover_cpu(self, jugador):
+    def mover_cpu(self, jugador,tiempo):
         # Por defecto un enemigo no hace nada
         #  (se podria programar, por ejemplo, que disparase al jugador por defecto)
-        return
-
-
-#---------------------------
-# Clase Zombi
-
-#---------------------------
-# Clase Soldado
-class Soldado(Personaje):
-    def __init__(self):
-        Personaje.__init__(self,'Fase/1/SpriteSoldadoFilas.png','Fase/1/offsetsSoldado.txt', [1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
-        self.disparar = OFF
-        self.inicializarCountDisparar()
-
-    def mover_cpu(self, jugador,tiempo):
-
         i = 0
         if self.rect.left>0 and self.rect.right<ANCHO_PANTALLA and self.rect.bottom>0 and self.rect.top<ALTO_PANTALLA:
-            #------------- HEY --------------------
-            #Esto no se puede hacer todo en una funcion?
-            #Le metes que el personaje/soldado este mirando
-            #Para el mismo sitio que el jugaor... self.mirando = jugador.mirando (?)
-            #Yo spameo esto de comentarios porque me hace gracia
-            #Ahora en serio...
-            #Por favor, Borja borra esto.
-            #Fijate en una cosa por cierto, mira a toda leche al mismo momento que el jugador cuando tiene que hacerlo.
-            #(este a la distancia que este)
-            #Pero para el movimiento no tiene porque ser asi (no debería... esto basarse en el ejemplo de ellos*)
-            #Creo que esto es algo que en general podemos complciar una barbaridad.
 
             #-----------------------------Mirar-----------------------------
             if self.movimiento == DISPARAR:
@@ -468,48 +420,34 @@ class Soldado(Personaje):
     def dispararBala(self):
         self.disparar = randint(OFF,ON) #Vamos a meterle aletoriedad para que no sea tan mecanico y resulte más natural.
         Personaje.mover(self,DISPARAR)
+    
+
+
+#---------------------------
+# Clase Zombi
+
+#---------------------------
+# Clase Soldado
+class Soldado(NoJugador):
+    def __init__(self):
+        NoJugador.__init__(self,'Fase/1/SpriteSoldadoFilas.png','Fase/1/offsetsSoldado.txt', [1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
+        #self.disparar = OFF
+        #self.inicializarCountDisparar()
+
+    def mover_cpu(self, jugador,tiempo):
+        NoJugador.mover_cpu(self,jugador,tiempo)
+        
 #---------------------------
 # Clase Jefe
 
-#----------------------------
-# Clase MiSpriteBala
-class MiSpriteBala(pygame.sprite.Sprite):
-
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.posicion = (0, 0)
-        self.velocidadBala = (0, 0)
-        self.scroll = (0, 0)
-
-    def establecerPosicion(self, posicion):
-        self.posicion = posicion
-        self.rect.left = self.posicion[0] - self.scroll[0]
-        self.rect.bottom = self.posicion[1] - self.scroll[1]
-
-    def establecerPosicionPantalla(self, scrollDecorado):
-        self.scroll = scrollDecorado;
-        (scrollx, scrolly) = self.scroll;
-        (posx, posy) = self.posicion;
-        self.rect.left = posx - scrollx;
-        self.rect.bottom = posy - scrolly;
-
-    def incrementarPosicion(self, incremento):
-        (posx, posy) = self.posicion
-        (incrementox, incrementoy) = incremento
-        self.establecerPosicion((posx+incrementox, posy+incrementoy))
-
-    def update(self, tiempo):
-        incrementox = self.velocidadBala[0]*tiempo
-        incrementoy = self.velocidadBala[1]*tiempo
-        self.incrementarPosicion((incrementox, incrementoy))
 
 #---------------------------
 # Clase BalaHeroe
-class BalaHeroe(MiSpriteBala):
+class BalaHeroe(MiSprite):
 
     def __init__(self, archivoImagen, archivoCoordenadas, velocidad, direccion):
 
-        MiSpriteBala.__init__(self);
+        MiSprite.__init__(self);
 
         self.mirando = direccion
 
