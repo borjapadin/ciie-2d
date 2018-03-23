@@ -225,6 +225,7 @@ class Fase(Escena):
         if self.enemigo != None:
             balasenemigo = self.enemigo.balasLanzar() #A partir de aqui es como la de arriba. GENERALIZAR.
             if balasenemigo != None:
+                balasenemigo.mirando = self.enemigo.mirando
                 self.grupoBalas.add(balasenemigo)
             	self.grupoSprites.add(balasenemigo)
             self.enemigo.balas = None
