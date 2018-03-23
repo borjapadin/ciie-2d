@@ -6,7 +6,7 @@ import sys
 #import escena
 from escena import *
 from pygame.locals import *
-from Constantes import *
+from constantes import *
 
 class Director():
 
@@ -76,7 +76,7 @@ class Director():
         
         #Modificar parámetro del menu.
         menu = self.pila.pop() #Saco el menu para cambiar el parámetro
-        if (pantalla == PANTALLA_PAUSA): 
+        """if (pantalla == PANTALLA_PAUSA): 
             menu.mostrarPantallaConfiguracion()
         elif (pantalla == PANTALLA_GAMEOVER):
             menu.mostrarPantallaGameOver()  
@@ -84,9 +84,15 @@ class Director():
             menu.mostrarPantallaVictoria()
         elif (pantalla == PANTALLA_CUTSCENE):
             menu.mostrarPantallaCutScene()
-            menu.setNumFaseSiguiente(fase.obtenerNumeroFaseSiguiente())#El director le da a menu el número de fase indicado por la fase 
-            #Esto es así porque el número de fase es necesario para saber que cutScene crear, y la cutScene
-            #a su vez tiene el control de que fase llevar.
+            menu.setNumFaseSiguiente(fase.obtenerNumeroFaseSiguiente())
+	    
+	El director le da a menu el número de fase indicado por la fase. 
+		Esto es así porque el número de fase es necesario para saber que cutScene crear, y la cutScene
+            		a su vez tiene el control de que fase llevar."""
+
+	menu.mostrarPantalla(pantalla)
+	if (pantalla != PANTALLA_CUTSCENE):
+		menu.setNumFaseSiguiente(fase.obtenerNumeroFaseSiguiente())
             
         self.pila.append(menu)
     

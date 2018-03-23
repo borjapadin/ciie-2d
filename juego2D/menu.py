@@ -6,13 +6,18 @@ from gestorRecursos import *
 from escena import *
 from director import *
 from fase import *
-from PantallaConfiguracion import *
-from pantallaInicial import *
-from PantallaGameOver import *
+#from pantallaConfiguracion import *
+#from pantallaInicial import *
+#from pantallaGameOver import *
 from time import *
-from Constantes import *
-from PantallaVictoria import *
-from PantallaCutScene import *
+from constantes import *
+#from pantallaVictoria import *
+#from pantallaCutScene import *
+
+#from pantallaVGO import*
+#from pantallaIniCute import *
+
+from pantalla import *
 
 ANCHO_PANTALLA = 800
 ALTO_PANTALLA =  600
@@ -27,14 +32,19 @@ class Menu(Escena):
 		self.listaPantallas = []
 		# Creamos las pantallas que vamos a tener
 		#   y las metemos en la lista
-		self.listaPantallas.append(PantallaInicialGUI(self))
+		#self.listaPantallas.append(PantallaInicialGUI(self))
+		self.listaPantallas.append(Pantalla(self, 'Menu/Inicio/PantallaInicio.jpg'))
 		self.listaPantallas.append(PantallaConfiguracionGUI(self,director))
-		self.listaPantallas.append(PantallaGameOverGUI(self))
-		self.listaPantallas.append(PantallaVictoriaGUI(self))
-		self.listaPantallas.append(PantallaCutSceneGUI(self))
+		#self.listaPantallas.append(PantallaGameOverGUI(self))
+		#self.listaPantallas.append(PantallaVictoriaGUI(self))
+		self.listaPantallas.append(Pantalla(self, 'Menu/GameOver/PantallaGameOver_2.jpg'))
+		self.listaPantallas.append(Pantalla(self, 'Menu/Victoria/PantallaVictoria.png'))
+		#self.listaPantallas.append(PantallaCutSceneGUI(self))
+		self.listaPantallas.append(Pantalla(self, 'Menu/CutScene/PantallaSiguienteNivel.png'))
 		
 		# En que pantalla estamos actualmente
-		self.mostrarPantallaInicial()
+		#self.mostrarPantallaInicial()
+		self.mostrarPantalla(PANTALLA_PRINCIPAL)
 		
 		#Para saber cual es la primera fase que creara cutScene.
 		#Con el número (de la fase y cutscene) gestionamos el comportamiento que debe tener esa fase como:
@@ -80,15 +90,19 @@ class Menu(Escena):
 		#Puede saberlo porque se ha inicializado con que es la fase inicial o por la información
 		#Que proporciona el director obteniendola de la fase terminada 
 		self.director.apilarEscena(cutscene)
-		self.mostrarPantallaConfiguracion() #Dejamos que esta sea la actual (si salimos de las fases entramos en esta)
-	
+		#self.mostrarPantallaConfiguracion() #Dejamos que esta sea la actual (si salimos de las fases entramos en esta)
+		self.mostrarPantalla(PANTALLA_PAUSA)
+
 	def reanudarJuego(self,fase):
 		self.director.apilarEscena(fase)
 	
 	def setNumFaseSiguiente(self,numFaseSiguiente):
 		self.numFaseSiguiente = numFaseSiguiente
 		
-	def mostrarPantallaInicial(self):
+	def mostrarPantalla(self, pantalla):
+		self.pantallaActual = pantalla
+
+	"""def mostrarPantallaInicial(self):
 		self.pantallaActual = PANTALLA_PRINCIPAL
     
 	def mostrarPantallaConfiguracion(self):
@@ -101,5 +115,5 @@ class Menu(Escena):
 		self.pantallaActual = PANTALLA_VICTORIA
 	
 	def mostrarPantallaCutScene(self):
-		self.pantallaActual = PANTALLA_CUTSCENE
+		self.pantallaActual = PANTALLA_CUTSCENE"""
 	

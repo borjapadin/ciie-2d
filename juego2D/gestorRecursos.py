@@ -37,3 +37,20 @@ class GestorRecursos(object):
             pathfile.close() #lo cerramos
             cls.recursos[nombre] = datos #almacenamos
             return datos #lo devolvemos
+
+
+
+	
+    @classmethod
+    def CargarSonido(cls, nombre):
+        if nombre in cls.recursos:
+                return cls.recursos[nombre]
+        else:
+            nombreEntero = os.path.join('sounds', nombre)
+            try:
+                sound = pygame.mixer.Sound(nombreEntero)
+            except pygame.error, message:
+                print 'Cannot load sound:', nombreEntero
+                raise SystemExit, message
+            cls.recursos[nombre] = sound
+            return sound

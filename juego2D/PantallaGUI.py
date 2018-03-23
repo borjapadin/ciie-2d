@@ -6,6 +6,8 @@ from gestorRecursos import *
 from escena import *
 from director import *
 from fase import *
+from menu import *
+from boton import *
 #from PantallaConfiguracion import *
 #from PantallaInicial import *
 
@@ -35,8 +37,6 @@ class PantallaGUI:
                             elemento.accion()
                 
                 
-
-
     def dibujar(self, pantalla):
         #Dibujamos primero la imagen de fondo
         pantalla.blit(self.imagen, self.imagen.get_rect())
@@ -48,4 +48,12 @@ class PantallaGUI:
             elemento.dibujar(pantalla)
 
 
+
+class PantallaConfiguracionGUI(PantallaGUI):
+    def __init__(self,menu,director):
+        PantallaGUI.__init__(self, menu, 'Menu/Pausa/PantallaPausa.png')
+        self.director = director #Para que indique en que fase esta
+        
+        botonReanudar = BotonReanudar(self,director)
+        self.elementosGUI.append(botonReanudar)     
 # -----------
