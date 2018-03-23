@@ -4,9 +4,9 @@ import pygame, escena, time
 from escena import *
 from personajes import *
 from pygame.locals import *
-from Constantes import *
-from TextoGUI import *
-from Objetos import *
+from constantes import *
+from textoGUI import *
+from objetos import *
 #from animaciones import *
 
 # -------------------------------------------------
