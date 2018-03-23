@@ -88,6 +88,7 @@ class Fase(Escena):
 	self.careto = Careto(nombreFase)
 	self.vida = listaVidas()
 	
+	
     #TODO: generalizar.
     def crearEnemigos(self):
 	self.enemigo = Soldado()

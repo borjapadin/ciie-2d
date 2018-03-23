@@ -39,10 +39,14 @@ class Objetos(MiSprite):
         # El rectangulo del Sprite
         self.rect = pygame.Rect((0,20),[34,40])
         self.image = self.hoja.subsurface(0,0,34,40)
+    
+    def desaparecerObjeto():
+        self.objeto.kill()   
 
 #---------------------------
 
 class BidonGasolina(Objetos):
     def __init__(self):
         Objetos.__init__(self,'Fase/1/Objetos/bidonGasolina.png','Fase/1/blababsbsdjadakjsdakjs.txt')
+    
 

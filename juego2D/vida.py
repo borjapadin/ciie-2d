@@ -7,7 +7,7 @@ class listaVidas:
         self.listaVidas = []
         
         posicionVertical = 115
-        for i in range(1,10):
+        for i in range(0,10):
             posicionVertical += 30
             self.listaVidas.append(Vida(posicionVertical))
     
