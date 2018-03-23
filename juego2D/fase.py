@@ -12,6 +12,7 @@ from decorado import *
 from constantes import *
 from careto import *
 from vida import *
+from Tiempo import *
 #from animaciones import *
 
 # -------------------------------------------------
@@ -89,6 +90,7 @@ class Fase(Escena):
     def crearElementosBordeSuperior(self,nombreFase):
 	self.careto = Careto(nombreFase)
 	self.vida = listaVidas()
+	self.tiempo = Tiempo((0,0))
 	
 	
     #TODO: generalizar.
@@ -235,6 +237,7 @@ class Fase(Escena):
 	# Dibujamos el menu
 	self.careto.dibujar(pantalla)
 	self.vida.dibujar(pantalla)
+	self.tiempo.dibujar(pantalla)
 	
 	# Luego pintamos la plataforma
         self.grupoPlataformas.draw(pantalla)
