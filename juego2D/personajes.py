@@ -371,7 +371,7 @@ class NoJugador(Personaje):
     # Aqui vendria la implementacion de la IA segun las posiciones de los jugadores
     # La implementacion por defecto, este metodo deberia de ser implementado en las clases inferiores
     #  mostrando la personalidad de cada enemigo
-    def mover_cpu(self, jugador,tiempo):
+    def mover_cpu_distancia(self, jugador,tiempo):
         # Por defecto un enemigo no hace nada
         #  (se podria programar, por ejemplo, que disparase al jugador por defecto)
         i = 0
@@ -401,6 +401,9 @@ class NoJugador(Personaje):
 
         #--------------------------Disparar----------------
         self.decidirSiDisparar()
+
+    def mover_cpu_mele(self, jugador,tiempo):
+        return 
 
     def decidirSiDisparar(self):
         if (self.count_disparar == VELOCIDAD_RECARGA_BALA):
