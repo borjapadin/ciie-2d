@@ -65,6 +65,7 @@ class Fase(Escena):
 
 	# Creamos un grupo con las balas.
         self.grupoBalas = pygame.sprite.Group()
+	
 
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador, self.enemigo)
     	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
@@ -187,18 +188,37 @@ class Fase(Escena):
             for bala in iter(self.grupoBalas):
                 bala.moverBala()
 
-        for enemigo in iter(self.grupoEnemigos):
+        for enemigo in iter(self.grupoEnemigos): #************************* LEEER COMENTARIO DE ABAJO
             enemigo.mover_cpu_distancia(self.jugador,tiempo)
+	    for bala in self.grupoBalas:
+		if pygame.sprite.collide_rect(self.enemigo, bala):
+		    damage = bala.damageBala()
+		    bala.kill()
+		    self.enemigo.perderVida(damage)
+		    if not self.enemigo.tieneVida():
+			self.enemigo.kill()
 
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 	
-	# Comprobamos si hay colisión entre algún jugador y una bala enemiga
+	#------------------- Comprobamos si hay colisión entre algún jugador y una bala enemiga ----------
 	for bala in self.grupoBalas:
 	    if pygame.sprite.collide_rect(self.jugador, bala):
+		damage = bala.damageBala()
 		bala.kill()
-		self.vida.perderVida(25) #De momento pierde vida 25 porque me da pereza otra cosa
-		
+		#Esta situacion no me agrada: el jugador pierde vida no esta directamente relacionado con la vida que se muestra en pantalla mmm...
+		self.jugador.perderVida(25)
+		self.vida.perderVida(damage) #De momento pierde vida 25 porque me da pereza otra cosa
+	#------------------- En principio he dejado estas dos partes separadas porque no estoy muy segura de como hacerlas ---
+	# Podriamos decir que el soldado enemigo sufre el fuego amigo (de sus compañeros) entonces quedaria igual.... pero no veo yo muy viable
+	# Hacer esto... así que habria que modificar varias cosas. Además de que si no hacemos fuego enemigo para los amigos tampoco deberíamos
+	# para el prota (porque va a resultar más natural programarlo asi), de todas maneras tampoco creo que se pudiera dar esa situacion
+	# si la bala es lo suficiente rápida.
+	
+	if not self.jugador.tieneVida():
+	    self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
+	
+	
 	# Comprobamos si hay colision entre algun jugador y el objeto principal
     	if pygame.sprite.collide_rect(self.jugador, self.objeto):
     	    self.objeto.kill()

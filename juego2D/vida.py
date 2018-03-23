@@ -16,11 +16,12 @@ class listaVidas:
             vida.dibujar(pantalla)
     
     def perderVida(self,vidaPerdida):
-        vida = self.listaVidas.pop()
-        valorVida = vida.getValor()
-        if vidaPerdida < valorVida: #Una bala lo máximo que va a quitar es una vida entera.
-            valorVidaNueva = valorVida-vidaPerdida
-            self.listaVidas.append(Vida(vida.posicionX(),valorVidaNueva))
+        if (len(self.listaVidas)>0):
+            vida = self.listaVidas.pop()
+            valorVida = vida.getValor()
+            if vidaPerdida < valorVida: #Una bala lo máximo que va a quitar es una vida entera.
+                valorVidaNueva = valorVida-vidaPerdida
+                self.listaVidas.append(Vida(vida.posicionX(),valorVidaNueva))
     
 class Vida:
     def __init__ (self,x,valor):

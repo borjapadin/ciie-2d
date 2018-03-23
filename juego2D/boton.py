@@ -47,7 +47,7 @@ class BotonVolverJuego(Boton):
         Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,500))
 
     def accion(self):
-        self.pantalla.menu.mostrarPantallaInicial()
+        self.pantalla.menu.mostrarPantalla(PANTALLA_PRINCIPAL)
 
 
 class BotonReanudar(Boton):

@@ -108,7 +108,6 @@ class Personaje(MiSprite):
         cont = 0;
         self.coordenadasHoja = [];
         variable = 0
-        self.vida = 100
 
         if archivoImagen == 'Fase/1/rossi.png':
             variable  = 6
@@ -144,6 +143,12 @@ class Personaje(MiSprite):
         self.actualizarPostura()
 
         self.count_disparar = 0
+    
+    def establecerVida(self,vida):
+        self.vida = vida
+    
+    def perderVida(self,valor):
+        self.vida -= valor
 
     def balasLanzar(self):
         return self.balas
@@ -306,7 +311,10 @@ class Personaje(MiSprite):
         #  calcule la nueva posición del Sprite
         MiSprite.update(self, tiempo)
 
-        return
+        return  
+    
+    def tieneVida(self):
+        return (self.vida > 0)
     
 
 #---------------------------
@@ -319,6 +327,7 @@ class Jugador(Personaje):
         Personaje.__init__(self,'Fase/1/rossi.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
         self.disparar = OFF
         self.count_disparar = 150
+        self.establecerVida(1000)
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, disparar):
         # Indicamos la acción a realizar segun la tecla pulsada para el jugador
@@ -346,7 +355,8 @@ class Jugador(Personaje):
         else:
             self.aumentarContadorDisparo(tiempo)
             self.disparar = OFF
-
+        
+    #----------------------------Aquí abajo veo material de una clase/interfaz-----------------
     def inicializarCountDisparar(self):
         self.count_disparar = 0
         self.disparado = 0
@@ -447,11 +457,13 @@ class NoJugador(Personaje):
 class Soldado(NoJugador):
     def __init__(self):
         NoJugador.__init__(self,'Fase/1/SpriteSoldadoFilas.png','Fase/1/offsetsSoldado.txt', [1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
+        self.establecerVida(250)
         #self.disparar = OFF
         #self.inicializarCountDisparar()
 
     def mover_cpu(self, jugador,tiempo):
         NoJugador.mover_cpu(self,jugador,tiempo)
+    
         
 #---------------------------
 # Clase Jefe
@@ -466,7 +478,8 @@ class BalaHeroe(MiSprite):
         MiSprite.__init__(self);
 
         self.mirando = direccion
-
+        self.damage = 25 #De momento por defecto porque me da pereza buscar
+        
         self.velocidad = velocidad #No le pondria la velocidad porque todas las balas tendran la misma (?)
         self.retardoAnimacion = 5 #No le pondría el retardo de la animación.
 
@@ -487,5 +500,9 @@ class BalaHeroe(MiSprite):
             self.incrementarPosicion((3,0)) #jojoojjojoojoj... efecto rayo laser!!
         else:
             self.incrementarPosicion((-3,0))
+    
     def destruirBala(self):
         self.hoja.kill()
+    
+    def damageBala(self):
+        return self.damage
