@@ -58,11 +58,12 @@ class Fase(Escena):
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
 
-    	self.crearPlataformas()
+        self.determinarPlataforma()
+    	self.crearPlataformas(self.coordPlataforma)
     	self.crearPersonajePrincipal()
         self.inicializarEnemigos()
-    	self.crearEnemigos(300, 401)
-        self.crearEnemigos(500, 401)
+    	self.crearEnemigos(300, self.coordPlataforma[1] +1)
+        self.crearEnemigos(500, self.coordPlataforma[1] +1)
         self.crearObjetoPrincipal()
 
 	   # Creamos un grupo con las balas.
@@ -84,7 +85,7 @@ class Fase(Escena):
     def crearPersonajePrincipal(self):
     	self.jugador = Jugador()
     	#Ponemos al jugador en la posición inicial
-    	self.jugador.establecerPosicion((5, 401))
+    	self.jugador.establecerPosicion((5, self.coordPlataforma[1]+1))
    
     #TODO: generalizar.
    # def crearPlataformasSecundarias():
@@ -103,16 +104,26 @@ class Fase(Escena):
     	enemigo = Soldado()
     	enemigo.establecerPosicion((x,y))
     	self.grupoEnemigos.add(enemigo)	
-    
+
+    def determinarPlataforma(self):
+        if self.numFase == '1':
+            self.coordPlataforma = (0, 400, 1200, 15)
+        if self.numFase == '2': 
+            self.coordPlataforma = (0, 480, 1200, 15)
+        if self.numFase == '3': 
+            self.coordPlataforma = (0, 455, 1200, 15)
+
     #TODO: generalizar.
-    def crearPlataformas(self):
-    	self.plataformaSuelo = Plataforma(pygame.Rect(0, 400, 1200, 15))
-    	self.grupoPlataformas = pygame.sprite.Group(self.plataformaSuelo)	
+    def crearPlataformas(self,coordenadas):
+        self.plataformaSuelo = Plataforma(pygame.Rect(coordenadas))
+    	self.grupoPlataformas = pygame.sprite.Group(self.plataformaSuelo)
+        
+
     
     #TODO: generalizar. De momento esto de generico tiene una mierda pero dejemoslo asi.
     def crearObjetoPrincipal(self):
     	self.objeto = BidonGasolina()
-    	self.objeto.establecerPosicion((1000,401))
+    	self.objeto.establecerPosicion((1000,self.coordPlataforma[1]+1))
 
     #TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
