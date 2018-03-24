@@ -1,10 +1,11 @@
 # -*- encoding: utf-8 -*-
 from constantes import *
 from gestorRecursos import *
+from ElementosDibujables import *
 # -------------------------------------------------
 # Clase Decorado
 
-class Decorado:
+class Decorado(ElementoDibujable):
     def __init__(self,nombreFase):
         self.imagen = GestorRecursos.CargarImagen('Fase'+nombreFase+'/decorado.png', -1)
         self.imagen = pygame.transform.scale(self.imagen, (1200, 400))

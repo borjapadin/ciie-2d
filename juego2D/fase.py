@@ -13,6 +13,7 @@ from constantes import *
 from careto import *
 from vida import *
 from Tiempo import *
+from ElementosDibujables import *
 #from animaciones import *
 
 # -------------------------------------------------
@@ -54,7 +55,10 @@ class Fase(Escena):
         # Creamos el decorado y el fondo
         self.decorado = Decorado("/"+self.numFase)
         self.fondo = Cielo("/"+self.numFase)
-
+	self.elementosDibujables = ElementosDibujables()
+	
+	#Aqui reunidos todos los elementos dibujables.
+	self.elementosDibujables.agregarElementos([self.fondo, self.decorado, self.vida, self.careto, self.tiempo])
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
 
@@ -199,63 +203,63 @@ class Fase(Escena):
         # Ademas, actualizamos el decorado para que se muestre una parte distinta
         self.decorado.update(self.scrollx)
 
+    def moverBalas(self,grupoBalas):
+	if grupoBalas != None:
+	    for bala in iter(grupoBalas):
+                bala.moverBala()
 
     def update(self, tiempo):
         # Primero, se indican las acciones que van a hacer las balas.
-        if self.grupoBalasJugador != None or self.grupoBalasSoldado != None:
-            for bala in iter(self.grupoBalasJugador):
-                bala.moverBala()
-            for bala in iter(self.grupoBalasSoldado):
-                bala.moverBala()
-
-        for enemigo in iter(self.grupoEnemigos): #************************* LEEER COMENTARIO DE ABAJO
+	self.moverBalas(self.grupoBalasJugador)
+	self.moverBalas(self.grupoBalasSoldado)
+	
+	#-----------------Comprobamos si hay colisión entre algun enemigo y una bala amiga.
+        for enemigo in iter(self.grupoEnemigos): 
             enemigo.mover_cpu_distancia(self.jugador,tiempo)
             for bala in self.grupoBalasJugador:
                 if pygame.sprite.collide_rect(enemigo, bala):
-                    damage = bala.damageBala()
-                    bala.kill()
-                    enemigo.perderVida(damage)
+                    self.lesionarPersonaje(bala,enemigo)
                     if not enemigo.tieneVida():
                         enemigo.kill()
 
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 	
-    	#------------------- Comprobamos si hay colisión entre algún jugador y una bala enemiga ----------
+    	#--------------------- Comprobamos si hay colisión entre algún jugador y una bala enemiga ----------
     	for bala in self.grupoBalasSoldado:
     	    if pygame.sprite.collide_rect(self.jugador, bala):
-    		damage = bala.damageBala()
-    		bala.kill()
-    		#Esta situacion no me agrada: el jugador pierde vida no esta directamente relacionado con la vida que se muestra en pantalla mmm...
-    		self.jugador.perderVida(25)
-    		self.vida.perderVida(damage) #De momento pierde vida 25 porque me da pereza otra cosa
-    	#------------------- En principio he dejado estas dos partes separadas porque no estoy muy segura de como hacerlas ---
-    	# Podriamos decir que el soldado enemigo sufre el fuego amigo (de sus compañeros) entonces quedaria igual.... pero no veo yo muy viable
-    	# Hacer esto... así que habria que modificar varias cosas. Además de que si no hacemos fuego enemigo para los amigos tampoco deberíamos
-    	# para el prota (porque va a resultar más natural programarlo asi), de todas maneras tampoco creo que se pudiera dar esa situacion
-    	# si la bala es lo suficiente rápida.
-    	
+		self.lesionarPersonaje(bala,self.jugador) #Si chocan se lesiona al personaje.
+		
+    	#----------------------Comprobar que el jugador esta muerto 
     	if not self.jugador.tieneVida():
     	    self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
 	
 	
-        # Comprobamos si hay colision entre algun jugador y el objeto principal
+        # ---------------------Comprobamos si hay colision entre algun jugador y el objeto principal
     	if pygame.sprite.collide_rect(self.jugador, self.objeto):
     	    self.objeto.kill()
     	    self.pasarFase = True
 	
-
         self.actualizarScroll(self.jugador)
-
+	
+    def lesionarPersonaje(self,bala,personaje):
+	damage = bala.damageBala()
+	bala.kill()
+	#Esta situacion no me agrada: el jugador pierde vida no esta directamente relacionado con la vida que se muestra en pantalla mmm...
+	personaje.perderVida(damage)
+	if (personaje == self.jugador):
+	    self.vida.perderVida(damage) #De momento pierde vida 25 porque me da pereza otra cosa	
+	
     def dibujar(self, pantalla):
+	self.elementosDibujables.dibujar(pantalla)
         # Ponemos primero el fondo
-        self.fondo.dibujar(pantalla)
+        #self.fondo.dibujar(pantalla)
         # Luego el decorado.
-        self.decorado.dibujar(pantalla)
+        #self.decorado.dibujar(pantalla)
         # Dibujamos el menu
-    	self.careto.dibujar(pantalla)
-    	self.vida.dibujar(pantalla)
-    	self.tiempo.dibujar(pantalla)
+    	#self.careto.dibujar(pantalla)
+    	#self.vida.dibujar(pantalla)
+    	#self.tiempo.dibujar(pantalla)
 	
         # Luego pintamos la plataforma
         self.grupoPlataformas.draw(pantalla)

@@ -1,8 +1,9 @@
 # -*- encoding: utf-8 -*-
 from constantes import *
 from gestorRecursos import *
+from ElementosDibujables import *
 
-class Tiempo:
+class Tiempo(ElementoDibujable):
     def __init__ (self,inicial):
         
         self.listaNumerosIzquierdos = []
