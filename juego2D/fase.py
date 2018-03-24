@@ -71,12 +71,12 @@ class Fase(Escena):
         self.grupoBalasSoldado = pygame.sprite.Group()
 	
 
-        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador, self.enemigo)
+        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador, self.grupoEnemigos)
     	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
     	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
     	#Eduardo Penas.
     	
-        self.grupoSprites = pygame.sprite.Group(self.jugador,self.plataformaSuelo,self.objeto, self.enemigo)
+        self.grupoSprites = pygame.sprite.Group(self.jugador,self.plataformaSuelo,self.objeto, self.grupoEnemigos)
     def condicionesPasarFase(self):
 	return self.pasarFase
     
@@ -100,9 +100,9 @@ class Fase(Escena):
 	
     #TODO: generalizar.
     def crearEnemigos(self, x, y):
-    	self.enemigo = Soldado()
-    	self.enemigo.establecerPosicion((x,y))
-    	self.grupoEnemigos.add(self.enemigo)	
+    	enemigo = Soldado()
+    	enemigo.establecerPosicion((x,y))
+    	self.grupoEnemigos.add(enemigo)	
     
     #TODO: generalizar.
     def crearPlataformas(self):
@@ -199,13 +199,13 @@ class Fase(Escena):
 
         for enemigo in iter(self.grupoEnemigos): #************************* LEEER COMENTARIO DE ABAJO
             enemigo.mover_cpu_distancia(self.jugador,tiempo)
-	    for bala in self.grupoBalasJugador:
-    		if pygame.sprite.collide_rect(self.enemigo, bala):
-    		    damage = bala.damageBala()
-    		    bala.kill()
-    		    self.enemigo.perderVida(damage)
-                if not self.enemigo.tieneVida():
-                    self.enemigo.kill()
+            for bala in self.grupoBalasJugador:
+                if pygame.sprite.collide_rect(enemigo, bala):
+                    damage = bala.damageBala()
+                    bala.kill()
+                    enemigo.perderVida(damage)
+                    if not enemigo.tieneVida():
+                        enemigo.kill()
 
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
