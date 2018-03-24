@@ -308,6 +308,9 @@ class Pistolero():
         self.disparar = OFF
         return self.balas
     
+    def vaciarBalas(self):
+        self.balas = None
+    
     def inicializarCountDisparar(self):
         self.count_disparar = 0
 

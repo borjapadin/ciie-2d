@@ -262,6 +262,8 @@ class Fase(Escena):
 	    disparo = pistolero.vaciarPistola()
 	    self.grupoBalas.add(disparo)
 	    self.grupoSprites.add(disparo)
+	    pistolero.vaciarBalas()
+	    
 	    
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
