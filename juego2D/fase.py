@@ -56,9 +56,10 @@ class Fase(Escena):
         self.decorado = Decorado("/"+self.numFase)
         self.fondo = Cielo("/"+self.numFase)
 	self.elementosDibujables = ElementosDibujables()
+	self.inventario = Inventario() #Tengo dudas de que hacer con esto una vez tengamos que sea todo diferente dependiendo de la fase.
 	
 	#Aqui reunidos todos los elementos dibujables.
-	self.elementosDibujables.agregarElementos([self.fondo, self.decorado, self.vida, self.careto, self.tiempo])
+	self.elementosDibujables.agregarElementos([self.fondo, self.decorado, self.vida, self.careto, self.tiempo, self.inventario])
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
 
@@ -126,7 +127,7 @@ class Fase(Escena):
     
     #TODO: generalizar. De momento esto de generico tiene una mierda pero dejemoslo asi.
     def crearObjetoPrincipal(self):
-    	self.objeto = BidonGasolina()
+    	self.objeto = ObjetoPrincipal('bidonGasolina','ficheroTextoQueActualmenteNoHaceNada')
     	self.objeto.establecerPosicion((1000,self.coordPlataforma[1]+1))
 
     #TODO repasar los comentarios por que no corresponden de los scrolls
@@ -237,6 +238,8 @@ class Fase(Escena):
 	
         # ---------------------Comprobamos si hay colision entre algun jugador y el objeto principal
     	if pygame.sprite.collide_rect(self.jugador, self.objeto):
+	    objetoInventario = self.objeto.crearObjetoInventario(1)
+	    self.inventario.guardarObjeto(objetoInventario)
     	    self.objeto.kill()
     	    self.pasarFase = True
 	
@@ -252,14 +255,6 @@ class Fase(Escena):
 	
     def dibujar(self, pantalla):
 	self.elementosDibujables.dibujar(pantalla)
-        # Ponemos primero el fondo
-        #self.fondo.dibujar(pantalla)
-        # Luego el decorado.
-        #self.decorado.dibujar(pantalla)
-        # Dibujamos el menu
-    	#self.careto.dibujar(pantalla)
-    	#self.vida.dibujar(pantalla)
-    	#self.tiempo.dibujar(pantalla)
 	
         # Luego pintamos la plataforma
         self.grupoPlataformas.draw(pantalla)

@@ -4,15 +4,8 @@ from pygame.locals import *
 from escena import *
 from gestorRecursos import *
 from personajes import *
+from inventario import *
 #----------------------------
-
-# -*- encoding: utf-8 -*-
-import pygame, sys, os
-from pygame.locals import *
-from escena import *
-from gestorRecursos import *
-
-    
 class Objetos(MiSprite):
     "Cualquier objeto del juego"
 
@@ -42,11 +35,16 @@ class Objetos(MiSprite):
     
     def obtenerObjeto():
         return imagen
+    
+class ObjetoPrincipal(Objetos):
+    def __init__(self,imagen,archivoCoordenadas):
+        self.imagen = imagen
+        direccionImagen = 'Fase/1/Objetos/'+imagen+'.png'
+        Objetos.__init__(self,direccionImagen,archivoCoordenadas)
+    
+    def crearObjetoInventario(self,num):
+        return ObjetoInventario(num,self.imagen)
+        
 
-#---------------------------
-
-class BidonGasolina(Objetos):
-    def __init__(self):
-        Objetos.__init__(self,'Fase/1/Objetos/bidonGasolina.png','Fase/1/blababsbsdjadakjsdakjs.txt')
     
 

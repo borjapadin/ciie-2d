@@ -4,6 +4,8 @@
 # Importar modulos
 # -*- encoding: utf-8 -*-
 
+
+
 import pygame
 import director
 from director import *
