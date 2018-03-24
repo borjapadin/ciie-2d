@@ -96,7 +96,7 @@ class Personaje(MiSprite):
         self.hoja = self.hoja.convert_alpha()
         # El movimiento que esta realizando
         self.movimiento = QUIETO
-        self.balas = None
+    
 
         self.archivoImagen = archivoImagen
 
@@ -316,16 +316,38 @@ class Personaje(MiSprite):
     def tieneVida(self):
         return (self.vida > 0)
     
+class Pistolero():
+    def __init__ (self):
+        self.inicializarBalas()
+        
+    def inicializarBalas(self):
+        self.balas = None
+    
+    def vaciarPistola(self):
+        self.disparar = OFF
+        return self.balas
+    
+    def inicializarCountDisparar(self):
+        self.count_disparar = 0
 
+    def aumentarContadorDisparo(self):
+        self.count_disparar += 1    
+    
+    def tieneBalas(self):
+        return (self.balas != None)   
+    
+    def balasLanzar(self):
+        return self.balas   
 #---------------------------
 # Clase Jugador
 
-class Jugador(Personaje):
+class Jugador(Pistolero,Personaje):
     "Cualquier personaje del juego"
     def __init__(self):
         # Invocamos al constructor de la clase padre con la configuracion de este personaje concreto
         Personaje.__init__(self,'Fase/1/rossi.png','Fase/1/offsetRossi.txt', [1,7,5,6,8,6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR);
         self.disparar = OFF
+        self.inicializarBalas()
         self.count_disparar = 150
         self.establecerVida(1000)
 
@@ -356,27 +378,19 @@ class Jugador(Personaje):
             self.aumentarContadorDisparo(tiempo)
             self.disparar = OFF
         
-    #----------------------------Aquí abajo veo material de una clase/interfaz-----------------
+    #Override
     def inicializarCountDisparar(self):
         self.count_disparar = 0
         self.disparado = 0
-
+    
+    #Override
     def aumentarContadorDisparo(self,tiempo):
         self.count_disparar += tiempo
-
+    
+    #Override
     def dispararBala(self):
         self.disparar = ON
         Personaje.mover(self,DISPARAR)
-    
-    def vaciarPistola(self):
-        self.disparar = OFF
-        return self.balas
-    
-    def tieneBalas(self):
-        return (self.balas != None)   
-    
-    def balasLanzar(self):
-        return self.balas    
     
 #--------------------------------------------------
 # Clase NoJugador
@@ -432,32 +446,21 @@ class NoJugador(Personaje):
         else:
             self.aumentarContadorDisparo()
 
-    def inicializarCountDisparar(self):
-        self.count_disparar = 0
-
-    def aumentarContadorDisparo(self):
-        self.count_disparar += 1
-
-
     def dispararBala(self):
         self.disparar = randint(OFF,ON) #Vamos a meterle aletoriedad para que no sea tan mecanico y resulte más natural.
         Personaje.mover(self,DISPARAR)
     
-    def tieneBalas(self): #Nuestro soldado enemigo siempre tiene balas.
-        return self.balas != None
-    
-    def vaciarPistola(self):
-        self.disparar = None
-        return self.balas   
+
 #---------------------------
 # Clase Zombi
 
 #---------------------------
 # Clase Soldado
-class Soldado(NoJugador):
+class Soldado(Pistolero,NoJugador):
     def __init__(self):
         NoJugador.__init__(self,'Fase/1/SpriteSoldadoFilas.png','Fase/1/offsetsSoldado.txt', [1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
         self.establecerVida(250)
+        self.inicializarBalas()
         #self.disparar = OFF
         #self.inicializarCountDisparar()
 
