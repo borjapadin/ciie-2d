@@ -191,26 +191,7 @@ class Personaje(MiSprite):
                 #  Si no, si mira a la derecha, invertimos esa imagen
                 elif self.mirando == DERECHA:
                     self.image = pygame.transform.flip(self.hoja.subsurface(self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
-    def crearBala(self):
-        # Si se ha pulsado que quieres disparar
-        #print(self.dispararBala)
-        if self.disparar == ON:
-            self.bala = BalaHeroe('Fase/1/playerBullet.png','Fase/1/offsetBala.txt', [1], 1)
-            #print('dispararBala')
-            self.disparar = OFF
-            if self.archivoImagen == 'Fase/1/rossi.png':
-                if self.mirando == IZQUIERDA:
-                    self.bala.establecerPosicion((self.posicion[0]-10, self.posicion[1]-21))
-                else:
-                    self.bala.establecerPosicion((self.posicion[0]+40, self.posicion[1]-21)) #Ponemos la bala en la posicion actual del heroe.
-                self.balas = self.bala
-            else:
-                if self.mirando == IZQUIERDA:
-                    self.bala.establecerPosicion((self.posicion[0]-10, self.posicion[1]-21))
-                else:
-                    self.bala.establecerPosicion((self.posicion[0]+40, self.posicion[1]-21)) #Ponemos la bala en la posicion actual del heroe.
-                self.balas = self.bala
-
+    
     def update(self, grupoPlataformas, tiempo):
 
         # Las velocidades a las que iba hasta este momento
@@ -338,6 +319,27 @@ class Pistolero():
     
     def balasLanzar(self):
         return self.balas   
+    
+    def crearBala(self):
+        # Si se ha pulsado que quieres disparar
+        #print(self.dispararBala)
+        if self.disparar == ON:
+            self.bala = BalaHeroe('Fase/1/playerBullet.png','Fase/1/offsetBala.txt', [1], 1)
+            #print('dispararBala')
+            self.disparar = OFF
+            if self.archivoImagen == 'Fase/1/rossi.png':
+                if self.mirando == IZQUIERDA:
+                    self.bala.establecerPosicion((self.posicion[0]-10, self.posicion[1]-21))
+                else:
+                    self.bala.establecerPosicion((self.posicion[0]+40, self.posicion[1]-21)) #Ponemos la bala en la posicion actual del heroe.
+                self.balas = self.bala
+            else:
+                if self.mirando == IZQUIERDA:
+                    self.bala.establecerPosicion((self.posicion[0]-10, self.posicion[1]-21))
+                else:
+                    self.bala.establecerPosicion((self.posicion[0]+40, self.posicion[1]-21)) #Ponemos la bala en la posicion actual del heroe.
+                self.balas = self.bala
+    
 #---------------------------
 # Clase Jugador
 
