@@ -48,9 +48,8 @@ class Fase(Escena):
 
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
-	
-	#  En ese caso solo hay scroll horizontal
-	self.crearElementosBordeSuperior("/"+self.numFase)
+	   #  En ese caso solo hay scroll horizontal
+        self.crearElementosBordeSuperior("/"+self.numFase)
 	
         # Creamos el decorado y el fondo
         self.decorado = Decorado("/"+self.numFase)
@@ -59,13 +58,17 @@ class Fase(Escena):
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
 
-	self.crearPlataformas()
-	self.crearPersonajePrincipal()
-	self.crearEnemigos()
+    	self.crearPlataformas()
+    	self.crearPersonajePrincipal()
+        self.inicializarEnemigos()
+    	self.crearEnemigos(300, 401)
+        self.crearEnemigos(500, 401)
         self.crearObjetoPrincipal()
 
-	# Creamos un grupo con las balas.
-        self.grupoBalas = pygame.sprite.Group()
+	   # Creamos un grupo con las balas.
+        #self.grupoBalas = pygame.sprite.Group()
+        self.grupoBalasJugador = pygame.sprite.Group()
+        self.grupoBalasSoldado = pygame.sprite.Group()
 	
 
         self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador, self.enemigo)
@@ -79,37 +82,39 @@ class Fase(Escena):
     
     #TODO: generalizar.
     def crearPersonajePrincipal(self):
-	self.jugador = Jugador()
-	#Ponemos al jugador en la posición inicial
-	self.jugador.establecerPosicion((5, 401))
+    	self.jugador = Jugador()
+    	#Ponemos al jugador en la posición inicial
+    	self.jugador.establecerPosicion((5, 401))
    
     #TODO: generalizar.
    # def crearPlataformasSecundarias():
     
     #TODO: generalizar
     def crearElementosBordeSuperior(self,nombreFase):
-	self.careto = Careto(nombreFase)
-	self.vida = listaVidas()
-	self.tiempo = Tiempo((0,0))
-	
+    	self.careto = Careto(nombreFase)
+    	self.vida = listaVidas()
+    	self.tiempo = Tiempo((0,0))
+
+    def inicializarEnemigos(self):
+        self.grupoEnemigos = pygame.sprite.Group()
 	
     #TODO: generalizar.
-    def crearEnemigos(self):
-	self.enemigo = Soldado()
-	self.enemigo.establecerPosicion((500, 401))
-	self.grupoEnemigos = pygame.sprite.Group( self.enemigo )	
+    def crearEnemigos(self, x, y):
+    	self.enemigo = Soldado()
+    	self.enemigo.establecerPosicion((x,y))
+    	self.grupoEnemigos.add(self.enemigo)	
     
     #TODO: generalizar.
     def crearPlataformas(self):
-	self.plataformaSuelo = Plataforma(pygame.Rect(0, 400, 1200, 15))
-	self.grupoPlataformas = pygame.sprite.Group(self.plataformaSuelo)	
+    	self.plataformaSuelo = Plataforma(pygame.Rect(0, 400, 1200, 15))
+    	self.grupoPlataformas = pygame.sprite.Group(self.plataformaSuelo)	
     
     #TODO: generalizar. De momento esto de generico tiene una mierda pero dejemoslo asi.
     def crearObjetoPrincipal(self):
     	self.objeto = BidonGasolina()
     	self.objeto.establecerPosicion((1000,401))
 
-#TODO repasar los comentarios por que no corresponden de los scrolls
+    #TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
 
         # Si el jugador de la izquierda se encuentra más allá del borde izquierdo
@@ -143,7 +148,7 @@ class Fase(Escena):
 
                 return True; # Se ha actualizado el scroll
 
-	#Si el jugador se encuentra más allá de la derecha.
+        #Si el jugador se encuentra más allá de la derecha.
         if (jugador.rect.right>MAXIMO_X_JUGADOR):
 
             # Se calcula cuantos pixeles esta fuera del borde
@@ -185,84 +190,85 @@ class Fase(Escena):
 
 
     def update(self, tiempo):
-	# Primero, se indican las acciones que van a hacer las balas.
-        if self.grupoBalas != None:
-            for bala in iter(self.grupoBalas):
+        # Primero, se indican las acciones que van a hacer las balas.
+        if self.grupoBalasJugador != None or self.grupoBalasSoldado != None:
+            for bala in iter(self.grupoBalasJugador):
+                bala.moverBala()
+            for bala in iter(self.grupoBalasSoldado):
                 bala.moverBala()
 
         for enemigo in iter(self.grupoEnemigos): #************************* LEEER COMENTARIO DE ABAJO
             enemigo.mover_cpu_distancia(self.jugador,tiempo)
-	    for bala in self.grupoBalas:
-		if pygame.sprite.collide_rect(self.enemigo, bala):
-		    damage = bala.damageBala()
-		    bala.kill()
-		    self.enemigo.perderVida(damage)
-		    if not self.enemigo.tieneVida():
-			self.enemigo.kill()
+	    for bala in self.grupoBalasJugador:
+    		if pygame.sprite.collide_rect(self.enemigo, bala):
+    		    damage = bala.damageBala()
+    		    bala.kill()
+    		    self.enemigo.perderVida(damage)
+                if not self.enemigo.tieneVida():
+                    self.enemigo.kill()
 
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 	
-	#------------------- Comprobamos si hay colisión entre algún jugador y una bala enemiga ----------
-	for bala in self.grupoBalas:
-	    if pygame.sprite.collide_rect(self.jugador, bala):
-		damage = bala.damageBala()
-		bala.kill()
-		#Esta situacion no me agrada: el jugador pierde vida no esta directamente relacionado con la vida que se muestra en pantalla mmm...
-		self.jugador.perderVida(25)
-		self.vida.perderVida(damage) #De momento pierde vida 25 porque me da pereza otra cosa
-	#------------------- En principio he dejado estas dos partes separadas porque no estoy muy segura de como hacerlas ---
-	# Podriamos decir que el soldado enemigo sufre el fuego amigo (de sus compañeros) entonces quedaria igual.... pero no veo yo muy viable
-	# Hacer esto... así que habria que modificar varias cosas. Además de que si no hacemos fuego enemigo para los amigos tampoco deberíamos
-	# para el prota (porque va a resultar más natural programarlo asi), de todas maneras tampoco creo que se pudiera dar esa situacion
-	# si la bala es lo suficiente rápida.
+    	#------------------- Comprobamos si hay colisión entre algún jugador y una bala enemiga ----------
+    	for bala in self.grupoBalasSoldado:
+    	    if pygame.sprite.collide_rect(self.jugador, bala):
+    		damage = bala.damageBala()
+    		bala.kill()
+    		#Esta situacion no me agrada: el jugador pierde vida no esta directamente relacionado con la vida que se muestra en pantalla mmm...
+    		self.jugador.perderVida(25)
+    		self.vida.perderVida(damage) #De momento pierde vida 25 porque me da pereza otra cosa
+    	#------------------- En principio he dejado estas dos partes separadas porque no estoy muy segura de como hacerlas ---
+    	# Podriamos decir que el soldado enemigo sufre el fuego amigo (de sus compañeros) entonces quedaria igual.... pero no veo yo muy viable
+    	# Hacer esto... así que habria que modificar varias cosas. Además de que si no hacemos fuego enemigo para los amigos tampoco deberíamos
+    	# para el prota (porque va a resultar más natural programarlo asi), de todas maneras tampoco creo que se pudiera dar esa situacion
+    	# si la bala es lo suficiente rápida.
+    	
+    	if not self.jugador.tieneVida():
+    	    self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
 	
-	if not self.jugador.tieneVida():
-	    self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
 	
-	
-	# Comprobamos si hay colision entre algun jugador y el objeto principal
+        # Comprobamos si hay colision entre algun jugador y el objeto principal
     	if pygame.sprite.collide_rect(self.jugador, self.objeto):
     	    self.objeto.kill()
     	    self.pasarFase = True
 	
 
         self.actualizarScroll(self.jugador)
-            #TODO detectar que se acabo la fase y cambiarla
+
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
         self.fondo.dibujar(pantalla)
-	# Luego el decorado.
+        # Luego el decorado.
         self.decorado.dibujar(pantalla)
-	# Dibujamos el menu
-	self.careto.dibujar(pantalla)
-	self.vida.dibujar(pantalla)
-	self.tiempo.dibujar(pantalla)
+        # Dibujamos el menu
+    	self.careto.dibujar(pantalla)
+    	self.vida.dibujar(pantalla)
+    	self.tiempo.dibujar(pantalla)
 	
-	# Luego pintamos la plataforma
+        # Luego pintamos la plataforma
         self.grupoPlataformas.draw(pantalla)
-	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
-	# pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
+        # Para pintar las balas como un sprite tienen que estar en el grupo de sprites
+        # pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
+        #En caso de existir disparos por parte del jugador se dibujan.
+        self.agregarDisparosEscena(self.jugador,self.grupoBalasJugador)
 	
-	#En caso de existir disparos por parte del jugador se dibujan.
-	self.agregarDisparosEscena(self.jugador)
-	
-	#En caso de que los enemigos tengan disparos que dar se dibujan.
-	for enemigo in self.grupoEnemigos:
-	    self.agregarDisparosEscena(enemigo)
+        #En caso de que los enemigos tengan disparos que dar se dibujan.
+    	for enemigo in self.grupoEnemigos:
+    	    self.agregarDisparosEscena(enemigo,self.grupoBalasSoldado)
 
-	# Finalmente se pinta el grupo de sprites.
+        # Finalmente se pinta el grupo de sprites.
     	self.grupoSprites.draw(pantalla)
-	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
+        # sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
     
-    def agregarDisparosEscena(self,pistolero):
-	if (pistolero.tieneBalas()): #Si hay balas.
-	    balas = pistolero.balasLanzar()
-	    balas.mirando = pistolero.mirando #Su dirección va a ser hacia donde este mirando el pistolero.
-	    disparo = pistolero.vaciarPistola()
-	    self.grupoBalas.add(disparo)
-	    self.grupoSprites.add(disparo)
-	    pistolero.vaciarBalas()
+    def agregarDisparosEscena(self,pistolero,grupo):
+        if (pistolero.tieneBalas()): #Si hay balas.
+    	    balas = pistolero.balasLanzar()
+    	    balas.mirando = pistolero.mirando #Su dirección va a ser hacia donde este mirando el pistolero.
+    	    disparo = pistolero.vaciarPistola()
+    	    grupo.add(disparo)
+    	    self.grupoSprites.add(disparo)
+    	    pistolero.vaciarBalas()
 	    
 	    
     def eventos(self, lista_eventos):
@@ -304,8 +310,6 @@ class Fase(Escena):
 
 # -------------------------------------------------
 # Clase Plataforma
-
-#class Plataforma(pygame.sprite.Sprite):
 class Plataforma(MiSprite):
     def __init__(self,rectangulo):
         # Primero invocamos al constructor de la clase padre
@@ -362,8 +366,6 @@ class CutScene(Escena):
         self.director.apilarEscena(faseNueva)
 
     def actualizarTextoTituloNivel(self):
-
-
         (posicion,_) = self.fondoCutScene.update(self.movimientoPosicion,self.texto) #Actualizar el texto que corresponda.
         if posicion > 400: #Cuando llega más o menos a la mitad del texto el titulo...:
             self.mostrarTexto() #Se muestra el otro texto.
