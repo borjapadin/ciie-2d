@@ -4,9 +4,16 @@ import pygame, escena, time
 from escena import *
 from personajes import *
 from pygame.locals import *
-from Constantes import *
-from TextoGUI import *
-from Objetos import *
+from constantes import *
+from textoGUI import *
+from objetos import *
+from Cielo import *
+from decorado import *
+from constantes import *
+from careto import *
+from vida import *
+from Tiempo import *
+from ElementosDibujables import *
 #from animaciones import *
 
 # -------------------------------------------------
@@ -42,43 +49,100 @@ class Fase(Escena):
 
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
-
+	   #  En ese caso solo hay scroll horizontal
+        self.crearElementosBordeSuperior("/"+self.numFase)
+	
         # Creamos el decorado y el fondo
         self.decorado = Decorado("/"+self.numFase)
         self.fondo = Cielo("/"+self.numFase)
-
+	self.elementosDibujables = ElementosDibujables()
+	self.inventario = Inventario() #Tengo dudas de que hacer con esto una vez tengamos que sea todo diferente dependiendo de la fase.
+	
+	#Aqui reunidos todos los elementos dibujables.
+	self.elementosDibujables.agregarElementos([self.fondo, self.decorado, self.vida, self.careto, self.tiempo, self.inventario])
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
-        #  En ese caso solo hay scroll horizontal
 
-        plataformaSuelo = Plataforma(pygame.Rect(0, 400, 1200, 15))
+        self.determinarPlataforma()
+    	self.crearPlataformas(self.coordPlataforma)
+    	self.crearPersonajePrincipal()
+        self.inicializarEnemigos()
+    	self.crearEnemigos(300, self.coordPlataforma[1] +1)
+        self.crearEnemigos(500, self.coordPlataforma[1] +1)
+        self.crearObjetoPrincipal()
 
-        self.grupoPlataformas = pygame.sprite.Group( plataformaSuelo)
-        #iniciamos el jugador
-        self.jugador = Jugador()
-        #Ponemos al jugador en la posición inicial
-        self.jugador.establecerPosicion((5, 401))
+	   # Creamos un grupo con las balas.
+        #self.grupoBalas = pygame.sprite.Group()
+        self.grupoBalasJugador = pygame.sprite.Group()
+        self.grupoBalasSoldado = pygame.sprite.Group()
+	
 
-        self.enemigo = Soldado()
-        self.enemigo.establecerPosicion((500, 401))
-        self.grupoEnemigos = pygame.sprite.Group( self.enemigo )
-
-	    # Creamos un grupo con las balas.
-        self.grupoBalas = pygame.sprite.Group()
-
-        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador, self.enemigo)
+        self.grupoSpritesDinamicos = pygame.sprite.Group(self.jugador, self.grupoEnemigos)
     	#Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
     	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
     	#Eduardo Penas.
-    	self.crearObjetoPrincipal()
-        self.grupoSprites = pygame.sprite.Group(self.jugador,plataformaSuelo,self.objeto, self.enemigo)
+    	
+        self.grupoSprites = pygame.sprite.Group(self.plataformaSuelo,self.objeto, self.grupoEnemigos)
+	self.kitsCurativos = self.crearKitCurativo()
+	for kitCurativo in iter(self.kitsCurativos):
+	    self.grupoSprites.add(kitCurativo)	
+	self.grupoSprites.add(self.jugador)
+    
+    def condicionesPasarFase(self):
+	return self.pasarFase
+    
+    #TODO: generalizar.
+    def crearPersonajePrincipal(self):
+    	self.jugador = Jugador()
+    	#Ponemos al jugador en la posición inicial
+    	self.jugador.establecerPosicion((5, self.coordPlataforma[1]+1))
+   
+    #TODO: generalizar.
+   # def crearPlataformasSecundarias():
+    
+    #TODO: generalizar
+    def crearElementosBordeSuperior(self,nombreFase):
+    	self.careto = Careto(nombreFase)
+    	self.vida = listaVidas()
+    	self.tiempo = Tiempo((0,0))
 
-    #De momento esto de generico tiene una mierda pero dejemoslo asi.
+    def inicializarEnemigos(self):
+        self.grupoEnemigos = pygame.sprite.Group()
+	
+    #TODO: generalizar.
+    def crearEnemigos(self, x, y):
+    	enemigo = Soldado()
+    	enemigo.establecerPosicion((x,y))
+    	self.grupoEnemigos.add(enemigo)	
+
+    def determinarPlataforma(self):
+        if self.numFase == '1':
+            self.coordPlataforma = (0, 400, 1200, 15)
+        if self.numFase == '2': 
+            self.coordPlataforma = (0, 480, 1200, 15)
+        if self.numFase == '3': 
+            self.coordPlataforma = (0, 455, 1200, 15)
+
+    #TODO: generalizar.
+    def crearPlataformas(self,coordenadas):
+        self.plataformaSuelo = Plataforma(pygame.Rect(coordenadas))
+    	self.grupoPlataformas = pygame.sprite.Group(self.plataformaSuelo)
+        
+
+    
+    #TODO: generalizar. De momento esto de generico tiene una mierda pero dejemoslo asi.
     def crearObjetoPrincipal(self):
-    	self.objeto = BidonGasolina()
-    	self.objeto.establecerPosicion((1000,401))
-
-#TODO repasar los comentarios por que no corresponden de los scrolls
+    	self.objeto = ObjetoPrincipal('bidonGasolina','ficheroTextoQueActualmenteNoHaceNada')
+    	self.objeto.establecerPosicion((1000,self.coordPlataforma[1]+1))
+    
+    def crearKitCurativo(self):
+	kitsCurativos = []
+	kitCurativo = KitCuracion(50) 
+	kitCurativo.establecerPosicion((100,self.coordPlataforma[1]+1))
+	kitsCurativos.append(kitCurativo)
+	return kitsCurativos
+	
+    #TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
 
         # Si el jugador de la izquierda se encuentra más allá del borde izquierdo
@@ -112,7 +176,7 @@ class Fase(Escena):
 
                 return True; # Se ha actualizado el scroll
 
-	#Si el jugador se encuentra más allá de la derecha.
+        #Si el jugador se encuentra más allá de la derecha.
         if (jugador.rect.right>MAXIMO_X_JUGADOR):
 
             # Se calcula cuantos pixeles esta fuera del borde
@@ -124,7 +188,7 @@ class Fase(Escena):
 
                 # En su lugar, colocamos al jugador que esté más a la derecha a la derecha de todo
                 jugador.establecerPosicion((self.scrollx+MAXIMO_X_JUGADOR-jugador.rect.width, jugador.posicion[1]))
-    		if (self.pasarFase == True): #Si hemos recogido el objeto principal podemos pasar de fase (si no pos no)
+    		if (self.condicionesPasarFase()): #Si se cumplen las condiciones para pasar fase
 
     		    # Si hemos llegado a la derecha de todo creamos la escena siguiente.
     		    self.director.cambiarAlMenu(self,PANTALLA_CUTSCENE)
@@ -152,56 +216,98 @@ class Fase(Escena):
         # Ademas, actualizamos el decorado para que se muestre una parte distinta
         self.decorado.update(self.scrollx)
 
+    def moverBalas(self,grupoBalas):
+	if grupoBalas != None:
+	    for bala in iter(grupoBalas):
+                bala.moverBala()
 
     def update(self, tiempo):
-	# Primero, se indican las acciones que van a hacer las balas.
-        if self.grupoBalas != None:
-            for bala in iter(self.grupoBalas):
-                bala.moverBala()
+        # Primero, se indican las acciones que van a hacer las balas.
+	self.moverBalas(self.grupoBalasJugador)
+	self.moverBalas(self.grupoBalasSoldado)
+	
+	#-----------------Comprobamos si hay colisión entre algun enemigo y una bala amiga.
+        for enemigo in iter(self.grupoEnemigos): 
+            enemigo.mover_cpu_distancia(self.jugador,tiempo)
+            for bala in self.grupoBalasJugador:
+                if pygame.sprite.collide_rect(enemigo, bala):
+                    self.lesionarPersonaje(bala,enemigo)
+                    if not enemigo.tieneVida():
+                        enemigo.kill()
+	    if pygame.sprite.collide_rect(self.jugador,enemigo):
+		self.golpearseEnemigo(enemigo,self.jugador)
 		
-        for enemigo in iter(self.grupoEnemigos):
-            enemigo.mover_cpu(self.jugador)
-	    
+
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
-
-	# Comprobamos si hay colision entre algun jugador y el objeto principal
+	
+    	#--------------------- Comprobamos si hay colisión entre algún jugador y una bala enemiga ----------
+    	for bala in self.grupoBalasSoldado:
+    	    if pygame.sprite.collide_rect(self.jugador, bala):
+		self.lesionarPersonaje(bala,self.jugador) #Si chocan se lesiona al personaje.
+		
+    	#----------------------Comprobar que el jugador esta muerto 
+    	if not self.jugador.tieneVida():
+    	    self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
+	
+	#----------------------Comprobar que el jugador choca con algun kit de curacion
+	for kitCurativo in self.kitsCurativos:
+	    if pygame.sprite.collide_rect(self.jugador,kitCurativo):
+		valorKitCurativo = kitCurativo.recogerKitCurativo()
+		self.jugador.recuperarVida(valorKitCurativo)
+		self.vida.recuperarVida(valorKitCurativo)
+		kitCurativo.vaciar()
+	    
+        # ---------------------Comprobamos si hay colision entre algun jugador y el objeto principal
     	if pygame.sprite.collide_rect(self.jugador, self.objeto):
+	    objetoInventario = self.objeto.crearObjetoInventario(1)
+	    self.inventario.guardarObjeto(objetoInventario)
     	    self.objeto.kill()
     	    self.pasarFase = True
-
-        self.actualizarScroll(self.jugador)
-            #TODO detectar que se acabo la fase y cambiarla
-    def dibujar(self, pantalla):
-        # Ponemos primero el fondo
-        self.fondo.dibujar(pantalla)
-	# Luego el decorado.
-        self.decorado.dibujar(pantalla)
-	# Luego pintamos la plataforma
-        self.grupoPlataformas.draw(pantalla)
-	# Para pintar las balas como un sprite tienen que estar en el grupo de sprites
-	# pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
-	# sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
 	
-	#Cortar esto en una función aparte.
-    	balas = self.jugador.balasLanzar()
-    	if balas != None:
-            balas.mirando = self.jugador.mirando
-    	    self.grupoBalas.add(balas)
-    	    self.grupoSprites.add(balas) #Se agrega la bala a los sprites del juego.
-	    self.jugador.balas = None
-       
-       #Cortar esto en una función aparte.
-        if self.enemigo != None:
-            balasenemigo = self.enemigo.balasLanzar() #A partir de aqui es como la de arriba. GENERALIZAR.
-            if balasenemigo != None:
-                self.grupoBalas.add(balasenemigo)
-            	self.grupoSprites.add(balasenemigo)
-            self.enemigo.balas = None
+        self.actualizarScroll(self.jugador)
+	
+    def lesionarPersonaje(self,bala,personaje):
+	damage = bala.damageBala()
+	bala.kill()
+	#Esta situacion no me agrada: el jugador pierde vida no esta directamente relacionado con la vida que se muestra en pantalla mmm...
+	personaje.perderVida(damage)
+	if (personaje == self.jugador):
+	    self.vida.perderVida(damage) #De momento pierde vida 25 porque me da pereza otra cosa	
+    
+    def golpearseEnemigo(self,enemigo,personaje):
+	damage = enemigo.damageEnemigo()
+	personaje.perderVida(damage)
+	self.vida.perderVida(damage)
+	
+    def dibujar(self, pantalla):
+	self.elementosDibujables.dibujar(pantalla)
+	
+        # Luego pintamos la plataforma
+        self.grupoPlataformas.draw(pantalla)
+        # Para pintar las balas como un sprite tienen que estar en el grupo de sprites
+        # pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
+        #En caso de existir disparos por parte del jugador se dibujan.
+        self.agregarDisparosEscena(self.jugador,self.grupoBalasJugador)
+	
+        #En caso de que los enemigos tengan disparos que dar se dibujan.
+    	for enemigo in self.grupoEnemigos:
+    	    self.agregarDisparosEscena(enemigo,self.grupoBalasSoldado)
 
-	# Finalmente se pinta el grupo de sprites.
+        # Finalmente se pinta el grupo de sprites.
     	self.grupoSprites.draw(pantalla)
-
+        # sacamos jugador y comprobamos con una variable los sprites que tiene y agregamos al grupo deSprites
+    
+    def agregarDisparosEscena(self,pistolero,grupo):
+        if (pistolero.tieneBalas()): #Si hay balas.
+    	    balas = pistolero.balasLanzar()
+    	    balas.mirando = pistolero.mirando #Su dirección va a ser hacia donde este mirando el pistolero.
+    	    disparo = pistolero.vaciarPistola()
+    	    grupo.add(disparo)
+    	    self.grupoSprites.add(disparo)
+    	    pistolero.vaciarBalas()
+	    
+	    
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
         for evento in lista_eventos:
@@ -223,17 +329,13 @@ class Fase(Escena):
                 elif evento.key == K_g:
                     self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
 		#---------------DISPARAR--------------------------
-		elif evento.key == K_t:
-		    self.jugador.dispararBala()
+		"""elif evento.key == K_t:
+		    self.jugador.dispararBala()"""
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
 
-        #elif self.enemigo.rect.left>0 and self.enemigo.rect.right<ANCHO_PANTALLA and self.enemigo.rect.bottom>0 and self.enemigo.rect.top<ALTO_PANTALLA:
-        #if self.jugador.posicion[0]<self.enemigo.posicion[0]:
-
         teclasPulsadas = pygame.key.get_pressed()
-        pygame.key.set_repeat(1000, 1000)
-        self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d)
+        self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
 
     def obtenerNumeroFaseSiguiente(self):
     	return self.numFaseSiguiente
@@ -245,8 +347,6 @@ class Fase(Escena):
 
 # -------------------------------------------------
 # Clase Plataforma
-
-#class Plataforma(pygame.sprite.Sprite):
 class Plataforma(MiSprite):
     def __init__(self,rectangulo):
         # Primero invocamos al constructor de la clase padre
@@ -261,45 +361,6 @@ class Plataforma(MiSprite):
 
 
 # -------------------------------------------------
-# Clase Cielo: aún no tiene nada prácticamente, solo un background negro.
-
-class Cielo:
-    def __init__(self,nombreFase):
-        self.posicionx = 0 # El lado izquierdo de la subimagen que se esta visualizando
-        self.update(0)
-
-    def update(self, tiempo):
-        # Calculamos el color del cielo
-        self.colorCielo = NEGRO
-
-    def dibujar(self,pantalla):
-        # Dibujamos el color del cielo
-        pantalla.fill(self.colorCielo)
-        self.colorCielo = NEGRO
-
-
-# -------------------------------------------------
-# Clase Decorado
-
-class Decorado:
-    def __init__(self,nombreFase):
-        self.imagen = GestorRecursos.CargarImagen('Fase'+nombreFase+'/decorado.png', -1)
-        self.imagen = pygame.transform.scale(self.imagen, (1200, 400))
-
-        self.rect = self.imagen.get_rect()
-        self.rect.bottom = ALTO_PANTALLA
-
-        # La subimagen que estamos viendo
-        self.rectSubimagen = pygame.Rect(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)
-        self.rectSubimagen.left = 0 # El scroll horizontal empieza en la posicion 0 por defecto
-
-    def update(self, scrollx):
-        self.rectSubimagen.left = scrollx
-
-    def dibujar(self, pantalla):
-        pantalla.blit(self.imagen, self.rect, self.rectSubimagen)
-
-
 
 class CutScene(Escena):
     #Crear cutScenas
@@ -342,8 +403,6 @@ class CutScene(Escena):
         self.director.apilarEscena(faseNueva)
 
     def actualizarTextoTituloNivel(self):
-
-
         (posicion,_) = self.fondoCutScene.update(self.movimientoPosicion,self.texto) #Actualizar el texto que corresponda.
         if posicion > 400: #Cuando llega más o menos a la mitad del texto el titulo...:
             self.mostrarTexto() #Se muestra el otro texto.

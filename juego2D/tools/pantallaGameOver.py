@@ -6,10 +6,10 @@ from gestorRecursos import *
 from escena import *
 from director import *
 from fase import *
-from PantallaGUI import *
-from TextoGUI import *
-from Boton import *
-from Constantes import *
+from pantallaGUI import *
+from textoGUI import *
+from boton import *
+from constantes import *
 
 class PantallaGameOverGUI(PantallaGUI):
     def __init__(self, menu):
@@ -34,7 +34,9 @@ class PantallaGameOverGUI(PantallaGUI):
     def addBotonSalir(self):
         self.elementosGUI.append(self.botonSalir)
         self.eventoSeleccionado = "salir"   
-    
+
+
+
     #Sobreescribir
     def eventos(self, lista_eventos):
         for evento in lista_eventos:
@@ -58,7 +60,7 @@ class PantallaGameOverGUI(PantallaGUI):
                     self.director.salirPrograma()                     
 
 
-class TextoSalir(TextoGUI):
+"""class TextoSalir(TextoGUI):
     def __init__(self, pantalla):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 30);
@@ -84,5 +86,7 @@ class BotonVolverJuego(Boton):
         Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,500))
 
     def accion(self):
-        self.pantalla.menu.mostrarPantallaInicial()
+        self.pantalla.menu.mostrarPantallaInicial() """
+
+
 

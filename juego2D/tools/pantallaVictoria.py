@@ -6,30 +6,29 @@ from gestorRecursos import *
 from escena import *
 from director import *
 from fase import *
-from PantallaGUI import *
-from TextoGUI import *
-from Boton import *
-from Constantes import *
+from pantallaGUI import *
+from textoGUI import *
+from boton import *
+from constantes import *
 
-class PantallaCutSceneGUI(PantallaGUI):
+class PantallaVictoriaGUI(PantallaGUI):
     def __init__(self, menu):
-        PantallaGUI.__init__(self, menu, 'Menu/CutScene/PantallaSiguienteNivel.png')
-        
+        PantallaGUI.__init__(self, menu, 'Menu/Victoria/PantallaVictoria.png')
         # Creamos el texto y lo metemos en la lista
         textoSalir = TextoSalir(self)
         self.elementosGUI.append(textoSalir) 
-        textoContinuar = TextoContinuar(self)
-        self.elementosGUI.append(textoContinuar)
+        textoVolverJuego = TextoVolverJuego(self)
+        self.elementosGUI.append(textoVolverJuego)
         
         #Creamos los botones
         self.botonSalir = BotonSalir(self)      
-        self.botonContinuar = BotonContinuar(self)
+        self.botonVolverJuego = BotonVolverJuego(self)
         #Agregamos solo el que va a estar seleccionado la primera vez que se cree
-        self.addBotonContinuar()
+        self.addBotonJugar()
     
-    def addBotonContinuar(self):
-        self.elementosGUI.append(self.botonContinuar)
-        self.eventoSeleccionado = "continuar"        
+    def addBotonJugar(self):
+        self.elementosGUI.append(self.botonVolverJuego)
+        self.eventoSeleccionado = "volverJugar"        
         
     def addBotonSalir(self):
         self.elementosGUI.append(self.botonSalir)
@@ -47,18 +46,18 @@ class PantallaCutSceneGUI(PantallaGUI):
                           
                 #Cambiar de opción
                 if evento.key == K_DOWN or evento.key == K_UP:
-                    if self.eventoSeleccionado == "continuar":
+                    if self.eventoSeleccionado == "volverJugar":
                         self.elementosGUI.pop()
                         self.addBotonSalir()
                     elif self.eventoSeleccionado == "salir":
                         self.elementosGUI.pop()
-                        self.addBotonContinuar() 
+                        self.addBotonJugar() 
                         
-                if evento.type == pygame.QUIT: 
+                if evento.type == pygame.QUIT: #EHHHHHHHHHHHHHHHHH... si?
                     self.director.salirPrograma()                     
 
 
-class TextoSalir(TextoGUI):
+"""class TextoSalir(TextoGUI):
     def __init__(self, pantalla):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 30);
@@ -72,17 +71,17 @@ class BotonSalir(Boton):
     def accion(self):
         self.pantalla.menu.salirPrograma()
 
-class TextoContinuar(TextoGUI):
+class TextoVolverJuego(TextoGUI):
     def __init__(self, pantalla):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Continuar', (65, 500))
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Volver a jugar', (65, 500))
 
 
-class BotonContinuar(Boton):
+class BotonVolverJuego(Boton):
     def __init__(self, pantalla):
         Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,500))
 
     def accion(self):
-        self.pantalla.menu.crearCutScene()
+        self.pantalla.menu.mostrarPantallaInicial() """
 

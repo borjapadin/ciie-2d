@@ -4,6 +4,9 @@ from pygame.locals import *
 
 class GestorRecursos(object):
     recursos = {}
+    config = {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT,
+    'BOSQUE_LVL': 0, 'PLAYA_LVL': 0, 'BUNKER_LVL': 0, 
+    'RATIO': (16,9), 'RES': 600}
 
     @classmethod
     def CargarImagen(cls, nombre, colorClave=None):
@@ -37,3 +40,51 @@ class GestorRecursos(object):
             pathfile.close() #lo cerramos
             cls.recursos[nombre] = datos #almacenamos
             return datos #lo devolvemos
+
+
+
+	
+    @classmethod
+    def CargarSonido(cls, nombre):
+        if nombre in cls.recursos:
+                return cls.recursos[nombre]
+        else:
+            nombreEntero = os.path.join('sounds', nombre)
+            try:
+                sound = pygame.mixer.Sound(nombreEntero)
+            except pygame.error, message:
+                print 'Cannot load sound:', nombreEntero
+                raise SystemExit, message
+            cls.recursos[nombre] = sound
+            return sound
+
+
+#Config methods 
+
+    #LOADS CONFIG PARAMETERS FROM FILESYSTEM "conf/gameProps.conf"
+    @classmethod
+    def LoadConfig(cls):
+        cofFile = os.path.join('conf', 'gameProps.conf')
+        try:
+            with open(confFile, 'r') as fp:
+                cls.config = json.load(fp)
+        except IOError, message:
+                print 'Cannot load configuration file:', confFile, ' Creating default file config!'
+                cls.SaveConfig()
+
+    #RETRIEVES A PARAMETER FROM CONFIGURATION PARAMETERS LIST
+    @classmethod
+    def getConfigParam(cls, param):
+        if param in cls.config:
+            return cls.config[param]
+        else:
+            return 0
+
+    #MODIFIES THE VALUE OF A CONFIGURATION PARAMETER
+    @classmethod
+    def setConfigParam(cls, param, value):
+        if not param in cls.config:
+            cls.config.update({param: value})
+        cls.config[param] = value
+        cls.SaveConfig()
+
