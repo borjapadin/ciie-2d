@@ -469,11 +469,15 @@ class Soldado(Pistolero,NoJugador):
         NoJugador.__init__(self,'Fase/1/SpriteSoldadoFilas.png','Fase/1/offsetsSoldado.txt', [1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
         self.establecerVida(250)
         self.inicializarBalas()
+        self.damage = 10
         #self.disparar = OFF
         #self.inicializarCountDisparar()
 
     def mover_cpu(self, jugador,tiempo):
         NoJugador.mover_cpu(self,jugador,tiempo)
+    
+    def damageEnemigo(self):
+        return self.damage
     
         
 #---------------------------
@@ -489,7 +493,7 @@ class BalaHeroe(MiSprite):
         MiSprite.__init__(self);
 
         self.mirando = direccion
-        self.damage = 25 #De momento por defecto porque me da pereza buscar
+        self.damage = 20 #De momento por defecto porque me da pereza buscar
         
         self.velocidad = velocidad #No le pondria la velocidad porque todas las balas tendran la misma (?)
         self.retardoAnimacion = 5 #No le pondría el retardo de la animación.

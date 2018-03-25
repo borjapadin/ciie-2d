@@ -82,10 +82,11 @@ class Fase(Escena):
     	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
     	#Eduardo Penas.
     	
-        self.grupoSprites = pygame.sprite.Group(self.jugador,self.plataformaSuelo,self.objeto, self.grupoEnemigos)
+        self.grupoSprites = pygame.sprite.Group(self.plataformaSuelo,self.objeto, self.grupoEnemigos)
 	self.kitsCurativos = self.crearKitCurativo()
 	for kitCurativo in iter(self.kitsCurativos):
 	    self.grupoSprites.add(kitCurativo)	
+	self.grupoSprites.add(self.jugador)
     
     def condicionesPasarFase(self):
 	return self.pasarFase
@@ -136,7 +137,7 @@ class Fase(Escena):
     
     def crearKitCurativo(self):
 	kitsCurativos = []
-	kitCurativo = KitCuracion(75) 
+	kitCurativo = KitCuracion(50) 
 	kitCurativo.establecerPosicion((100,self.coordPlataforma[1]+1))
 	kitsCurativos.append(kitCurativo)
 	return kitsCurativos
@@ -233,6 +234,9 @@ class Fase(Escena):
                     self.lesionarPersonaje(bala,enemigo)
                     if not enemigo.tieneVida():
                         enemigo.kill()
+	    if pygame.sprite.collide_rect(self.jugador,enemigo):
+		self.golpearseEnemigo(enemigo,self.jugador)
+		
 
         self.fondo.update(tiempo)
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
@@ -250,7 +254,6 @@ class Fase(Escena):
 	for kitCurativo in self.kitsCurativos:
 	    if pygame.sprite.collide_rect(self.jugador,kitCurativo):
 		valorKitCurativo = kitCurativo.recogerKitCurativo()
-		print(valorKitCurativo)
 		self.jugador.recuperarVida(valorKitCurativo)
 		self.vida.recuperarVida(valorKitCurativo)
 		kitCurativo.vaciar()
@@ -271,6 +274,11 @@ class Fase(Escena):
 	personaje.perderVida(damage)
 	if (personaje == self.jugador):
 	    self.vida.perderVida(damage) #De momento pierde vida 25 porque me da pereza otra cosa	
+    
+    def golpearseEnemigo(self,enemigo,personaje):
+	damage = enemigo.damageEnemigo()
+	personaje.perderVida(damage)
+	self.vida.perderVida(damage)
 	
     def dibujar(self, pantalla):
 	self.elementosDibujables.dibujar(pantalla)
