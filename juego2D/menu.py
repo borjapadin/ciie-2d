@@ -50,10 +50,13 @@ class Menu(Escena):
 		#Con el número (de la fase y cutscene) gestionamos el comportamiento que debe tener esa fase como:
 		#Que imagen cargar de donde en cutScene, que texto, cual seria la fase siguiente etc.
 		self.setNumFaseSiguiente(NUM_FASE_INICIAL)
-		
+	
+	#FIX -- Method forced to implement but never used?
 	def update(self, *args):
 		return
     
+    #Recibe una lista de eventos, en caso de que en esta se encuentre SALIR, comunicamos al director
+    #En caso contrario 
 	def eventos(self, lista_eventos):
 	    # Se mira si se quiere salir de esta escena
 		for evento in lista_eventos:
@@ -102,18 +105,3 @@ class Menu(Escena):
 	def mostrarPantalla(self, pantalla):
 		self.pantallaActual = pantalla
 
-	"""def mostrarPantallaInicial(self):
-		self.pantallaActual = PANTALLA_PRINCIPAL
-    
-	def mostrarPantallaConfiguracion(self):
-		self.pantallaActual = PANTALLA_PAUSA
-
-	def mostrarPantallaGameOver(self):
-		self.pantallaActual = PANTALLA_GAMEOVER
-	
-	def mostrarPantallaVictoria(self):
-		self.pantallaActual = PANTALLA_VICTORIA
-	
-	def mostrarPantallaCutScene(self):
-		self.pantallaActual = PANTALLA_CUTSCENE"""
-	
