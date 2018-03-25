@@ -149,7 +149,10 @@ class Personaje(MiSprite):
     
     def perderVida(self,valor):
         self.vida -= valor
-
+    
+    def recuperarVida(self,valor):
+        self.vida += valor
+    
     def balasLanzar(self):
         return self.balas
 

@@ -23,6 +23,16 @@ class listaVidas(ElementoDibujable):
             if vidaPerdida < valorVida: #Una bala lo máximo que va a quitar es una vida entera.
                 valorVidaNueva = valorVida-vidaPerdida
                 self.listaVidas.append(Vida(vida.posicionX(),valorVidaNueva))
+                
+    def recuperarVida(self,vidaGanada):
+        if (len(self.listaVidas)<=10):
+            vida = self.listaVidas.pop()
+            valorVida = vida.getValor()
+            if vidaGanada <= 100:
+                valorVidaNueva = valorVida+vidaGanada
+                if valorVidaNueva > 100: 
+                    valorVidaNueva = 100
+                self.listaVidas.append(Vida(vida.posicionX(),valorVidaNueva))
     
 class Vida:
     def __init__ (self,x,valor):

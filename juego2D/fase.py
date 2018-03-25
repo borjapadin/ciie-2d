@@ -83,6 +83,10 @@ class Fase(Escena):
     	#Eduardo Penas.
     	
         self.grupoSprites = pygame.sprite.Group(self.jugador,self.plataformaSuelo,self.objeto, self.grupoEnemigos)
+	self.kitsCurativos = self.crearKitCurativo()
+	for kitCurativo in iter(self.kitsCurativos):
+	    self.grupoSprites.add(kitCurativo)	
+    
     def condicionesPasarFase(self):
 	return self.pasarFase
     
@@ -129,7 +133,14 @@ class Fase(Escena):
     def crearObjetoPrincipal(self):
     	self.objeto = ObjetoPrincipal('bidonGasolina','ficheroTextoQueActualmenteNoHaceNada')
     	self.objeto.establecerPosicion((1000,self.coordPlataforma[1]+1))
-
+    
+    def crearKitCurativo(self):
+	kitsCurativos = []
+	kitCurativo = KitCuracion(75) 
+	kitCurativo.establecerPosicion((100,self.coordPlataforma[1]+1))
+	kitsCurativos.append(kitCurativo)
+	return kitsCurativos
+	
     #TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
 
@@ -235,7 +246,15 @@ class Fase(Escena):
     	if not self.jugador.tieneVida():
     	    self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
 	
-	
+	#----------------------Comprobar que el jugador choca con algun kit de curacion
+	for kitCurativo in self.kitsCurativos:
+	    if pygame.sprite.collide_rect(self.jugador,kitCurativo):
+		valorKitCurativo = kitCurativo.recogerKitCurativo()
+		print(valorKitCurativo)
+		self.jugador.recuperarVida(valorKitCurativo)
+		self.vida.recuperarVida(valorKitCurativo)
+		kitCurativo.vaciar()
+	    
         # ---------------------Comprobamos si hay colision entre algun jugador y el objeto principal
     	if pygame.sprite.collide_rect(self.jugador, self.objeto):
 	    objetoInventario = self.objeto.crearObjetoInventario(1)

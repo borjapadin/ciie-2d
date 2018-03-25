@@ -21,17 +21,15 @@ class Objetos(MiSprite):
         MiSprite.__init__(self);
 
         # Se carga la hoja
+        self.cambiarImagen(archivoImagen)
+        
+    def cambiarImagen(self,archivoImagen):
         self.hoja = GestorRecursos.CargarImagen(archivoImagen,-1)
         self.hoja = self.hoja.convert_alpha()
-       
-        # Leemos las coordenadas de un archivo de texto
-        # No lo uso que no tengo ni idea de como funciona.
-        #datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas) 
-        #datos = datos.split()
-
+    
         # El rectangulo del Sprite
         self.rect = pygame.Rect((0,20),[34,40])
-        self.image = self.hoja.subsurface(0,0,34,40)
+        self.image = self.hoja.subsurface(0,0,34,40)        
     
     def obtenerObjeto():
         return imagen
@@ -44,7 +42,25 @@ class ObjetoPrincipal(Objetos):
     
     def crearObjetoInventario(self,num):
         return ObjetoInventario(num,self.imagen)
+
+class KitCuracion(Objetos):
+    def __init__(self,valorCurativo):
+        self.valorCurativo = valorCurativo 
+        Objetos.__init__(self,'Inventario/kitCurativo.png','nada')
+    
+    def getValorCurativo(self):
+        return self.valorCurativo
+    
+    def vaciar(self):
+        self.cambiarImagen('Inventario/kitCurativoVacio.png')
+        self.valorCurativo = 0
         
+    def recogerKitCurativo(self):
+        valorCurativo = self.getValorCurativo()
+        return valorCurativo
+
+        
+    
 
     
 
