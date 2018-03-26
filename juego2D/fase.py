@@ -137,10 +137,7 @@ class Fase(Escena):
     def crearEnemigos(self):
         for (enemigo) in iter(GestorRecursos.getConfiguration('ENEMIGOS')):
             (tipoEnemigo, posicion) = enemigo
-            print(tipoEnemigo)
             enemy = self.constructorTipoEnemigo(tipoEnemigo)
-            print(posicion)
-            print(self.coordPlataforma[1])
             enemy.establecerPosicion((posicion, self.coordPlataforma[1] + 1))
             self.grupoEnemigos.add(enemy)
         #enemigo = Soldado()
@@ -221,7 +218,6 @@ class Fase(Escena):
             # Si el escenario ya está a la derecha del todo, no lo movemos mas
             if self.scrollx + ANCHO_PANTALLA >= self.decorado.rect.right:
                 self.scrollx = self.decorado.rect.right - ANCHO_PANTALLA
-                print(self.condicionesPasarFase())
                 # En su lugar, colocamos al jugador que esté más a la derecha a
                 # la derecha de todo
                 jugador.establecerPosicion(
@@ -505,7 +501,6 @@ class FondoCutScene:
         self.tiempoCutScene = pygame.time.get_ticks() / 1000
 
     def leerArchivo(self, nombreFase):
-        print(type(nombreFase))
         datos = GestorRecursos.CargarArchivoCoordenadas(
             'Cutscene' + nombreFase + '/Texto.txt')
         datos = datos.splitlines()

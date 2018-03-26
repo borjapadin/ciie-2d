@@ -271,7 +271,6 @@ class Personaje(MiSprite):
             if self.numPostura != SPRITE_SALTANDO:
                 if self.archivoImagen == 'Fase/1/rossi.png':
                     self.decidirSiDisparar(tiempo)
-                    print(self.numPostura)
                     velocidadx = 0
                 else:
                     self.decidirSiDisparar()
@@ -353,11 +352,9 @@ class Pistolero():
 
     def crearBala(self):
         # Si se ha pulsado que quieres disparar
-        # print(self.dispararBala)
         if self.disparar == ON:
             self.bala = BalaHeroe('Fase/1/playerBullet.png',
                                   'Fase/1/offsetBala.txt', [1], 1)
-            # print('dispararBala')
             self.disparar = OFF
             if self.archivoImagen == 'Fase/1/rossi.png':
                 if self.mirando == IZQUIERDA:
@@ -414,7 +411,6 @@ class Jugador(Pistolero, Personaje):
 
     def decidirSiDisparar(self, tiempo):
         if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_SOLDADO):
-            print(self.count_disparar)
             self.dispararBala()
             self.inicializarCountDisparar()
             self.numPostura = SPRITE_DISPARANDO
@@ -457,33 +453,26 @@ class NoJugador(Personaje):
     def mover_cpu_distancia(self, jugador, tiempo):
         # Por defecto un enemigo no hace nada
         #  (se podria programar, por ejemplo, que disparase al jugador por defecto)
-        i = 0
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
-
+            self.decidirSiDisparar()
             #-----------------------------Mirar-----------------------------
-            if self.movimiento == DISPARAR:
-                while i <= 8:
-                    i += 1
-
-                    if jugador.posicion[0] < self.posicion[0]:
-                        self.mirando = IZQUIERDA
+            #if self.movimiento == DISPARAR:
+            if jugador.posicion[0] < self.posicion[0]:
+                    self.mirando = IZQUIERDA
+                    if self.movimiento == DISPARAR:
                         self.numPostura = SPRITE_DISPARANDO
-                    else:
-                        self.mirando = DERECHA
-                        self.numPostura = SPRITE_DISPARANDO
-            """if jugador.posicion[0]<self.posicion[0]:
-                self.mirando = IZQUIERDA
-                Personaje.mover(self,QUIETO)
+                    
             else:
                 self.mirando = DERECHA
-                Personaje.mover(self,QUIETO)"""
+                if self.movimiento == DISPARAR:
+                        self.numPostura = SPRITE_DISPARANDO
 
-        # Si este personaje no esta en pantalla, no hara nada
-        """else:
-            Personaje.mover(self,QUIETO)"""
+           
+        else:
+            Personaje.mover(self,QUIETO)
 
         #--------------------------Disparar----------------
-        self.decidirSiDisparar()
+        
 
     def mover_cpu_mele(self, jugador, tiempo):
         return
@@ -569,3 +558,6 @@ class BalaHeroe(MiSprite):
 
     def damageBala(self):
         return self.damage
+
+
+#print()
