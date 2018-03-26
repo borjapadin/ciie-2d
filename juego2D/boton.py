@@ -26,14 +26,6 @@ class Boton(ElementoGUI):
 ################################################################################################
 
 
-class BotonJugar(Boton):
-    def __init__(self, pantalla):
-        Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,400))
-
-    def accion(self):
-        self.pantalla.menu.ejecutarJuego()
-
-
 class BotonSalir(Boton):
     def __init__(self, pantalla):
         Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,450))
@@ -52,7 +44,7 @@ class BotonVolverJuego(Boton):
 
 class BotonReanudar(Boton):
     def __init__(self, pantalla, director):
-        Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,400))
+        Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (60, 500))
         self.director = director
         
     def accion(self):
@@ -67,6 +59,15 @@ class BotonContinuar(Boton):
         self.pantalla.menu.crearCutScene()
 
 
+class BotonJugar(Boton):
+    def __init__(self, pantalla):
+        Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20,400))
+
+
+    def accion(self):
+        self.pantalla.menu.ejecutarJuego()
+
+	
 
 """class AddBoton(Boton):
 	def __init__(self, boton, evento):
