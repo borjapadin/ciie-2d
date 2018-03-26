@@ -265,7 +265,7 @@ class Fase(Escena):
 
         #-----------------Comprobamos si hay colisión entre algun enemigo y una bala amiga.
         for enemigo in iter(self.grupoEnemigos):
-            enemigo.mover_cpu_distancia(self.jugador, tiempo)
+            enemigo.mover_cpu(self.jugador, tiempo)
             for bala in self.grupoBalasJugador:
                 if pygame.sprite.collide_rect(enemigo, bala):
                     self.lesionarPersonaje(bala, enemigo)

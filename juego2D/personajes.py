@@ -123,6 +123,10 @@ class Personaje(MiSprite):
         elif archivoImagen == 'Fase/1/SpriteSoldadoFilas.png':
             variable = 4
             self.mirando = IZQUIERDA
+        elif archivoImagen == 'Fase/1/Zombie.png':
+            variable = 3
+            self.mirando = IZQUIERDA
+
 
         for linea in range(0, variable):
             self.coordenadasHoja.append([])
@@ -302,8 +306,8 @@ class Personaje(MiSprite):
             # gravedad
             else:
                 velocidady += GRAVEDAD * tiempo
-
-        self.crearBala()
+        if self.archivoImagen != 'Fase/1/Zombie.png':
+            self.crearBala()
         # Actualizamos la imagen a mostrar
         self.actualizarPostura()
 
@@ -443,16 +447,50 @@ class NoJugador(Personaje):
         # pasados
         Personaje.__init__(self, archivoImagen, archivoCoordenadas,
                            numImagenes, velocidad, velocidadSalto, retardoAnimacion)
-        self.disparar = OFF
-        self.inicializarCountDisparar()
+        
     # Aqui vendria la implementacion de la IA segun las posiciones de los jugadores
     # La implementacion por defecto, este metodo deberia de ser implementado en las clases inferiores
     #  mostrando la personalidad de cada enemigo
+                      
 
-    def mover_cpu_distancia(self, jugador, tiempo):
-        # Por defecto un enemigo no hace nada
-        #  (se podria programar, por ejemplo, que disparase al jugador por defecto)
-              if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+    
+
+
+#---------------------------
+# Clase Zombi
+class Zombie(NoJugador):
+    def __init__(self):
+        NoJugador.__init__(self, 'Fase/1/Zombie.png', 'Fase/1/OffsetZombie.txt', [
+                            1, 6, 4], VELOCIDAD_ZOMBIE, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
+        self.establecerVida(250)
+        self.damage = 10
+
+    def mover_cpu(self, jugador, tiempo):
+        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+            if jugador.posicion[0] < self.posicion[0]:
+                self.mirando = IZQUIERDA
+                Personaje.mover(self, IZQUIERDA)
+            else:
+                self.mirando = DERECHA
+                Personaje.mover(self, IZQUIERDA)
+
+    def damageEnemigo(self):
+        return self.damage
+#---------------------------
+# Clase Soldado
+class Soldado(Pistolero, NoJugador):
+
+    def __init__(self):
+        NoJugador.__init__(self, 'Fase/1/SpriteSoldadoFilas.png', 'Fase/1/offsetsSoldado.txt', [
+                           1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
+        self.establecerVida(250)
+        self.inicializarBalas()
+        self.damage = 10
+        self.disparar = OFF
+        self.inicializarCountDisparar()
+
+    def mover_cpu(self, jugador, tiempo):
+        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
             #self.decidirSiDisparar()
             #-----------------------------Mirar-----------------------------
             #if self.movimiento == DISPARAR:
@@ -486,14 +524,8 @@ class NoJugador(Personaje):
                 else:
                     Personaje.mover(self,QUIETO)
 
-    def mover_cpu_mele(self, jugador, tiempo):
-        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
-            if jugador.posicion[0] < self.posicion[0]:
-                self.mirando = IZQUIERDA
-                Personaje.mover(self, IZQUIERDA)
-            else:
-                self.mirando = DERECHA
-                Personaje.mover(self, IZQUIERDA)
+    def damageEnemigo(self):
+        return self.damage
 
     def decidirSiDisparar(self):
         if (self.count_disparar == VELOCIDAD_RECARGA_BALA):
@@ -508,41 +540,6 @@ class NoJugador(Personaje):
         # más natural.
         self.disparar = randint(OFF, ON)
         Personaje.mover(self, DISPARAR)
-
-
-#---------------------------
-# Clase Zombi
-class Zombie(NoJugador):
-    def __init__(self):
-        NoJugador.__init__(self, 'Fase/1/Zombie.png', 'Fase/1/OffsetZombie.txt', [
-                            1, 6, 4, 0], VELOCIDAD_ZOMBIE, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
-        self.establecerVida(250)
-        self.damage = 5
-
-    def mover_cpu(self, jugador, tiempo):
-        NoJugador.mover_cpu_mele(self, jugador, tiempo)
-
-    def damageEnemigo(self):
-        return self.damage
-#---------------------------
-# Clase Soldado
-class Soldado(Pistolero, NoJugador):
-
-    def __init__(self):
-        NoJugador.__init__(self, 'Fase/1/SpriteSoldadoFilas.png', 'Fase/1/offsetsSoldado.txt', [
-                           1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
-        self.establecerVida(250)
-        self.inicializarBalas()
-        self.damage = 10
-        #self.disparar = OFF
-        # self.inicializarCountDisparar()
-
-    def mover_cpu(self, jugador, tiempo):
-        NoJugador.mover_cpu(self, jugador, tiempo)
-
-    def damageEnemigo(self):
-        return self.damage
-
 
 #---------------------------
 # Clase Jefe
