@@ -307,7 +307,7 @@ class Fase(Escena):
         for bala in self.grupoBalasSoldado:
             if pygame.sprite.collide_rect(self.jugador, bala):
                 # Si chocan se lesiona al personaje.
-                print(self.jugador.devolverVida())
+                #print(self.jugador.devolverVida())
                 self.lesionarPersonaje(bala, self.jugador)
 
         #----------------------Comprobar que el jugador esta muerto

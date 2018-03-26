@@ -17,7 +17,6 @@ ALTO_PANTALLA =  600
 # Clase Menu, la escena en sí
 class Menu(Escena):
 	def __init__(self, director):
-<<<<<<< HEAD
 		Escena.__init__(self, director); # Llamamos al constructor de la clase padre
 
 		self.listaPantallas = [] # Creamos la lista de pantallas
@@ -28,19 +27,7 @@ class Menu(Escena):
 		self.listaPantallas.append(Pantalla(self, director, 'Menu/GameOver/PantallaGameOver_2.jpg'))
 		self.listaPantallas.append(Pantalla(self, director, 'Menu/Victoria/PantallaVictoria.png'))
 		self.listaPantallas.append(Pantalla(self, director, 'Menu/CutScene/PantallaSiguienteNivel.png'))
-=======
-		# Llamamos al constructor de la clase padre
-		Escena.__init__(self, director);
-		# Creamos la lista de pantallas
-		self.listaPantallas = []
-		# Creamos las pantallas que vamos a tener
-		#   y las metemos en la lista
-		self.listaPantallas.append(Pantalla(self, 'Menu/Inicio/PantallaInicio.jpg'))
-		self.listaPantallas.append(PantallaPausa(self,director))
-		self.listaPantallas.append(Pantalla(self, 'Menu/GameOver/PantallaGameOver_2.jpg'))
-		self.listaPantallas.append(Pantalla(self, 'Menu/Victoria/PantallaVictoria.png'))
-		self.listaPantallas.append(Pantalla(self, 'Menu/CutScene/PantallaSiguienteNivel.png'))
->>>>>>> origin/master
+
 		
 		# En que pantalla estamos actualmente
 		self.mostrarPantalla(PANTALLA_PRINCIPAL)
@@ -95,8 +82,3 @@ class Menu(Escena):
 		
 	def mostrarPantalla(self, pantalla):
 		self.pantallaActual = pantalla
-<<<<<<< HEAD
-=======
-
-	
->>>>>>> origin/master

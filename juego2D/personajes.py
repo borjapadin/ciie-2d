@@ -8,7 +8,6 @@ from escena import *
 from gestorRecursos import *
 from random import randint
 
-# Constantes--------------
 GRAVEDAD = 0.003  # Píxeles / ms2
 # Movimientos
 QUIETO = 0
@@ -47,8 +46,6 @@ RETARDO_ANIMACION_ZOMBIE = 8
 GRAVEDAD = 0.0006  # Píxeles / ms2
 VELOCIDAD_BALAS = 5
 
-#----------------------------
-# Clase MiSprite
 
 
 class MiSprite(pygame.sprite.Sprite):
@@ -82,8 +79,7 @@ class MiSprite(pygame.sprite.Sprite):
         incrementoy = self.velocidad[1] * tiempo
         self.incrementarPosicion((incrementox, incrementoy))
 
-#---------------------------
-# Clases Personaje
+
 
 
 class Personaje(MiSprite):
@@ -328,8 +324,7 @@ class Personaje(MiSprite):
 
         return
 
-#---------------------------
-# class Pistolero
+
 
 
 class Pistolero():
@@ -384,8 +379,7 @@ class Pistolero():
                         (self.posicion[0] + 40, self.posicion[1] - 21))
                 self.balas = self.bala
 
-#---------------------------
-# Clase Jugador
+
 
 
 class Jugador(Pistolero, Personaje):
@@ -441,8 +435,6 @@ class Jugador(Pistolero, Personaje):
         self.disparar = ON
         Personaje.mover(self, DISPARAR)
 
-#--------------------------------------------------
-# Clase NoJugador
 
 
 class NoJugador(Personaje):
@@ -460,10 +452,6 @@ class NoJugador(Personaje):
                       
 
     
-
-
-#---------------------------
-# Clase Zombi
 class Zombie(NoJugador):
     def __init__(self):
         NoJugador.__init__(self, 'Fase/1/Zombie.png', 'Fase/1/OffsetZombie.txt', [
@@ -484,10 +472,11 @@ class Zombie(NoJugador):
 
     def damageEnemigo(self):
         return self.damage
-#---------------------------
-# Clase Soldado
-class Soldado(Pistolero, NoJugador):
 
+
+
+
+class Soldado(Pistolero, NoJugador):
     def __init__(self):
         NoJugador.__init__(self, 'Fase/1/SpriteSoldadoFilas.png', 'Fase/1/offsetsSoldado.txt', [
                            1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
@@ -549,14 +538,9 @@ class Soldado(Pistolero, NoJugador):
         self.disparar = randint(OFF, ON)
         Personaje.mover(self, DISPARAR)
 
-#---------------------------
-# Clase Jefe
 
 
-#---------------------------
-# Clase BalaHeroe
 class BalaHeroe(MiSprite):
-
     def __init__(self, archivoImagen, archivoCoordenadas, velocidad, direccion):
 
         MiSprite.__init__(self)
@@ -592,6 +576,3 @@ class BalaHeroe(MiSprite):
 
     def damageBala(self):
         return self.damage
-
-
-#print()
