@@ -18,7 +18,7 @@ ARRIBA = 3
 ABAJO = 4
 DISPARAR = 5
 
-VELOCIDAD_RECARGA_BALA = 100
+VELOCIDAD_RECARGA_BALA = 20
 VELOCIDAD_RECARGA_BALA_SOLDADO = 120
 
 ON = 1
@@ -273,8 +273,6 @@ class Personaje(MiSprite):
                 if self.archivoImagen == 'Fase/1/rossi.png':
                     self.decidirSiDisparar(tiempo)
                     velocidadx = 0
-                else:
-                    self.decidirSiDisparar()
             else:
                 self.decidirSiDisparar(tiempo)
                 self.numPostura = SPRITE_SALTANDO
@@ -454,26 +452,39 @@ class NoJugador(Personaje):
     def mover_cpu_distancia(self, jugador, tiempo):
         # Por defecto un enemigo no hace nada
         #  (se podria programar, por ejemplo, que disparase al jugador por defecto)
-        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
-            self.decidirSiDisparar()
+              if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+            #self.decidirSiDisparar()
             #-----------------------------Mirar-----------------------------
             #if self.movimiento == DISPARAR:
-            if jugador.posicion[0] < self.posicion[0]:
-                    self.mirando = IZQUIERDA
-                    if self.movimiento == DISPARAR:
-                        self.numPostura = SPRITE_DISPARANDO
-                    
-            else:
-                self.mirando = DERECHA
-                if self.movimiento == DISPARAR:
-                        self.numPostura = SPRITE_DISPARANDO
-
-           
-        else:
-            Personaje.mover(self,QUIETO)
-
-        #--------------------------Disparar----------------
-        
+                posicionJugador = jugador.posicion[0] 
+                posicionEnemigo = self.posicion[0]
+                if posicionJugador < posicionEnemigo:
+                    if (posicionEnemigo-posicionJugador) < 150: #La distancia es menor de 50
+                        if (self.count_disparar >= VELOCIDAD_RECARGA_BALA): #Velocidad recarga bala.
+                            self.mirando = IZQUIERDA            
+                            self.numPostura = SPRITE_DISPARANDO
+                            self.disparar = ON
+                            Personaje.mover(self, DISPARAR)
+                            self.inicializarCountDisparar()
+                        else:
+                            self.aumentarContadorDisparo()
+                    else: 
+                        Personaje.mover(self,QUIETO)
+                elif posicionEnemigo < posicionJugador:
+                    if (posicionJugador-posicionEnemigo) < 150: #La distancia es menor de 50 
+                        if (self.count_disparar >= VELOCIDAD_RECARGA_BALA): #Velocidad recarga bala.
+                            self.mirando = DERECHA
+                            self.numPostura = SPRITE_DISPARANDO
+                            self.disparar = ON
+                            Personaje.mover(self, DISPARAR)
+                            self.inicializarCountDisparar()
+                        else:
+                            self.disparar = OFF
+                            self.aumentarContadorDisparo()
+                    else:
+                        Personaje.mover(self,QUIETO)
+                else:
+                    Personaje.mover(self,QUIETO)
 
     def mover_cpu_mele(self, jugador, tiempo):
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
