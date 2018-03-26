@@ -1,10 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+<<<<<<< HEAD
+=======
+# Importar modulos
+# -*- encoding: utf-8 -*-
+
+>>>>>>> origin/master
 import pygame
 import director
 from director import *
 from menu import *
+from baseDeDatos import *
 
 
 if __name__ == '__main__':

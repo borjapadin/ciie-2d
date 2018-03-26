@@ -3,14 +3,27 @@ from constantes import *
 from gestorRecursos import *
 from elementosDibujables import *
 
+MAX_VIDA = 1000
+
 class listaVidas(ElementoDibujable):
-    def __init__(self):
+    def __init__(self,vidaAcumulada):
         self.listaVidas = []
         
+        #Cuantos corazones enteros tenemos que dibujar.
+        corazonesLlenos = int(vidaAcumulada/100)
+        print(vidaAcumulada)
+
         posicionVertical = 115
-        for i in range(0,10):
+        for i in range(0,corazonesLlenos):
             posicionVertical += 30
             self.listaVidas.append(Vida(posicionVertical,100))
+
+        #Cuanto esta lleno el último corazón
+        ultimoCachitoUltimoCorazon = vidaAcumulada % 100 
+        if ultimoCachitoUltimoCorazon != 0:
+            self.listaVidas.append(Vida(posicionVertical+30,ultimoCachitoUltimoCorazon))
+            print(ultimoCachitoUltimoCorazon*10)
+
     
     def dibujar(self,pantalla):
         for vida in self.listaVidas:

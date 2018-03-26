@@ -17,6 +17,7 @@ ALTO_PANTALLA =  600
 # Clase Menu, la escena en sí
 class Menu(Escena):
 	def __init__(self, director):
+<<<<<<< HEAD
 		Escena.__init__(self, director); # Llamamos al constructor de la clase padre
 
 		self.listaPantallas = [] # Creamos la lista de pantallas
@@ -27,15 +28,28 @@ class Menu(Escena):
 		self.listaPantallas.append(Pantalla(self, director, 'Menu/GameOver/PantallaGameOver_2.jpg'))
 		self.listaPantallas.append(Pantalla(self, director, 'Menu/Victoria/PantallaVictoria.png'))
 		self.listaPantallas.append(Pantalla(self, director, 'Menu/CutScene/PantallaSiguienteNivel.png'))
+=======
+		# Llamamos al constructor de la clase padre
+		Escena.__init__(self, director);
+		# Creamos la lista de pantallas
+		self.listaPantallas = []
+		# Creamos las pantallas que vamos a tener
+		#   y las metemos en la lista
+		self.listaPantallas.append(Pantalla(self, 'Menu/Inicio/PantallaInicio.jpg'))
+		self.listaPantallas.append(PantallaPausa(self,director))
+		self.listaPantallas.append(Pantalla(self, 'Menu/GameOver/PantallaGameOver_2.jpg'))
+		self.listaPantallas.append(Pantalla(self, 'Menu/Victoria/PantallaVictoria.png'))
+		self.listaPantallas.append(Pantalla(self, 'Menu/CutScene/PantallaSiguienteNivel.png'))
+>>>>>>> origin/master
 		
 		# En que pantalla estamos actualmente
 		self.mostrarPantalla(PANTALLA_PRINCIPAL)
-		
+		self.vida = 1000
 		#Para saber cual es la primera fase que creara cutScene.
 		#Con el número (de la fase y cutscene) gestionamos el comportamiento que debe tener esa fase como:
 		#Que imagen cargar de donde en cutScene, que texto, cual seria la fase siguiente etc.
 		self.setNumFaseSiguiente(NUM_FASE_INICIAL)
-		
+	
 	def update(self, *args):
 		return
     
@@ -63,10 +77,6 @@ class Menu(Escena):
     
 	def ejecutarJuego(self):
 		self.crearCutScene()
-		#fase2 = Fase(self.director,2)
-	#	cutscene = CutScene(self.director,NUM_FASE_INICIAL)
-	#	self.director.apilarEscena(cutscene)
-	#	self.mostrarPantallaConfiguracion() 
 	
 	def crearCutScene(self):
 		#El menú ya sabe cual es la fase siguiente.
@@ -85,3 +95,8 @@ class Menu(Escena):
 		
 	def mostrarPantalla(self, pantalla):
 		self.pantallaActual = pantalla
+<<<<<<< HEAD
+=======
+
+	
+>>>>>>> origin/master

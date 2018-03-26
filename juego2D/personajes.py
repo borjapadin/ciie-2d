@@ -169,7 +169,15 @@ class Personaje(MiSprite):
 
     def recuperarVida(self, valor):
         self.vida += valor
-
+        if (self.vida > 1000):
+            self.vida = 1000
+    
+    def tieneVida(self):
+        return (self.vida > 0)
+    
+    def devolverVida(self):
+        return self.vida
+    
     def balasLanzar(self):
         return self.balas
 
@@ -320,8 +328,6 @@ class Personaje(MiSprite):
 
         return
 
-    def tieneVida(self):
-        return (self.vida > 0)
 #---------------------------
 # class Pistolero
 
@@ -385,7 +391,7 @@ class Pistolero():
 class Jugador(Pistolero, Personaje):
     "Cualquier personaje del juego"
 
-    def __init__(self):
+    def __init__(self,vidaActual=1000): #Vida Actual = 1000 si no se dice nada
         # Invocamos al constructor de la clase padre con la configuracion de
         # este personaje concreto
         Personaje.__init__(self, 'Fase/1/rossi.png', 'Fase/1/offsetRossi.txt', [
@@ -393,7 +399,7 @@ class Jugador(Pistolero, Personaje):
         self.disparar = OFF
         self.inicializarBalas()
         self.count_disparar = 150
-        self.establecerVida(1000)
+        self.establecerVida(vidaActual)
 
     def mover(self, teclasPulsadas, arriba, abajo, izquierda, derecha, disparar):
         # Indicamos la acción a realizar segun la tecla pulsada para el jugador
