@@ -9,13 +9,13 @@ from pygame.locals import *
 from constantes import *
 from textoGUI import *
 from objetos import *
-from Cielo import *
+from cielo import *
 from decorado import *
 from constantes import *
 from careto import *
 from vida import *
-from Tiempo import *
-from ElementosDibujables import *
+from tiempo import *
+from elementosDibujables import *
 #from animaciones import *
 
 # -------------------------------------------------

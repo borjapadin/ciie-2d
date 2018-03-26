@@ -7,17 +7,8 @@ from escena import *
 from director import *
 from fase import *
 from pantallaPausa import *
-#from pantallaConfiguracion import *
-#from pantallaInicial import *
-#from pantallaGameOver import *
 from time import *
 from constantes import *
-#from pantallaVictoria import *
-#from pantallaCutScene import *
-
-#from pantallaVGO import*
-#from pantallaIniCute import *
-
 from pantalla import *
 
 ANCHO_PANTALLA = 800

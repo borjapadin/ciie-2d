@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from constantes import *
 from gestorRecursos import *
-from ElementosDibujables import *
+from elementosDibujables import *
 # Clase Cielo: aún no tiene nada prácticamente, solo un background negro.
 
 class Cielo(ElementoDibujable):
