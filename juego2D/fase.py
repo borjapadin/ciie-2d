@@ -236,9 +236,13 @@ class Fase(Escena):
                         enemigo.kill()
 	    if pygame.sprite.collide_rect(self.jugador,enemigo):
 		self.golpearseEnemigo(enemigo,self.jugador)
-		
 
-        self.fondo.update(tiempo)
+	self.cronometro = pygame.time.get_ticks()/1000-self.cronometroScene
+	self.tiempo.actualizarCronometro(self.cronometro)
+	self.fondo.update(tiempo)
+	if(self.cronometro == 20):
+		self.director.cambiarAlMenu(self,PANTALLA_GAMEOVER)
+	
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 	
     	#--------------------- Comprobamos si hay colisión entre algún jugador y una bala enemiga ----------
@@ -344,6 +348,8 @@ class Fase(Escena):
         self.director.salirEscena()
         faseNueva = CutScene(self.director,self.numFaseSiguiente)
         self.director.apilarEscena(faseNueva)
+	
+	
 
 # -------------------------------------------------
 # Clase Plataforma
@@ -375,6 +381,7 @@ class CutScene(Escena):
         self.fondoCutScene = FondoCutScene("/"+self.numFase)
         self.texto = TITULO
         self.movimientoPosicion = 2 #Velocidad a la que ira el texto de titulo.
+	
 
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
@@ -400,7 +407,9 @@ class CutScene(Escena):
     def crearSceneSiguiente(self):
         self.director.salirEscena()
         faseNueva = Fase(self.director,self.numFase)
+	faseNueva.cronometroScene = pygame.time.get_ticks()/1000
         self.director.apilarEscena(faseNueva)
+	
 
     def actualizarTextoTituloNivel(self):
         (posicion,_) = self.fondoCutScene.update(self.movimientoPosicion,self.texto) #Actualizar el texto que corresponda.
@@ -432,6 +441,7 @@ class FondoCutScene:
 
 
         self.texto = TITULO
+	self.tiempoCutScene = pygame.time.get_ticks()/1000
 
     def leerArchivo(self,nombreFase):
 	print (type (nombreFase))

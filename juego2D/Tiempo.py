@@ -6,32 +6,55 @@ from ElementosDibujables import *
 class Tiempo(ElementoDibujable):
     def __init__ (self,inicial):
         
-        self.listaNumerosIzquierdos = []
-        self.listaNumerosDerechos = []
+        self.listaNumerosIzquierdos1 = []
+	self.listaNumerosIzquierdos2 = []
+        self.listaNumerosDerechos1 = []
+	self.listaNumerosDerechos2 = []
         #Append de todos los números que hay para poder mostrarlos si hacen falta.
         for i in range(0,10):
-            self.listaNumerosIzquierdos.append(Numero(i,(700,75)))
-            self.listaNumerosDerechos.append(Numero(i,(725,75)))
+            self.listaNumerosIzquierdos1.append(Numero(i,(675,75)))
+	    self.listaNumerosIzquierdos2.append(Numero(i,(700,75)))
+            self.listaNumerosDerechos1.append(Numero(i,(725,75)))
+	    self.listaNumerosDerechos2.append(Numero(i,(750,75)))
             
-        self.mostrarNumeroIzquierdo(0)
-        self.mostrarNumeroDerecho(0)
+        self.mostrarNumeroIzquierdo1(0)
+	self.mostrarNumeroIzquierdo2(0)
+        self.mostrarNumeroDerecho1(2)
+	self.mostrarNumeroDerecho2(0)
+
        
-    def mostrarNumeroIzquierdo(self,num):
-        self.numeroIzquierdo = self.listaNumerosIzquierdos[num]
+    def mostrarNumeroIzquierdo1(self,num):
+        self.numeroIzquierdo1 = self.listaNumerosIzquierdos1[num]
+
+    def mostrarNumeroIzquierdo2(self,num):
+	self.numeroIzquierdo2 = self.listaNumerosIzquierdos2[num]
        
-    def mostrarNumeroDerecho(self,num):
-        self.numeroDerecho = self.listaNumerosDerechos[num]
-    
+    def mostrarNumeroDerecho1(self,num):
+        self.numeroDerecho1 = self.listaNumerosDerechos1[num]
+
+    def mostrarNumeroDerecho2(self,num):
+        self.numeroDerecho2 = self.listaNumerosDerechos2[num]
   
     def dibujar(self,pantalla):
-        self.numeroDerecho.dibujar(pantalla)
-        self.numeroIzquierdo.dibujar(pantalla)
+        self.numeroDerecho1.dibujar(pantalla)
+	self.numeroDerecho2.dibujar(pantalla)
+	self.numeroIzquierdo1.dibujar(pantalla)
+        self.numeroIzquierdo2.dibujar(pantalla)
     
     def establecerPosicion(self, posicion):
         (posicionx, posiciony) = posicion
         self.rect.left = posicionx
-        self.rect.bottom = posiciony    
-        
+        self.rect.bottom = posiciony
+
+    def actualizarCronometro(self, tiempo):
+	if(tiempo >= 1):
+		if(tiempo>=1 and tiempo <=10):
+			self.mostrarNumeroDerecho1(1)
+			self.mostrarNumeroDerecho2(10-tiempo)
+		elif(tiempo>10):
+			self.mostrarNumeroDerecho1(0)
+        		self.mostrarNumeroDerecho2(10-tiempo)
+
 class Numero:
     
     def __init__(self,numero,posicion):
