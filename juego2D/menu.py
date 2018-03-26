@@ -6,7 +6,6 @@ from gestorRecursos import *
 from escena import *
 from director import *
 from fase import *
-from pantallaPausa import *
 from time import *
 from constantes import *
 from pantalla import *
@@ -18,24 +17,18 @@ ALTO_PANTALLA =  600
 # Clase Menu, la escena en sí
 class Menu(Escena):
 	def __init__(self, director):
-		# Llamamos al constructor de la clase padre
-		Escena.__init__(self, director);
-		# Creamos la lista de pantallas
-		self.listaPantallas = []
-		# Creamos las pantallas que vamos a tener
-		#   y las metemos en la lista
-		#self.listaPantallas.append(PantallaInicialGUI(self))
-		self.listaPantallas.append(Pantalla(self, 'Menu/Inicio/PantallaInicio.jpg'))
-		self.listaPantallas.append(PantallaPausa(self,director))
-		#self.listaPantallas.append(PantallaGameOverGUI(self))
-		#self.listaPantallas.append(PantallaVictoriaGUI(self))
-		self.listaPantallas.append(Pantalla(self, 'Menu/GameOver/PantallaGameOver_2.jpg'))
-		self.listaPantallas.append(Pantalla(self, 'Menu/Victoria/PantallaVictoria.png'))
-		#self.listaPantallas.append(PantallaCutSceneGUI(self))
-		self.listaPantallas.append(Pantalla(self, 'Menu/CutScene/PantallaSiguienteNivel.png'))
+		Escena.__init__(self, director); # Llamamos al constructor de la clase padre
+
+		self.listaPantallas = [] # Creamos la lista de pantallas
+
+		# Creamos las pantallas que vamos a tener y las metemos en la lista
+		self.listaPantallas.append(Pantalla(self, director, 'Menu/Inicio/PantallaInicio.jpg'))
+		self.listaPantallas.append(Pantalla(self, director, 'Menu/Pausa/PantallaPausa.png'))
+		self.listaPantallas.append(Pantalla(self, director, 'Menu/GameOver/PantallaGameOver_2.jpg'))
+		self.listaPantallas.append(Pantalla(self, director, 'Menu/Victoria/PantallaVictoria.png'))
+		self.listaPantallas.append(Pantalla(self, director, 'Menu/CutScene/PantallaSiguienteNivel.png'))
 		
 		# En que pantalla estamos actualmente
-		#self.mostrarPantallaInicial()
 		self.mostrarPantalla(PANTALLA_PRINCIPAL)
 		
 		#Para saber cual es la primera fase que creara cutScene.
@@ -63,9 +56,8 @@ class Menu(Escena):
 	def dibujar(self, pantalla):
 		self.listaPantallas[self.pantallaActual].dibujar(pantalla)
     
-	#--------------------------------------
-	# Metodos propios del menu
-    
+
+	# Metodos propios del menu 
 	def salirPrograma(self):
 		self.director.salirPrograma()
     
@@ -93,19 +85,3 @@ class Menu(Escena):
 		
 	def mostrarPantalla(self, pantalla):
 		self.pantallaActual = pantalla
-
-	"""def mostrarPantallaInicial(self):
-		self.pantallaActual = PANTALLA_PRINCIPAL
-    
-	def mostrarPantallaConfiguracion(self):
-		self.pantallaActual = PANTALLA_PAUSA
-    
-	def mostrarPantallaGameOver(self):
-		self.pantallaActual = PANTALLA_GAMEOVER
-	
-	def mostrarPantallaVictoria(self):
-		self.pantallaActual = PANTALLA_VICTORIA
-	
-	def mostrarPantallaCutScene(self):
-		self.pantallaActual = PANTALLA_CUTSCENE"""
-	

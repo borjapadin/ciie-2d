@@ -16,8 +16,8 @@ class Escena:
     def dibujar(self):
         raise NotImplemented("Tiene que implementar el metodo dibujar.")
 
-class EscenaPygame(Escena):
 
+class EscenaPygame(Escena):
     def __init__(self, director):
         Escena.__init__(self, director)
         # Inicializamos la libreria de pygame (si no esta inicializada ya)

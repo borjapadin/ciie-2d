@@ -12,10 +12,9 @@ from boton import *
 from constantes import *
 
 class Pantalla(PantallaGUI):
-	def __init__(self, menu, imagen):
-	        PantallaGUI.__init__(self, menu, imagen)
+	def __init__(self, menu, director, imagen):
+	        PantallaGUI.__init__(self, menu, director, imagen)
         
-	         # Creamos el texto y lo metemos en la lista
 		if imagen == 'Menu/CutScene/PantallaSiguienteNivel.png':
 			textoContinuar = TextoContinuar(self)
 	                self.elementosGUI.append(textoContinuar)
@@ -38,14 +37,21 @@ class Pantalla(PantallaGUI):
 	                self.botonSalirPantallaIni = BotonSalir(self)
     
 	                self.addBotonJugar()
-	            
+                    
+	        elif imagen == 'Menu/Pausa/PantallaPausa.png':
+                	self.director = director #Para que indique en que fase esta
+           
+                	textoContinuar = TextoContinuar(self) 
+                	self.elementosGUI.append(textoContinuar)
+    
+                	self.botonReanudar = BotonReanudar(self,director)
+                	self.elementosGUI.append(self.botonReanudar)    
 	        else:
 	                textoVolverJuego = TextoVolverJuego(self) 
 	                textoSalir = TextoSalir(self)
     
 	                self.elementosGUI.append(textoVolverJuego)
 	                self.elementosGUI.append(textoSalir)
-    
          
 	                #Creamos los botones
 	                self.botonSalir = BotonSalir(self) 
@@ -77,8 +83,12 @@ class Pantalla(PantallaGUI):
         	self.eventoSeleccionado = "salirCuteScene" 
 
         def addbBotonSalirPantallaIni(self):
-            self.elementosGUI.append(self.botonSalirPantallaIni)
-            self.eventoSeleccionado = "salirPantallaIni" 
+            	self.elementosGUI.append(self.botonSalirPantallaIni)
+            	self.eventoSeleccionado = "salirPantallaIni" 
+
+       	def addBotonReanudar(self):
+            	self.elementosGUI.append(self.botonReanudar)
+            	self.eventoSeleccionado = "volverJugar"
 
 
     	#Sobreescribir

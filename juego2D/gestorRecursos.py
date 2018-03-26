@@ -35,7 +35,6 @@ class GestorRecursos(object):
             nombreEntero = os.path.join('imagenes/', nombre) #Se carga
             try:
                 imag = pygame.image.load(nombreEntero) #intentamos cargar
-                print(nombreEntero)
             except pygame.error, message:
                 print 'No se ha podido cargar', nombreEntero
                 raise SystemExit, message
@@ -53,7 +52,6 @@ class GestorRecursos(object):
             return cls.recursos[nombre] #se devuelve
         else: #si no ha sido cargado
             nombreEntero = os.path.join('imagenes', nombre)#se carga
-            print (nombreEntero)
             pathfile = open(nombreEntero, 'r') #lo abrimos
             datos = pathfile.read() #lo leemos
             pathfile.close() #lo cerramos

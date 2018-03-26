@@ -2,8 +2,7 @@
 from constantes import *
 from gestorRecursos import *
 from elementosDibujables import *
-# -------------------------------------------------
-# Clase Decorado
+
 
 class Decorado(ElementoDibujable):
     def __init__(self,nombreFase):
@@ -17,8 +16,10 @@ class Decorado(ElementoDibujable):
         self.rectSubimagen = pygame.Rect(0, 0, ANCHO_PANTALLA, ALTO_PANTALLA)
         self.rectSubimagen.left = 0 # El scroll horizontal empieza en la posicion 0 por defecto
 
+
     def update(self, scrollx):
         self.rectSubimagen.left = scrollx
+
 
     def dibujar(self, pantalla):
         pantalla.blit(self.imagen, self.rect, self.rectSubimagen)

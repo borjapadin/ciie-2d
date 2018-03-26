@@ -7,7 +7,7 @@ from escena import *
 from director import *
 from elementoGUI import *
 
-#Clase Boton con los correspondientes botones
+
 class Boton(ElementoGUI):
     def __init__(self, pantalla, nombreImagen, posicion):
         #Se carga la imagen del boton
@@ -20,10 +20,6 @@ class Boton(ElementoGUI):
 
     def dibujar(self,pantalla):
         pantalla.blit(self.imagen,self.rect)
-
-
-
-################################################################################################
 
 
 class BotonSalir(Boton):
@@ -66,15 +62,3 @@ class BotonJugar(Boton):
 
     def accion(self):
         self.pantalla.menu.ejecutarJuego()
-
-	
-
-"""class AddBoton(Boton):
-	def __init__(self, boton, evento):
-		if evento == "volverJugar":
-        		self.elementosGUI.append(self.boton)
-    		elif evento == "salir":
-        		self.elementosGUI.append(self.boton)
-    		elif evento == "jugar":
-        		self.elementosGUI.append(self.boton)             
-    		self.eventoSeleccionado = evento"""

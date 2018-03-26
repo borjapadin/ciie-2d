@@ -8,12 +8,10 @@ from director import *
 from fase import *
 from menu import *
 from boton import *
-#from PantallaConfiguracion import *
-#from PantallaInicial import *
 
-#Clase PantallaGUI y las distintas pantallas
+
 class PantallaGUI:
-    def __init__(self, menu, nombreImagen):
+    def __init__(self, menu, director, nombreImagen):
         self.menu = menu
         #Se carga la imagen de fondo
         self.imagen = GestorRecursos.CargarImagen(nombreImagen,1)
@@ -21,7 +19,7 @@ class PantallaGUI:
         #Se tiene una lista de elementos GUI
         self.elementosGUI = []
         #Se tiene una lista de animaciones
-       # self.animaciones = []
+       	# self.animaciones = []
 
     def eventos(self, lista_eventos): #Actualmente no usa esto ninguna porque hay una clase que la sobreescribe, pero dejemoslo de momento
         for evento in lista_eventos:
@@ -47,13 +45,3 @@ class PantallaGUI:
         for elemento in self.elementosGUI:
             elemento.dibujar(pantalla)
 
-
-
-class PantallaConfiguracionGUI(PantallaGUI):
-    def __init__(self,menu,director):
-        PantallaGUI.__init__(self, menu, 'Menu/Pausa/PantallaPausa.png')
-        self.director = director #Para que indique en que fase esta
-        
-        botonReanudar = BotonReanudar(self,director)
-        self.elementosGUI.append(botonReanudar)     
-# -----------

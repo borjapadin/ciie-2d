@@ -1,4 +1,3 @@
-
 # -*- encoding: utf-8 -*-
 import pygame
 #import pyganim (?)
@@ -7,7 +6,7 @@ from gestorRecursos import *
 from escena import *
 from director import *
 from elementoGUI import *
-#Clase TextoGUI y los distintos textos
+
 
 class  TextoGUI(ElementoGUI):
     def __init__(self, pantalla, fuente, color, texto, posicion):
@@ -20,11 +19,7 @@ class  TextoGUI(ElementoGUI):
 
     def dibujar(self, pantalla):
         pantalla.blit(self.imagen, self.rect)
-    
-    
-    
-    
-################################################################################################3    
+      
 
 class TextoJugar(TextoGUI):
     def __init__(self, pantalla):
@@ -47,7 +42,6 @@ class TextoContinuar(TextoGUI):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 30);
         TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Continuar', (120, 495))
-
 
 
 class TextoVolverJuego(TextoGUI):

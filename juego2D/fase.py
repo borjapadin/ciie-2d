@@ -18,25 +18,16 @@ from tiempo import *
 from elementosDibujables import *
 #from animaciones import *
 
-# -------------------------------------------------
-# -------------------------------------------------
-# Constantes
-# -------------------------------------------------
-# -------------------------------------------------
 
 ULTIMA_FASE = 3
-
 # Los bordes de la pantalla para hacer scroll horizontal
 MINIMO_X_JUGADOR = 50
 MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 
-# -------------------------------------------------
-# Clase Fase
 
 
 class Fase(Escena):
     # Crear Escenas habituales
-
     def __init__(self, director, numFase):
         # Habria que pasarle como parámetro el número de fase, a partir del cual se cargue
         #  un fichero donde este la configuracion de esa fase en concreto, con cosas como
@@ -109,11 +100,13 @@ class Fase(Escena):
     def condicionesPasarFase(self):
         return self.pasarFase
 
+
     # TODO: generalizar.
     def crearPersonajePrincipal(self):
         self.jugador = Jugador()
         # Ponemos al jugador en la posición inicial
         self.jugador.establecerPosicion((5, self.coordPlataforma[1] + 1))
+
 
     # TODO: generalizar.
    # def crearPlataformasSecundarias():
@@ -128,6 +121,7 @@ class Fase(Escena):
         self.grupoEnemigos = pygame.sprite.Group()
         self.grupoSoldados = pygame.sprite.Group()
         self.grupoZombies = pygame.sprite.Group()
+
 
     # TODO: generalizar.
     def crearEnemigos(self):
@@ -145,13 +139,16 @@ class Fase(Escena):
         # enemigo.establecerPosicion((x,y))
         # self.grupoEnemigos.add(enemigo)
 
+
     def determinarPlataforma(self):
         self.coordPlataforma = GestorRecursos.getConfiguration('PLATAFORMA')
+
 
     # TODO: generalizar.
     def crearPlataformas(self, coordenadas):
         self.plataformaSuelo = Plataforma(pygame.Rect(coordenadas))
         self.grupoPlataformas = pygame.sprite.Group(self.plataformaSuelo)
+
 
     # TODO: generalizar. De momento esto de generico tiene una mierda pero
     # dejemoslo asi.
@@ -164,6 +161,7 @@ class Fase(Escena):
             self.objeto.establecerPosicion((1000, self.coordPlataforma[1] + 1))
             self.grupoSprites.add(self.objeto)
 
+
     def crearKitCurativo(self):
         kitsCurativos = []
         kitCurativo = KitCuracion(50)
@@ -171,6 +169,7 @@ class Fase(Escena):
         kitsCurativos.append(kitCurativo)
         return kitsCurativos
 
+    
     # TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
 
@@ -243,6 +242,7 @@ class Fase(Escena):
         # hace nada
         return False
 
+   
     def actualizarScroll(self, jugador):
         self.actualizarScrollOrdenados(jugador)
         # Actualizamos la posición en pantalla de todos los Sprites según el
@@ -254,6 +254,7 @@ class Fase(Escena):
         # distinta
         self.decorado.update(self.scrollx)
 
+   
     def moverBalas(self, grupoBalas):
         if grupoBalas != None:
             for bala in iter(grupoBalas):
@@ -271,6 +272,7 @@ class Fase(Escena):
             if pygame.sprite.collide_rect(self.jugador, enemigo):
                 self.golpearseEnemigo(enemigo, self.jugador)
 
+    
     def update(self, tiempo):
         # Primero, se indican las acciones que van a hacer las balas.
         self.moverBalas(self.grupoBalasJugador)
@@ -316,6 +318,7 @@ class Fase(Escena):
 
         self.actualizarScroll(self.jugador)
 
+    
     def lesionarPersonaje(self, bala, personaje):
         damage = bala.damageBala()
         bala.kill()
@@ -327,11 +330,13 @@ class Fase(Escena):
             # De momento pierde vida 25 porque me da pereza otra cosa
             self.vida.perderVida(damage)
 
+    
     def golpearseEnemigo(self, enemigo, personaje):
         damage = enemigo.damageEnemigo()
         personaje.perderVida(damage)
         self.vida.perderVida(damage)
 
+    
     def dibujar(self, pantalla):
         self.elementosDibujables.dibujar(pantalla)
 
@@ -351,6 +356,7 @@ class Fase(Escena):
         # sacamos jugador y comprobamos con una variable los sprites que tiene
         # y agregamos al grupo deSprites
 
+    
     def agregarDisparosEscena(self, pistolero, grupo):
         if (pistolero.tieneBalas()):  # Si hay balas.
             balas = pistolero.balasLanzar()
@@ -361,6 +367,7 @@ class Fase(Escena):
             self.grupoSprites.add(disparo)
             pistolero.vaciarBalas()
 
+    
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
         for evento in lista_eventos:
@@ -391,22 +398,23 @@ class Fase(Escena):
         teclasPulsadas = pygame.key.get_pressed()
         self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
 
+    
     def teclasConfiguracion(self):
         return
 
+   
     def obtenerNumeroFaseSiguiente(self):
         return self.numFaseSiguiente
 
+    
     def crearSceneSiguiente(self):
         self.director.salirEscena()
         faseNueva = CutScene(self.director, self.numFaseSiguiente)
         self.director.apilarEscena(faseNueva)
 
 
-# -------------------------------------------------
-# Clase Plataforma
-class Plataforma(MiSprite):
 
+class Plataforma(MiSprite):
     def __init__(self, rectangulo):
         # Primero invocamos al constructor de la clase padre
         MiSprite.__init__(self)
@@ -419,11 +427,8 @@ class Plataforma(MiSprite):
         self.image = pygame.Surface((0, 0))
 
 
-# -------------------------------------------------
 
 class CutScene(Escena):
-    # Crear cutScenas
-
     def __init__(self, director, numFase):
         Escena.__init__(self, director)
         # NumFase
@@ -437,6 +442,7 @@ class CutScene(Escena):
         self.texto = TITULO
         # Velocidad a la que ira el texto de titulo.
         self.movimientoPosicion = 2
+
 
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
@@ -452,18 +458,22 @@ class CutScene(Escena):
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
 
+
     def update(self, tiempo):
         self.actualizarTextoTituloNivel()
+
 
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
         self.fondoCutScene.dibujar(pantalla)
+
 
     def crearSceneSiguiente(self):
         self.director.salirEscena()
         faseNueva = Fase(self.director, self.numFase)
         faseNueva.cronometroScene = pygame.time.get_ticks() / 1000
         self.director.apilarEscena(faseNueva)
+
 
     def actualizarTextoTituloNivel(self):
         # Actualizar el texto que corresponda.
@@ -472,6 +482,7 @@ class CutScene(Escena):
         if posicion > 400:  # Cuando llega más o menos a la mitad del texto el titulo...:
             self.mostrarTexto()  # Se muestra el otro texto.
             self.movimientoPosicion = 1  # Se baja la velocidad
+
 
     # Dependiendo de cual de estas funciones sean se muestra el texto texto o
     # texto de titulo.
@@ -482,8 +493,8 @@ class CutScene(Escena):
         self.texto = TITULO
 
 
-class FondoCutScene:
 
+class FondoCutScene:
     def __init__(self, nombreFase):
         self.imagen = GestorRecursos.CargarImagen(
             'Cutscene' + nombreFase + '/Nivel.jpg', 1)
@@ -505,11 +516,13 @@ class FondoCutScene:
         self.texto = TITULO
         self.tiempoCutScene = pygame.time.get_ticks() / 1000
 
+
     def leerArchivo(self, nombreFase):
         datos = GestorRecursos.CargarArchivoCoordenadas(
             'Cutscene' + nombreFase + '/Texto.txt')
         datos = datos.splitlines()
         return datos[::-1]  # Hacerla reverse porque se lee del reves.
+
 
     def update(self, movimientoPosicion, texto):
         self.texto = texto
@@ -531,8 +544,8 @@ class FondoCutScene:
                 lineaTextoNivel.dibujar(pantalla)
 
 
-class TextoTituloNivel(TextoGUI):
 
+class TextoTituloNivel(TextoGUI):
     def __init__(self, pantalla, nombreFase):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 50)
@@ -541,7 +554,6 @@ class TextoTituloNivel(TextoGUI):
 
 
 class TextoNivel(TextoGUI):
-
     def __init__(self, pantalla, nombreFase, coordenada):
         fuente = pygame.font.SysFont('impact', 30)
         TextoGUI.__init__(self, pantalla, fuente, BLANCO,

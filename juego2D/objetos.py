@@ -5,7 +5,8 @@ from escena import *
 from gestorRecursos import *
 from personajes import *
 from inventario import *
-#----------------------------
+
+
 class Objetos(MiSprite):
     "Cualquier objeto del juego"
 
@@ -34,6 +35,7 @@ class Objetos(MiSprite):
     def obtenerObjeto():
         return imagen
     
+
 class ObjetoPrincipal(Objetos):
     def __init__(self,imagen,archivoCoordenadas,numFase):
         self.imagen = imagen
@@ -42,6 +44,7 @@ class ObjetoPrincipal(Objetos):
     
     def crearObjetoInventario(self,num):
         return ObjetoInventario(num,self.imagen)
+
 
 class KitCuracion(Objetos):
     def __init__(self,valorCurativo):
