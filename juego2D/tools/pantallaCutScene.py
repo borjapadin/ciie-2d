@@ -16,14 +16,16 @@ class PantallaCutSceneGUI(PantallaGUI):
         PantallaGUI.__init__(self, menu, 'Menu/CutScene/PantallaSiguienteNivel.png')
         
         # Creamos el texto y lo metemos en la lista
-        textoSalir = TextoSalir(self)
-        self.elementosGUI.append(textoSalir) 
+       
         textoContinuar = TextoContinuar(self)
         self.elementosGUI.append(textoContinuar)
+ 	textoSalir = TextoSalir(self)
+        self.elementosGUI.append(textoSalir) 
         
         #Creamos los botones
+	self.botonContinuar = BotonContinuar(self)
         self.botonSalir = BotonSalir(self)      
-        self.botonContinuar = BotonContinuar(self)
+       
         #Agregamos solo el que va a estar seleccionado la primera vez que se cree
         self.addBotonContinuar()
     

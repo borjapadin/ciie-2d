@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 import pygame
-from constantes import *
 
+ANCHO_PANTALLA = 800
+ALTO_PANTALLA =  600
 
 class Escena:
     def __init__(self, director):
