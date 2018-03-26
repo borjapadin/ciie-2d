@@ -43,10 +43,15 @@ class Fase(Escena):
         #  etc.
         # Y cargar esa configuracion del archivo en lugar de ponerla a mano, como aqui abajo
         # De esta forma, se podrian tener muchas fases distintas con esta clase
-    	self.pasarFase = False
+	
+	#Condicion_pasar_fase establece si inicialmente es posible pasar la fase o si no lo es.
+	#Las condiciones que pueden hacer que se pasen o no de fase son: matar a un enemigo o conseguir un objeto principal.
+	
         self.numFase = numFase #Necesito que sea string para ponerlo en la ruta.
         self.numFaseSiguiente = int(numFase)+1
-
+	self.configuracion = GestorRecursos.getConfigParam(self.numFase)
+	self.pasarFase = self.getConfiguracion('PASAR_FASE')
+	
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
 	   #  En ese caso solo hay scroll horizontal
@@ -67,9 +72,9 @@ class Fase(Escena):
     	self.crearPlataformas(self.coordPlataforma)
     	self.crearPersonajePrincipal()
         self.inicializarEnemigos()
-    	self.crearEnemigos(300, self.coordPlataforma[1] +1)
-        self.crearEnemigos(500, self.coordPlataforma[1] +1)
-        self.crearObjetoPrincipal()
+	self.crearEnemigos()
+    	#self.crearEnemigos(300, self.coordPlataforma[1] +1)
+        #self.crearEnemigos(500, self.coordPlataforma[1] +1)
 
 	   # Creamos un grupo con las balas.
         #self.grupoBalas = pygame.sprite.Group()
@@ -82,12 +87,16 @@ class Fase(Escena):
     	#fichero de texto decida que es lo qeu tiene que crear y donde. Esto es tarea de Javier
     	#Eduardo Penas.
     	
-        self.grupoSprites = pygame.sprite.Group(self.plataformaSuelo,self.objeto, self.grupoEnemigos)
+        self.grupoSprites = pygame.sprite.Group(self.plataformaSuelo, self.grupoEnemigos)
+	self.crearObjetoPrincipal()
 	self.kitsCurativos = self.crearKitCurativo()
 	for kitCurativo in iter(self.kitsCurativos):
 	    self.grupoSprites.add(kitCurativo)	
 	self.grupoSprites.add(self.jugador)
     
+    def getConfiguracion(self, parametro):
+	return self.configuracion[parametro]
+	
     def condicionesPasarFase(self):
 	return self.pasarFase
     
@@ -108,15 +117,29 @@ class Fase(Escena):
 
     def inicializarEnemigos(self):
         self.grupoEnemigos = pygame.sprite.Group()
+    
+    def constructorTipoEnemigo(self,tipoEnemigo):
+	if tipoEnemigo == 'Soldado':
+	    return Soldado()
+	elif tipoEnemigo == 'NoMuerto':
+	    return NoMuerto()
 	
     #TODO: generalizar.
-    def crearEnemigos(self, x, y):
-    	enemigo = Soldado()
-    	enemigo.establecerPosicion((x,y))
-    	self.grupoEnemigos.add(enemigo)	
+    def crearEnemigos(self):
+	for (enemigo) in iter(self.getConfiguracion('ENEMIGOS')):
+	    (tipoEnemigo, posicion) = enemigo
+	    print(tipoEnemigo)
+	    enemy = self.constructorTipoEnemigo(tipoEnemigo)
+	    print(posicion)
+	    print(self.coordPlataforma[1])
+	    enemy.establecerPosicion((posicion,self.coordPlataforma[1]+1))
+	    self.grupoEnemigos.add(enemy)
+    	#enemigo = Soldado()
+    	#enemigo.establecerPosicion((x,y))
+    	#self.grupoEnemigos.add(enemigo)	
 
     def determinarPlataforma(self):
-	self.coordPlataforma = GestorRecursos.getConfigParam(self.numFase)['PLATAFORMA']
+	self.coordPlataforma = self.getConfiguracion('PLATAFORMA')
 	
     #TODO: generalizar.
     def crearPlataformas(self,coordenadas):
@@ -126,8 +149,12 @@ class Fase(Escena):
   
     #TODO: generalizar. De momento esto de generico tiene una mierda pero dejemoslo asi.
     def crearObjetoPrincipal(self):
-    	self.objeto = ObjetoPrincipal('bidonGasolina','ficheroTextoQueActualmenteNoHaceNada')
-    	self.objeto.establecerPosicion((1000,self.coordPlataforma[1]+1))
+	nombreObjetoPrincipal = self.getConfiguracion('OBJETO_PRINCIPAL')
+	#En caso de existir se añade pero en caso de que no se añade nada.
+	if nombreObjetoPrincipal != None:
+	    self.objeto = ObjetoPrincipal(nombreObjetoPrincipal,'ficheroTextoQueActualmenteNoHaceNada', self.numFase)
+	    self.objeto.establecerPosicion((1000,self.coordPlataforma[1]+1))
+	    self.grupoSprites.add(self.objeto)
     
     def crearKitCurativo(self):
 	kitsCurativos = []
@@ -179,7 +206,7 @@ class Fase(Escena):
             # Si el escenario ya está a la derecha del todo, no lo movemos mas
             if self.scrollx + ANCHO_PANTALLA >= self.decorado.rect.right:
                 self.scrollx = self.decorado.rect.right - ANCHO_PANTALLA
-
+		print(self.condicionesPasarFase())
                 # En su lugar, colocamos al jugador que esté más a la derecha a la derecha de todo
                 jugador.establecerPosicion((self.scrollx+MAXIMO_X_JUGADOR-jugador.rect.width, jugador.posicion[1]))
     		if (self.condicionesPasarFase()): #Si se cumplen las condiciones para pasar fase
@@ -257,11 +284,12 @@ class Fase(Escena):
 		kitCurativo.vaciar()
 	    
         # ---------------------Comprobamos si hay colision entre algun jugador y el objeto principal
-    	if pygame.sprite.collide_rect(self.jugador, self.objeto):
-	    objetoInventario = self.objeto.crearObjetoInventario(1)
-	    self.inventario.guardarObjeto(objetoInventario)
-    	    self.objeto.kill()
-    	    self.pasarFase = True
+	if self.getConfiguracion('OBJETO_PRINCIPAL') != None:
+	    if pygame.sprite.collide_rect(self.jugador, self.objeto):
+		objetoInventario = self.objeto.crearObjetoInventario(int(self.numFase))
+		self.inventario.guardarObjeto(objetoInventario)
+		self.objeto.kill()
+		self.pasarFase = True
 	
         self.actualizarScroll(self.jugador)
 	

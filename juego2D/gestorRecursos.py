@@ -4,11 +4,22 @@ from pygame.locals import *
 
 class GestorRecursos(object):
     recursos = {}
+    
+    Nivel_Bosque = {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15), 'OBJETO_PRINCIPAL': 'bidonGasolina', 'PASAR_FASE': False,
+                    'ENEMIGOS': [('Soldado',300),('Soldado',400)]}
+    Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'OBJETO_PRINCIPAL': None, 'PASAR_FASE': True, 
+                   'ENEMIGOS': [('Soldado',350)]}
+    Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': 'llave', 'PASAR_FASE': False, 
+                     'ENEMIGOS': [('Soldado',600)]}    
+    
     config = {'Generales': {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT},
-              '1': {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15)},
-              '2': {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15)},
-              '3': {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15)},
+              '1': Nivel_Bosque,
+              '2': Nivel_Playa,
+              '3': Nivel_Bunker,
               }
+    
+   
+    
   #  config = {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT,
   #  'BOSQUE_LVL': 0, 'PLAYA_LVL': 0, 'BUNKER_LVL': 0, 
   #  'RATIO': (16,9), 'RES': 600}

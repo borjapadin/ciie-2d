@@ -35,9 +35,9 @@ class Objetos(MiSprite):
         return imagen
     
 class ObjetoPrincipal(Objetos):
-    def __init__(self,imagen,archivoCoordenadas):
+    def __init__(self,imagen,archivoCoordenadas,numFase):
         self.imagen = imagen
-        direccionImagen = 'Fase/1/Objetos/'+imagen+'.png'
+        direccionImagen = 'Fase/'+numFase+'/Objetos/'+imagen+'.png'
         Objetos.__init__(self,direccionImagen,archivoCoordenadas)
     
     def crearObjetoInventario(self,num):
