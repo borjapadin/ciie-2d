@@ -6,13 +6,16 @@ class GestorRecursos(object):
     recursos = {}
     
     Nivel_Bosque = {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15), 'OBJETO_PRINCIPAL': 'bidonGasolina', 'PASAR_FASE': False,
-                    'ENEMIGOS': [('Soldado',300),('Soldado',400)]}
+                    'ENEMIGOS': [('Soldado',300),('Soldado',400)],
+                    'KIT_CURACION': [450,25]}
     Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'OBJETO_PRINCIPAL': None, 'PASAR_FASE': True, 
-                   'ENEMIGOS': [('Soldado',350)]}
+                   'ENEMIGOS': [('Soldado',350)],
+                   'KIT_CURACION': [(245,75),(340,100)]}
     Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': 'llave', 'PASAR_FASE': False, 
-                     'ENEMIGOS': [('Soldado',600)]}    
+                     'ENEMIGOS': [('Soldado',600)],
+                     'KIT_CURACION': [(75,10)]}    
     
-    config = {'Generales': {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT},
+    config = {'Teclas': {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT, 'DISPARAR': K_j},
               '1': Nivel_Bosque,
               '2': Nivel_Playa,
               '3': Nivel_Bunker,

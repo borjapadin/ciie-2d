@@ -25,7 +25,7 @@ class listaVidas(ElementoDibujable):
                 self.listaVidas.append(Vida(vida.posicionX(),valorVidaNueva))
                 
     def recuperarVida(self,vidaGanada):
-        if (len(self.listaVidas)<=10):
+        if (len(self.listaVidas)<=10 and len(self.listaVidas)>0):
             vida = self.listaVidas.pop()
             valorVida = vida.getValor()
             if vidaGanada <= 100:

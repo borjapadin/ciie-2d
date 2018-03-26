@@ -362,7 +362,9 @@ class Fase(Escena):
 
         teclasPulsadas = pygame.key.get_pressed()
         self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
-
+    
+    def teclasConfiguracion(self):
+	return 
     def obtenerNumeroFaseSiguiente(self):
     	return self.numFaseSiguiente
 
