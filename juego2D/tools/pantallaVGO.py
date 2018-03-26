@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 import pygame
-#import pyganim (?)     
+#import pyganim (?)
 from pygame.locals import *
 from gestorRecursos import *
 from escena import *
@@ -16,21 +16,18 @@ class PantallaVGO(PantallaGUI):
         PantallaGUI.__init__(self, menu, imagen)
         
         # Creamos el texto y lo metemos en la lista
-	textoVolverJuego = TextoVolverJuego(self) 
-	textoSalir = TextoSalir(self)
-	
-	self.elementosGUI.append(textoVolverJuego)
-	self.elementosGUI.append(textoSalir)
-	
-		 
+        textoSalir = TextoSalir(self)
+        self.elementosGUI.append(textoSalir) 
+        textoVolverJuego = TextoVolverJuego(self)
+        self.elementosGUI.append(textoVolverJuego)
+        
         #Creamos los botones
-	self.botonSalir = BotonSalir(self) 
+        self.botonSalir = BotonSalir(self)      
         self.botonVolverJuego = BotonVolverJuego(self)
-	
         #Agregamos solo el que va a estar seleccionado la primera vez que se cree
-        self.addBotonVolverJugar()
+        self.addBotonJugar()
     
-    def addBotonVolverJugar(self):
+    def addBotonJugar(self):
         self.elementosGUI.append(self.botonVolverJuego)
         self.eventoSeleccionado = "volverJugar"        
         
@@ -55,9 +52,7 @@ class PantallaVGO(PantallaGUI):
                         self.addBotonSalir()
                     elif self.eventoSeleccionado == "salir":
                         self.elementosGUI.pop()
-			self.addBotonVolverJugar()
-                         
-			
+                        self.addBotonJugar() 
                         
-                if evento.type == pygame.QUIT: 
+                if evento.type == pygame.QUIT: #EHHHHHHHHHHHHHHHHH... si?
                     self.director.salirPrograma()                     

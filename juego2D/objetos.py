@@ -4,15 +4,8 @@ from pygame.locals import *
 from escena import *
 from gestorRecursos import *
 from personajes import *
+from inventario import *
 #----------------------------
-
-# -*- encoding: utf-8 -*-
-import pygame, sys, os
-from pygame.locals import *
-from escena import *
-from gestorRecursos import *
-
-    
 class Objetos(MiSprite):
     "Cualquier objeto del juego"
 
@@ -28,21 +21,46 @@ class Objetos(MiSprite):
         MiSprite.__init__(self);
 
         # Se carga la hoja
+        self.cambiarImagen(archivoImagen)
+        
+    def cambiarImagen(self,archivoImagen):
         self.hoja = GestorRecursos.CargarImagen(archivoImagen,-1)
         self.hoja = self.hoja.convert_alpha()
-       
-        # Leemos las coordenadas de un archivo de texto
-        # No lo uso que no tengo ni idea de como funciona.
-        #datos = GestorRecursos.CargarArchivoCoordenadas(archivoCoordenadas) 
-        #datos = datos.split()
-
+    
         # El rectangulo del Sprite
         self.rect = pygame.Rect((0,20),[34,40])
-        self.image = self.hoja.subsurface(0,0,34,40)
+        self.image = self.hoja.subsurface(0,0,34,40)        
+    
+    def obtenerObjeto():
+        return imagen
+    
+class ObjetoPrincipal(Objetos):
+    def __init__(self,imagen,archivoCoordenadas,numFase):
+        self.imagen = imagen
+        direccionImagen = 'Fase/'+numFase+'/Objetos/'+imagen+'.png'
+        Objetos.__init__(self,direccionImagen,archivoCoordenadas)
+    
+    def crearObjetoInventario(self,num):
+        return ObjetoInventario(num,self.imagen)
 
-#---------------------------
+class KitCuracion(Objetos):
+    def __init__(self,valorCurativo):
+        self.valorCurativo = valorCurativo 
+        Objetos.__init__(self,'Inventario/kitCurativo.png','nada')
+    
+    def getValorCurativo(self):
+        return self.valorCurativo
+    
+    def vaciar(self):
+        self.cambiarImagen('Inventario/kitCurativoVacio.png')
+        self.valorCurativo = 0
+        
+    def recogerKitCurativo(self):
+        valorCurativo = self.getValorCurativo()
+        return valorCurativo
 
-class BidonGasolina(Objetos):
-    def __init__(self):
-        Objetos.__init__(self,'Fase/1/Objetos/bidonGasolina.png','Fase/1/blababsbsdjadakjsdakjs.txt')
+        
+    
+
+    
 

@@ -6,7 +6,6 @@ from gestorRecursos import *
 from escena import *
 from director import *
 from fase import *
-from pantallaPausa import *
 #from pantallaConfiguracion import *
 #from pantallaInicial import *
 #from pantallaGameOver import *
@@ -35,7 +34,7 @@ class Menu(Escena):
 		#   y las metemos en la lista
 		#self.listaPantallas.append(PantallaInicialGUI(self))
 		self.listaPantallas.append(Pantalla(self, 'Menu/Inicio/PantallaInicio.jpg'))
-		self.listaPantallas.append(PantallaPausa(self,director))
+		self.listaPantallas.append(PantallaConfiguracionGUI(self,director))
 		#self.listaPantallas.append(PantallaGameOverGUI(self))
 		#self.listaPantallas.append(PantallaVictoriaGUI(self))
 		self.listaPantallas.append(Pantalla(self, 'Menu/GameOver/PantallaGameOver_2.jpg'))
@@ -51,10 +50,13 @@ class Menu(Escena):
 		#Con el número (de la fase y cutscene) gestionamos el comportamiento que debe tener esa fase como:
 		#Que imagen cargar de donde en cutScene, que texto, cual seria la fase siguiente etc.
 		self.setNumFaseSiguiente(NUM_FASE_INICIAL)
-		
+	
+	#FIX -- Method forced to implement but never used?
 	def update(self, *args):
 		return
     
+    #Recibe una lista de eventos, en caso de que en esta se encuentre SALIR, comunicamos al director
+    #En caso contrario 
 	def eventos(self, lista_eventos):
 	    # Se mira si se quiere salir de esta escena
 		for evento in lista_eventos:
@@ -92,7 +94,7 @@ class Menu(Escena):
 		#Que proporciona el director obteniendola de la fase terminada 
 		self.director.apilarEscena(cutscene)
 		#self.mostrarPantallaConfiguracion() #Dejamos que esta sea la actual (si salimos de las fases entramos en esta)
-		#self.mostrarPantalla(PANTALLA_PAUSA)
+		self.mostrarPantalla(PANTALLA_PAUSA)
 
 	def reanudarJuego(self,fase):
 		self.director.apilarEscena(fase)
@@ -103,18 +105,3 @@ class Menu(Escena):
 	def mostrarPantalla(self, pantalla):
 		self.pantallaActual = pantalla
 
-	"""def mostrarPantallaInicial(self):
-		self.pantallaActual = PANTALLA_PRINCIPAL
-    
-	def mostrarPantallaConfiguracion(self):
-		self.pantallaActual = PANTALLA_PAUSA
-    
-	def mostrarPantallaGameOver(self):
-		self.pantallaActual = PANTALLA_GAMEOVER
-	
-	def mostrarPantallaVictoria(self):
-		self.pantallaActual = PANTALLA_VICTORIA
-	
-	def mostrarPantallaCutScene(self):
-		self.pantallaActual = PANTALLA_CUTSCENE"""
-	
