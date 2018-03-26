@@ -116,20 +116,14 @@ class Fase(Escena):
     	self.grupoEnemigos.add(enemigo)	
 
     def determinarPlataforma(self):
-        if self.numFase == '1':
-            self.coordPlataforma = (0, 400, 1200, 15)
-        if self.numFase == '2': 
-            self.coordPlataforma = (0, 480, 1200, 15)
-        if self.numFase == '3': 
-            self.coordPlataforma = (0, 455, 1200, 15)
-
+	self.coordPlataforma = GestorRecursos.getConfigParam(self.numFase)['PLATAFORMA']
+	
     #TODO: generalizar.
     def crearPlataformas(self,coordenadas):
         self.plataformaSuelo = Plataforma(pygame.Rect(coordenadas))
     	self.grupoPlataformas = pygame.sprite.Group(self.plataformaSuelo)
         
-
-    
+  
     #TODO: generalizar. De momento esto de generico tiene una mierda pero dejemoslo asi.
     def crearObjetoPrincipal(self):
     	self.objeto = ObjetoPrincipal('bidonGasolina','ficheroTextoQueActualmenteNoHaceNada')

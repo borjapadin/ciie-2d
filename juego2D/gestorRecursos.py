@@ -4,9 +4,14 @@ from pygame.locals import *
 
 class GestorRecursos(object):
     recursos = {}
-    config = {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT,
-    'BOSQUE_LVL': 0, 'PLAYA_LVL': 0, 'BUNKER_LVL': 0, 
-    'RATIO': (16,9), 'RES': 600}
+    config = {'Generales': {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT},
+              '1': {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15)},
+              '2': {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15)},
+              '3': {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15)},
+              }
+  #  config = {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT,
+  #  'BOSQUE_LVL': 0, 'PLAYA_LVL': 0, 'BUNKER_LVL': 0, 
+  #  'RATIO': (16,9), 'RES': 600}
 
     @classmethod
     def CargarImagen(cls, nombre, colorClave=None):
