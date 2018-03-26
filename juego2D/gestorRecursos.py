@@ -6,7 +6,7 @@ class GestorRecursos(object):
     recursos = {}
     
     Nivel_Bosque = {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15), 'OBJETO_PRINCIPAL': 'bidonGasolina', 'PASAR_FASE': False,
-                    'ENEMIGOS': [('Soldado',300),('Soldado',400),('Zombie', 500)],
+                    'ENEMIGOS': [('Soldado',300),('Soldado',400)],
                     'KIT_CURACION': [450,25]}
     Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'OBJETO_PRINCIPAL': None, 'PASAR_FASE': True, 
                    'ENEMIGOS': [('Soldado',350)],
