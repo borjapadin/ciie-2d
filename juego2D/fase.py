@@ -126,18 +126,19 @@ class Fase(Escena):
 
     def inicializarEnemigos(self):
         self.grupoEnemigos = pygame.sprite.Group()
-
-    def constructorTipoEnemigo(self, tipoEnemigo):
-        if tipoEnemigo == 'Soldado':
-            return Soldado()
-        elif tipoEnemigo == 'Zombie':
-            return Zombie()
+        self.grupoSoldados = pygame.sprite.Group()
+        self.grupoZombies = pygame.sprite.Group()
 
     # TODO: generalizar.
     def crearEnemigos(self):
         for (enemigo) in iter(GestorRecursos.getConfiguration('ENEMIGOS')):
             (tipoEnemigo, posicion) = enemigo
-            enemy = self.constructorTipoEnemigo(tipoEnemigo)
+            if tipoEnemigo == 'Soldado':
+                enemy = Soldado()
+                self.grupoSoldados.add(enemy)
+            elif tipoEnemigo == 'Zombie':
+                enemy = Zombie()
+                self.grupoZombies.add(enemy)
             enemy.establecerPosicion((posicion, self.coordPlataforma[1] + 1))
             self.grupoEnemigos.add(enemy)
         #enemigo = Soldado()
@@ -258,13 +259,9 @@ class Fase(Escena):
             for bala in iter(grupoBalas):
                 bala.moverBala()
 
-    def update(self, tiempo):
-        # Primero, se indican las acciones que van a hacer las balas.
-        self.moverBalas(self.grupoBalasJugador)
-        self.moverBalas(self.grupoBalasSoldado)
 
-        #-----------------Comprobamos si hay colisión entre algun enemigo y una bala amiga.
-        for enemigo in iter(self.grupoEnemigos):
+    def colisionEnemigoBalaAmiga(self,grupoEnemigos,tiempo):
+        for enemigo in iter(grupoEnemigos):
             enemigo.mover_cpu(self.jugador, tiempo)
             for bala in self.grupoBalasJugador:
                 if pygame.sprite.collide_rect(enemigo, bala):
@@ -273,6 +270,14 @@ class Fase(Escena):
                         enemigo.kill()
             if pygame.sprite.collide_rect(self.jugador, enemigo):
                 self.golpearseEnemigo(enemigo, self.jugador)
+
+    def update(self, tiempo):
+        # Primero, se indican las acciones que van a hacer las balas.
+        self.moverBalas(self.grupoBalasJugador)
+        self.moverBalas(self.grupoBalasSoldado)
+
+        self.colisionEnemigoBalaAmiga(self.grupoSoldados,tiempo)
+        self.colisionEnemigoBalaAmiga(self.grupoZombies,tiempo)
 
         self.cronometro = pygame.time.get_ticks() / 1000 - self.cronometroScene
         self.tiempo.actualizarCronometro(self.cronometro)
@@ -338,7 +343,7 @@ class Fase(Escena):
         self.agregarDisparosEscena(self.jugador, self.grupoBalasJugador)
 
         # En caso de que los enemigos tengan disparos que dar se dibujan.
-        for enemigo in self.grupoEnemigos:
+        for enemigo in self.grupoSoldados:
             self.agregarDisparosEscena(enemigo, self.grupoBalasSoldado)
 
         # Finalmente se pinta el grupo de sprites.
