@@ -91,6 +91,14 @@ class GestorRecursos(object):
                 print 'Cannot load configuration file:', confFile, ' Creating default file config!'
                 cls.SaveConfig()
 
+    @classmethod
+    def setConfiguration(cls,numFase):
+        cls.configuration = cls.getConfigParam(numFase)
+
+    @classmethod
+    def getConfiguration(cls,param):
+        return cls.configuration[param]
+
     #RETRIEVES A PARAMETER FROM CONFIGURATION PARAMETERS LIST
     @classmethod
     def getConfigParam(cls, param):

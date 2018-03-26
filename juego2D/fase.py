@@ -55,8 +55,8 @@ class Fase(Escena):
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
         self.numFaseSiguiente = int(numFase) + 1
-        self.configuracion = GestorRecursos.getConfigParam(self.numFase)
-        self.pasarFase = self.getConfiguracion('PASAR_FASE')
+        GestorRecursos.setConfiguration(self.numFase)
+        self.pasarFase = GestorRecursos.getConfiguration('PASAR_FASE')
 
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
@@ -104,8 +104,7 @@ class Fase(Escena):
             self.grupoSprites.add(kitCurativo)
         self.grupoSprites.add(self.jugador)
 
-    def getConfiguracion(self, parametro):
-        return self.configuracion[parametro]
+
 
     def condicionesPasarFase(self):
         return self.pasarFase
@@ -136,7 +135,7 @@ class Fase(Escena):
 
     # TODO: generalizar.
     def crearEnemigos(self):
-        for (enemigo) in iter(self.getConfiguracion('ENEMIGOS')):
+        for (enemigo) in iter(GestorRecursos.getConfiguration('ENEMIGOS')):
             (tipoEnemigo, posicion) = enemigo
             print(tipoEnemigo)
             enemy = self.constructorTipoEnemigo(tipoEnemigo)
@@ -149,7 +148,7 @@ class Fase(Escena):
         # self.grupoEnemigos.add(enemigo)
 
     def determinarPlataforma(self):
-        self.coordPlataforma = self.getConfiguracion('PLATAFORMA')
+        self.coordPlataforma = GestorRecursos.getConfiguration('PLATAFORMA')
 
     # TODO: generalizar.
     def crearPlataformas(self, coordenadas):
@@ -159,7 +158,7 @@ class Fase(Escena):
     # TODO: generalizar. De momento esto de generico tiene una mierda pero
     # dejemoslo asi.
     def crearObjetoPrincipal(self):
-        nombreObjetoPrincipal = self.getConfiguracion('OBJETO_PRINCIPAL')
+        nombreObjetoPrincipal = GestorRecursos.getConfiguration('OBJETO_PRINCIPAL')
         # En caso de existir se añade pero en caso de que no se añade nada.
         if nombreObjetoPrincipal != None:
             self.objeto = ObjetoPrincipal(
@@ -306,7 +305,7 @@ class Fase(Escena):
                 kitCurativo.vaciar()
 
         # ---------------------Comprobamos si hay colision entre algun jugador y el objeto principal
-        if self.getConfiguracion('OBJETO_PRINCIPAL') != None:
+        if GestorRecursos.getConfiguration('OBJETO_PRINCIPAL') != None:
             if pygame.sprite.collide_rect(self.jugador, self.objeto):
                 objetoInventario = self.objeto.crearObjetoInventario(
                     int(self.numFase))
