@@ -210,7 +210,7 @@ class Personaje(MiSprite):
                 elif self.mirando == IZQUIERDA:
                     self.image = pygame.transform.flip(self.hoja.subsurface(
                         self.coordenadasHoja[self.numPostura][self.numImagenPostura]), 1, 0)
-            elif self.archivoImagen == 'Fase/1/SpriteSoldadoFilas.png':
+            else:
                 if self.mirando == IZQUIERDA:
                     self.image = self.hoja.subsurface(
                         self.coordenadasHoja[self.numPostura][self.numImagenPostura])
@@ -472,7 +472,9 @@ class Zombie(NoJugador):
                 Personaje.mover(self, IZQUIERDA)
             else:
                 self.mirando = DERECHA
-                Personaje.mover(self, IZQUIERDA)
+                Personaje.mover(self, DERECHA)
+        else:
+            Personaje.mover(self,QUIETO)
 
     def damageEnemigo(self):
         return self.damage
