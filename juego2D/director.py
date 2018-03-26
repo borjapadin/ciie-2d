@@ -21,7 +21,6 @@ class Director():
         # Reloj
         self.reloj = pygame.time.Clock()
 
-
     def bucle(self, escena):
 
         self.salir_escena = False

@@ -4,14 +4,11 @@
 # Importar modulos
 # -*- encoding: utf-8 -*-
 
-
-
-
-
 import pygame
 import director
 from director import *
 from menu import *
+from baseDeDatos import *
 
 if __name__ == '__main__':
     

@@ -5,27 +5,22 @@ from pygame.locals import *
 class GestorRecursos(object):
     recursos = {}
     
-    Nivel_Bosque = {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15), 'OBJETO_PRINCIPAL': 'bidonGasolina', 'PASAR_FASE': False,
+    Nivel_Bosque = {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15), 'OBJETO_PRINCIPAL': ('bidonGasolina',750,1), 'PASAR_FASE': False,
                     'ENEMIGOS': [('Soldado',300),('Soldado',400),('Zombie',500),('Zombie',700)],
-                    'KIT_CURACION': [450,25]}
-    Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'OBJETO_PRINCIPAL': None, 'PASAR_FASE': True, 
+                    'KIT_CURACION': [(20,450),(70,650)]} #Lo primero es la vida que carga (multiplos de diez, posicionX)
+    Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'OBJETO_PRINCIPAL':  (None,None,None), 'PASAR_FASE': True, 
                    'ENEMIGOS': [('Soldado',350)],
-                   'KIT_CURACION': [(245,75),(340,100)]}
-    Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': 'llave', 'PASAR_FASE': False, 
+                   'KIT_CURACION': [(20,600),(20,120)]}
+    Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': ('llave',300,2), 'PASAR_FASE': False, 
                      'ENEMIGOS': [('Soldado',600)],
-                     'KIT_CURACION': [(75,10)]}    
+                     'KIT_CURACION': [(20,10)]}    
     
-    config = {'Teclas': {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT, 'DISPARAR': K_j},
+    config = {'teclas': {'ARRIBA': K_w, 'ABAJO': K_s, 'IZQUIERDA': K_a, 'DERECHA': K_d, 'DISPARAR': K_j},
               '1': Nivel_Bosque,
               '2': Nivel_Playa,
               '3': Nivel_Bunker,
               }
-    
-   
-    
-  #  config = {'ARRIBA': K_UP, 'ABAJO': K_DOWN, 'IZQUIERDA': K_LEFT, 'DERECHA': K_RIGHT,
-  #  'BOSQUE_LVL': 0, 'PLAYA_LVL': 0, 'BUNKER_LVL': 0, 
-  #  'RATIO': (16,9), 'RES': 600}
+    vida = 1000
 
     @classmethod
     def CargarImagen(cls, nombre, colorClave=None):
@@ -60,9 +55,6 @@ class GestorRecursos(object):
             cls.recursos[nombre] = datos #almacenamos
             return datos #lo devolvemos
 
-
-
-	
     @classmethod
     def CargarSonido(cls, nombre):
         if nombre in cls.recursos:
@@ -114,4 +106,13 @@ class GestorRecursos(object):
             cls.config.update({param: value})
         cls.config[param] = value
         cls.SaveConfig()
+    
+    @classmethod
+    def setVida(cls,vida):
+        cls.vida = vida
+
+    @classmethod
+    def getVida(cls):
+        return cls.vida
+
 

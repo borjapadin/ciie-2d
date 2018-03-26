@@ -24,25 +24,20 @@ class Menu(Escena):
 		self.listaPantallas = []
 		# Creamos las pantallas que vamos a tener
 		#   y las metemos en la lista
-		#self.listaPantallas.append(PantallaInicialGUI(self))
 		self.listaPantallas.append(Pantalla(self, 'Menu/Inicio/PantallaInicio.jpg'))
 		self.listaPantallas.append(PantallaPausa(self,director))
-		#self.listaPantallas.append(PantallaGameOverGUI(self))
-		#self.listaPantallas.append(PantallaVictoriaGUI(self))
 		self.listaPantallas.append(Pantalla(self, 'Menu/GameOver/PantallaGameOver_2.jpg'))
 		self.listaPantallas.append(Pantalla(self, 'Menu/Victoria/PantallaVictoria.png'))
-		#self.listaPantallas.append(PantallaCutSceneGUI(self))
 		self.listaPantallas.append(Pantalla(self, 'Menu/CutScene/PantallaSiguienteNivel.png'))
 		
 		# En que pantalla estamos actualmente
-		#self.mostrarPantallaInicial()
 		self.mostrarPantalla(PANTALLA_PRINCIPAL)
-		
+		self.vida = 1000
 		#Para saber cual es la primera fase que creara cutScene.
 		#Con el número (de la fase y cutscene) gestionamos el comportamiento que debe tener esa fase como:
 		#Que imagen cargar de donde en cutScene, que texto, cual seria la fase siguiente etc.
 		self.setNumFaseSiguiente(NUM_FASE_INICIAL)
-		
+	
 	def update(self, *args):
 		return
     
@@ -71,10 +66,6 @@ class Menu(Escena):
     
 	def ejecutarJuego(self):
 		self.crearCutScene()
-		#fase2 = Fase(self.director,2)
-	#	cutscene = CutScene(self.director,NUM_FASE_INICIAL)
-	#	self.director.apilarEscena(cutscene)
-	#	self.mostrarPantallaConfiguracion() 
 	
 	def crearCutScene(self):
 		#El menú ya sabe cual es la fase siguiente.
@@ -94,18 +85,4 @@ class Menu(Escena):
 	def mostrarPantalla(self, pantalla):
 		self.pantallaActual = pantalla
 
-	"""def mostrarPantallaInicial(self):
-		self.pantallaActual = PANTALLA_PRINCIPAL
-    
-	def mostrarPantallaConfiguracion(self):
-		self.pantallaActual = PANTALLA_PAUSA
-    
-	def mostrarPantallaGameOver(self):
-		self.pantallaActual = PANTALLA_GAMEOVER
-	
-	def mostrarPantallaVictoria(self):
-		self.pantallaActual = PANTALLA_VICTORIA
-	
-	def mostrarPantallaCutScene(self):
-		self.pantallaActual = PANTALLA_CUTSCENE"""
 	

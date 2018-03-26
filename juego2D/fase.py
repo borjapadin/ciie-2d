@@ -47,10 +47,15 @@ class Fase(Escena):
         #  etc.
         # Y cargar esa configuracion del archivo en lugar de ponerla a mano, como aqui abajo
         # De esta forma, se podrian tener muchas fases distintas con esta clase
-
         # Condicion_pasar_fase establece si inicialmente es posible pasar la fase o si no lo es.
         # Las condiciones que pueden hacer que se pasen o no de fase son: matar
         # a un enemigo o conseguir un objeto principal.
+
+     
+        self.vidaGestor = GestorRecursos.getVida() 
+
+
+
 
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
@@ -110,8 +115,8 @@ class Fase(Escena):
         return self.pasarFase
 
     # TODO: generalizar.
-    def crearPersonajePrincipal(self):
-        self.jugador = Jugador()
+    def crearPersonajePrincipal(self,):
+        self.jugador = Jugador(self.vidaGestor)
         # Ponemos al jugador en la posición inicial
         self.jugador.establecerPosicion((5, self.coordPlataforma[1] + 1))
 
@@ -121,8 +126,8 @@ class Fase(Escena):
     # TODO: generalizar
     def crearElementosBordeSuperior(self, nombreFase):
         self.careto = Careto(nombreFase)
-        self.vida = listaVidas()
-        self.tiempo = Tiempo((0, 0))
+        self.vida = listaVidas(self.vidaGestor)
+        self.tiempo = Tiempo(0)
 
     def inicializarEnemigos(self):
         self.grupoEnemigos = pygame.sprite.Group()
@@ -141,9 +146,15 @@ class Fase(Escena):
                 self.grupoZombies.add(enemy)
             enemy.establecerPosicion((posicion, self.coordPlataforma[1] + 1))
             self.grupoEnemigos.add(enemy)
-        #enemigo = Soldado()
-        # enemigo.establecerPosicion((x,y))
-        # self.grupoEnemigos.add(enemigo)
+
+    def crearKitCurativo(self):
+        kitsCurativos = []
+        for (kitCurativoConfig) in iter(GestorRecursos.getConfiguration('KIT_CURACION')):
+            (vida,posicionX) = kitCurativoConfig
+            kitCurativo = KitCuracion(vida)
+            kitCurativo.establecerPosicion(((posicionX),self.coordPlataforma[1] + 5))
+            kitsCurativos.append(kitCurativo)
+        return kitsCurativos
 
     def determinarPlataforma(self):
         self.coordPlataforma = GestorRecursos.getConfiguration('PLATAFORMA')
@@ -156,20 +167,13 @@ class Fase(Escena):
     # TODO: generalizar. De momento esto de generico tiene una mierda pero
     # dejemoslo asi.
     def crearObjetoPrincipal(self):
-        nombreObjetoPrincipal = GestorRecursos.getConfiguration('OBJETO_PRINCIPAL')
+        (nombreObjetoPrincipal,posicionX,posInventario) = GestorRecursos.getConfiguration('OBJETO_PRINCIPAL')
         # En caso de existir se añade pero en caso de que no se añade nada.
         if nombreObjetoPrincipal != None:
             self.objeto = ObjetoPrincipal(
                 nombreObjetoPrincipal, 'ficheroTextoQueActualmenteNoHaceNada', self.numFase)
             self.objeto.establecerPosicion((1000, self.coordPlataforma[1] + 1))
             self.grupoSprites.add(self.objeto)
-
-    def crearKitCurativo(self):
-        kitsCurativos = []
-        kitCurativo = KitCuracion(50)
-        kitCurativo.establecerPosicion((100, self.coordPlataforma[1] + 1))
-        kitsCurativos.append(kitCurativo)
-        return kitsCurativos
 
     # TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
@@ -291,6 +295,7 @@ class Fase(Escena):
         for bala in self.grupoBalasSoldado:
             if pygame.sprite.collide_rect(self.jugador, bala):
                 # Si chocan se lesiona al personaje.
+                print(self.jugador.devolverVida())
                 self.lesionarPersonaje(bala, self.jugador)
 
         #----------------------Comprobar que el jugador esta muerto
@@ -306,7 +311,7 @@ class Fase(Escena):
                 kitCurativo.vaciar()
 
         # ---------------------Comprobamos si hay colision entre algun jugador y el objeto principal
-        if GestorRecursos.getConfiguration('OBJETO_PRINCIPAL') != None:
+        if GestorRecursos.getConfiguration('OBJETO_PRINCIPAL') != (None,None,None):
             if pygame.sprite.collide_rect(self.jugador, self.objeto):
                 objetoInventario = self.objeto.crearObjetoInventario(
                     int(self.numFase))
@@ -319,12 +324,8 @@ class Fase(Escena):
     def lesionarPersonaje(self, bala, personaje):
         damage = bala.damageBala()
         bala.kill()
-        # Esta situacion no me agrada: el jugador pierde vida no esta
-        # directamente relacionado con la vida que se muestra en pantalla
-        # mmm...
         personaje.perderVida(damage)
         if (personaje == self.jugador):
-            # De momento pierde vida 25 porque me da pereza otra cosa
             self.vida.perderVida(damage)
 
     def golpearseEnemigo(self, enemigo, personaje):
@@ -371,6 +372,7 @@ class Fase(Escena):
                     self.director.salirPrograma()
                 #-------------CAMBIAR ESCENA (a una cutScena)------------------
                 elif evento.key == K_c:  # Trampa de salir de escena para cambiarla
+                    GestorRecursos.setVida(self.jugador.devolverVida())
                     self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p:
@@ -389,19 +391,14 @@ class Fase(Escena):
                 self.director.salirPrograma()
 
         teclasPulsadas = pygame.key.get_pressed()
-        self.jugador.mover(teclasPulsadas, K_w, K_s, K_a, K_d, K_t)
+        self.jugador.mover(teclasPulsadas, GestorRecursos.getConfigParam('teclas')['ARRIBA'],GestorRecursos.getConfigParam('teclas')['ABAJO'],
+        GestorRecursos.getConfigParam('teclas')['IZQUIERDA'], GestorRecursos.getConfigParam('teclas')['DERECHA'], GestorRecursos.getConfigParam('teclas')['DISPARAR'])
 
     def teclasConfiguracion(self):
         return
 
     def obtenerNumeroFaseSiguiente(self):
         return self.numFaseSiguiente
-
-    def crearSceneSiguiente(self):
-        self.director.salirEscena()
-        faseNueva = CutScene(self.director, self.numFaseSiguiente)
-        self.director.apilarEscena(faseNueva)
-
 
 # -------------------------------------------------
 # Clase Plataforma
@@ -426,7 +423,6 @@ class CutScene(Escena):
 
     def __init__(self, director, numFase):
         Escena.__init__(self, director)
-        # NumFase
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = str(numFase)
         # self.numFaseSiguiente = numFase+1 #Para saber el numero de la fase siguiente
@@ -464,6 +460,7 @@ class CutScene(Escena):
         faseNueva = Fase(self.director, self.numFase)
         faseNueva.cronometroScene = pygame.time.get_ticks() / 1000
         self.director.apilarEscena(faseNueva)
+
 
     def actualizarTextoTituloNivel(self):
         # Actualizar el texto que corresponda.
