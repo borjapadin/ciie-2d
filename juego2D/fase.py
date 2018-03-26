@@ -130,8 +130,8 @@ class Fase(Escena):
     def constructorTipoEnemigo(self, tipoEnemigo):
         if tipoEnemigo == 'Soldado':
             return Soldado()
-        elif tipoEnemigo == 'NoMuerto':
-            return NoMuerto()
+        elif tipoEnemigo == 'Zombie':
+            return Zombie()
 
     # TODO: generalizar.
     def crearEnemigos(self):

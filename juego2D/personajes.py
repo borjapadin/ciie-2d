@@ -40,9 +40,10 @@ RETARDO_ANIMACION_JUGADOR = 5  # updates que durará cada imagen del personaje
 RETARDO_ANIMACION_JUGADOR_SALTAR = 20
 # velocidades de enemigos
 VELOCIDAD_SOLDADO = 0.12  # Pixeles por milisegundo
+VELOCIDAD_ZOMBIE = 0.09
 VELOCIDAD_SALTO_SOLDADO = 0.27  # Pixeles por milisegundo
 RETARDO_ANIMACION_SOLDADO = 5  # updates que durará cada imagen del personaje
-
+RETARDO_ANIMACION_ZOMBIE = 8
 GRAVEDAD = 0.0006  # Píxeles / ms2
 VELOCIDAD_BALAS = 5
 
@@ -475,7 +476,13 @@ class NoJugador(Personaje):
         
 
     def mover_cpu_mele(self, jugador, tiempo):
-        return
+        if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:
+            if jugador.posicion[0] < self.posicion[0]:
+                self.mirando = IZQUIERDA
+                Personaje.mover(self, IZQUIERDA)
+            else:
+                self.mirando = DERECHA
+                Personaje.mover(self, IZQUIERDA)
 
     def decidirSiDisparar(self):
         if (self.count_disparar == VELOCIDAD_RECARGA_BALA):
@@ -494,7 +501,18 @@ class NoJugador(Personaje):
 
 #---------------------------
 # Clase Zombi
+class Zombie(NoJugador):
+    def __init__(self):
+        NoJugador.__init__(self, 'Fase/1/Zombie.png', 'Fase/1/OffsetZombie.txt', [
+                            1, 6, 4, 0], VELOCIDAD_ZOMBIE, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
+        self.establecerVida(250)
+        self.damage = 5
 
+    def mover_cpu(self, jugador, tiempo):
+        NoJugador.mover_cpu_mele(self, jugador, tiempo)
+
+    def damageEnemigo(self):
+        return self.damage
 #---------------------------
 # Clase Soldado
 class Soldado(Pistolero, NoJugador):
