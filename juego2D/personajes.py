@@ -113,13 +113,13 @@ class Personaje(MiSprite):
         self.coordenadasHoja = []
         variable = 0
 
-        if archivoImagen == 'Fase/1/rossi.png':
+        if archivoImagen == 'Personajes/rossi.png':
             variable = 6
             self.mirando = DERECHA
-        elif archivoImagen == 'Fase/1/SpriteSoldadoFilas.png':
+        elif archivoImagen == 'Personajes/SpriteSoldadoFilas.png':
             variable = 4
             self.mirando = IZQUIERDA
-        elif archivoImagen == 'Fase/1/Zombie.png':
+        elif archivoImagen == 'Personajes/Zombie.png':
             variable = 3
             self.mirando = IZQUIERDA
 
@@ -206,7 +206,7 @@ class Personaje(MiSprite):
                 self.coordenadasHoja[self.numPostura][self.numImagenPostura])
 
             # Si esta mirando a la izquiera, cogemos la porcion de la hoja
-            if self.archivoImagen == 'Fase/1/rossi.png':
+            if self.archivoImagen == 'Personajes/rossi.png':
                 if self.mirando == DERECHA:
                     self.image = self.hoja.subsurface(
                         self.coordenadasHoja[self.numPostura][self.numImagenPostura])
@@ -278,7 +278,7 @@ class Personaje(MiSprite):
         elif self.movimiento == DISPARAR:
             # La postura actual sera estar saltando
             if self.numPostura != SPRITE_SALTANDO:
-                if self.archivoImagen == 'Fase/1/rossi.png':
+                if self.archivoImagen == 'Personajes/rossi.png':
                     self.decidirSiDisparar(tiempo)
                     velocidadx = 0
             else:
@@ -310,7 +310,7 @@ class Personaje(MiSprite):
             # gravedad
             else:
                 velocidady += GRAVEDAD * tiempo
-        if self.archivoImagen != 'Fase/1/Zombie.png':
+        if self.archivoImagen != 'Personajes/Zombie.png':
             self.crearBala()
         # Actualizamos la imagen a mostrar
         self.actualizarPostura()
@@ -357,10 +357,10 @@ class Pistolero():
     def crearBala(self):
         # Si se ha pulsado que quieres disparar
         if self.disparar == ON:
-            self.bala = BalaHeroe('Fase/1/playerBullet.png',
-                                  'Fase/1/offsetBala.txt', [1], 1)
+            self.bala = BalaHeroe('Personajes/playerBullet.png',
+                                  'Personajes/offsetBala.png', [1], 1)
             self.disparar = OFF
-            if self.archivoImagen == 'Fase/1/rossi.png':
+            if self.archivoImagen == 'Personajes/rossi.png':
                 if self.mirando == IZQUIERDA:
                     self.bala.establecerPosicion(
                         (self.posicion[0] - 10, self.posicion[1] - 21))
@@ -388,7 +388,7 @@ class Jugador(Pistolero, Personaje):
     def __init__(self,vidaActual=1000): #Vida Actual = 1000 si no se dice nada
         # Invocamos al constructor de la clase padre con la configuracion de
         # este personaje concreto
-        Personaje.__init__(self, 'Fase/1/rossi.png', 'Fase/1/offsetRossi.txt', [
+        Personaje.__init__(self, 'Personajes/rossi.png', 'Personajes/offsetRossi.txt', [
                            1, 7, 5, 6, 8, 6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
         self.disparar = OFF
         self.inicializarBalas()
@@ -454,7 +454,7 @@ class NoJugador(Personaje):
     
 class Zombie(NoJugador):
     def __init__(self):
-        NoJugador.__init__(self, 'Fase/1/Zombie.png', 'Fase/1/OffsetZombie.txt', [
+        NoJugador.__init__(self, 'Personajes/Zombie.png', 'Personajes/OffsetZombie.txt', [
                             1, 6, 4], VELOCIDAD_ZOMBIE, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
         self.establecerVida(250)
         self.damage = 10
@@ -478,7 +478,7 @@ class Zombie(NoJugador):
 
 class Soldado(Pistolero, NoJugador):
     def __init__(self):
-        NoJugador.__init__(self, 'Fase/1/SpriteSoldadoFilas.png', 'Fase/1/offsetsSoldado.txt', [
+        NoJugador.__init__(self, 'Personajes/SpriteSoldadoFilas.png', 'Personajes/offsetsSoldado.txt', [
                            1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
         self.establecerVida(250)
         self.inicializarBalas()
