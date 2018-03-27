@@ -358,7 +358,7 @@ class Pistolero():
         # Si se ha pulsado que quieres disparar
         if self.disparar == ON:
             self.bala = BalaHeroe('Personajes/playerBullet.png',
-                                  'Personajes/offsetBala.png', [1], 1)
+                                  'Personajes/offsetBala.txt', [1], 1)
             self.disparar = OFF
             if self.archivoImagen == 'Personajes/rossi.png':
                 if self.mirando == IZQUIERDA:
@@ -491,35 +491,35 @@ class Soldado(Pistolero, NoJugador):
             #self.decidirSiDisparar()
             #-----------------------------Mirar-----------------------------
             #if self.movimiento == DISPARAR:
-                posicionJugador = jugador.posicion[0] 
-                posicionEnemigo = self.posicion[0]
-                if posicionJugador < posicionEnemigo:
-                    if (posicionEnemigo-posicionJugador) < 150: #La distancia es menor de 50
-                        if (self.count_disparar >= VELOCIDAD_RECARGA_BALA): #Velocidad recarga bala.
-                            self.mirando = IZQUIERDA            
-                            self.numPostura = SPRITE_DISPARANDO
-                            self.disparar = ON
-                            Personaje.mover(self, DISPARAR)
-                            self.inicializarCountDisparar()
-                        else:
-                            self.aumentarContadorDisparo()
-                    else: 
-                        Personaje.mover(self,QUIETO)
-                elif posicionEnemigo < posicionJugador:
-                    if (posicionJugador-posicionEnemigo) < 150: #La distancia es menor de 50 
-                        if (self.count_disparar >= VELOCIDAD_RECARGA_BALA): #Velocidad recarga bala.
-                            self.mirando = DERECHA
-                            self.numPostura = SPRITE_DISPARANDO
-                            self.disparar = ON
-                            Personaje.mover(self, DISPARAR)
-                            self.inicializarCountDisparar()
-                        else:
-                            self.disparar = OFF
-                            self.aumentarContadorDisparo()
+            posicionJugador = jugador.posicion[0] 
+            posicionEnemigo = self.posicion[0]
+            if posicionJugador < posicionEnemigo:
+                if (posicionEnemigo-posicionJugador) < 150: #La distancia es menor de 50
+                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA): #Velocidad recarga bala.
+                        self.mirando = IZQUIERDA            
+                        self.numPostura = SPRITE_DISPARANDO
+                        self.disparar = ON
+                        Personaje.mover(self, DISPARAR)
+                        self.inicializarCountDisparar()
                     else:
-                        Personaje.mover(self,QUIETO)
+                        self.aumentarContadorDisparo()
+                else: 
+                    Personaje.mover(self,QUIETO)
+            elif posicionEnemigo < posicionJugador:
+                if (posicionJugador-posicionEnemigo) < 150: #La distancia es menor de 50 
+                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA): #Velocidad recarga bala.
+                        self.mirando = DERECHA
+                        self.numPostura = SPRITE_DISPARANDO
+                        self.disparar = ON
+                        Personaje.mover(self, DISPARAR)
+                        self.inicializarCountDisparar()
+                    else:
+                        self.disparar = OFF
+                        self.aumentarContadorDisparo()
                 else:
                     Personaje.mover(self,QUIETO)
+            else:
+                Personaje.mover(self,QUIETO)
 
     def damageEnemigo(self):
         return self.damage
