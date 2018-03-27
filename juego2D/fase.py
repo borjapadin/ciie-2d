@@ -333,6 +333,12 @@ class Fase(Escena):
                 self.inventario.guardarObjeto(objetoInventario)
                 self.objeto.kill()
                 self.pasarFase = True
+        
+        # Si tiene Boss y el boss no tiene vida acaba el juego
+        if GestorRecursos.getConfiguration('TIENE_BOSS'):
+            for enemigo in iter(self.grupoEnemigos): #Solo tiene el boss realmente.
+                if not enemigo.tieneVida():
+                    self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
 
         self.actualizarScroll(self.jugador)
 
