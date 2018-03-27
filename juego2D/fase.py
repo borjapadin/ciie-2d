@@ -17,8 +17,7 @@ from vida import *
 from tiempo import *
 from elementosDibujables import *
 from plataforma import *
-#from animaciones import *
-
+from loggerCreator import *
 
 ULTIMA_FASE = 3
 # Los bordes de la pantalla para hacer scroll horizontal
@@ -30,25 +29,10 @@ MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 class Fase(Escena):
     # Crear Escenas habituales
     def __init__(self, director, numFase):
-        # Habria que pasarle como parámetro el número de fase, a partir del cual se cargue
-        #  un fichero donde este la configuracion de esa fase en concreto, con cosas como
-        #   - Nombre del archivo con el decorado
-        #   - Posiciones de las plataformas
-        #   - Posiciones de los enemigos
-        #   - Posiciones de inicio de los jugadores
-        #  etc.
-        # Y cargar esa configuracion del archivo en lugar de ponerla a mano, como aqui abajo
-        # De esta forma, se podrian tener muchas fases distintas con esta clase
-        # Condicion_pasar_fase establece si inicialmente es posible pasar la fase o si no lo es.
-        # Las condiciones que pueden hacer que se pasen o no de fase son: matar
-        # a un enemigo o conseguir un objeto principal.
-
-     
+        self.logger = loggerCreator.getLogger('loger','loger.log')
+        self.logger.info = 'Hola'
+        
         self.vidaGestor = GestorRecursos.getVida() 
-
-
-
-
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
         self.numFaseSiguiente = int(numFase) + 1
@@ -423,12 +407,6 @@ class Fase(Escena):
    
     def obtenerNumeroFaseSiguiente(self):
         return self.numFaseSiguiente
-    
-    def crearSceneSiguiente(self):
-        self.director.salirEscena()
-        faseNueva = CutScene(self.director, self.numFaseSiguiente)
-        self.director.apilarEscena(faseNueva)
-
 
 
 

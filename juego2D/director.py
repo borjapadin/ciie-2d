@@ -82,6 +82,11 @@ class Director():
         menu.mostrarPantalla(pantalla)
         if (pantalla == PANTALLA_CUTSCENE):
             menu.setNumFaseSiguiente(fase.obtenerNumeroFaseSiguiente())
+        # Cuando la pantalla es de game over o de victoria hay que tener cuidado de indicarle que reseteamos
+        # las fases.
+        elif (pantalla == PANTALLA_GAMEOVER or pantalla == PANTALLA_VICTORIA):
+            menu.setNumFaseSiguiente(1)
+
         self.pila.append(menu)
     
 

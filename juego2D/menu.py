@@ -65,14 +65,14 @@ class Menu(Escena):
 	def ejecutarJuego(self):
 		self.crearCutScene()
 	
-	def crearCutScene(self):
+	def crearCutScene(self,primera=True):
+		if not primera:
+			self.director.salirEscena()
 		#El menú ya sabe cual es la fase siguiente.
 		cutscene = CutScene(self.director,self.numFaseSiguiente)
 		#Puede saberlo porque se ha inicializado con que es la fase inicial o por la información
 		#Que proporciona el director obteniendola de la fase terminada 
 		self.director.apilarEscena(cutscene)
-		#self.mostrarPantallaConfiguracion() #Dejamos que esta sea la actual (si salimos de las fases entramos en esta)
-		#self.mostrarPantalla(PANTALLA_PAUSA)
 
 	def reanudarJuego(self,fase):
 		self.director.apilarEscena(fase)
