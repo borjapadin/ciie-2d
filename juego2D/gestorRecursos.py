@@ -15,15 +15,22 @@ class GestorRecursos(object):
                    'KIT_CURACION': [(20,600),(20,120)],
                    'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)]}
 
-    Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': ('llave',300,2), 'PASAR_FASE': False, 
-                    'ENEMIGOS': [('Soldado',600),('Boss', 1000)], 
+    Nivel_Pasillo_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': ('llave',300,2), 'PASAR_FASE': False, 
+                    'ENEMIGOS': [('Soldado',600)], 
+                     'KIT_CURACION': [(20,10)],
+                     'PLATAFORMA_SECUNDARIA': [('Caja',200,401)]}    
+
+
+    Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': (None,None,None), 'PASAR_FASE': False, 
+                    'ENEMIGOS': [('Boss', 1000)], 
                      'KIT_CURACION': [(20,10)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)]}    
 
     config = {'teclas': {'ARRIBA': K_w, 'ABAJO': K_s, 'IZQUIERDA': K_a, 'DERECHA': K_d, 'DISPARAR': K_j},
               '1': Nivel_Bosque,
               '2': Nivel_Playa,
-              '3': Nivel_Bunker,
+              '3': Nivel_Pasillo_Bunker,
+              '4': Nivel_Bunker,
               }
     
     vida = 1000

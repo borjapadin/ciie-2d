@@ -570,16 +570,16 @@ class Boss(Pistolero, NoJugador):
             posicionEnemigo = self.posicion[0]
             if posicionJugador < posicionEnemigo:
                 if (posicionEnemigo-posicionJugador) < 350: #La distancia es menor de 50
-                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_BOSS): #Velocidad recarga bala.
-                        self.mirando = IZQUIERDA            
+                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_BOSS): #Velocidad recarga bala.          
                         self.numPostura = SPRITE_DISPARANDO
                         self.disparar = ON
+                        Personaje.mover(self, IZQUIERDA)
                         Personaje.mover(self, DISPARAR)
                         self.inicializarCountDisparar()
                     else:
                         self.aumentarContadorDisparo()
                 else: 
-                    Personaje.mover(self,QUIETO)
+                    Personaje.mover(self,IZQUIERDA)
             elif posicionEnemigo < posicionJugador:
                 if (posicionJugador-posicionEnemigo) < 350: #La distancia es menor de 50 
                     if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_BOSS): #Velocidad recarga bala.
@@ -592,7 +592,7 @@ class Boss(Pistolero, NoJugador):
                         self.disparar = OFF
                         self.aumentarContadorDisparo()
                 else:
-                    Personaje.mover(self,QUIETO)
+                    Personaje.mover(self,DERECHA)
             else:
                 Personaje.mover(self,QUIETO)
 
