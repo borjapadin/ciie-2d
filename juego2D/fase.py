@@ -226,7 +226,8 @@ class Fase(Escena):
                 if (self.condicionesPasarFase()):  # Si se cumplen las condiciones para pasar fase
 
                     # Si hemos llegado a la derecha de todo creamos la escena
-                    # siguiente.
+                    # siguiente, además de que reseteamos la vida.
+                    GestorRecursos.setVida(self.jugador.devolverVida())
                     self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
 
                     return False  # No se ha actualizado el scroll
@@ -387,8 +388,7 @@ class Fase(Escena):
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p:
                     self.director.cambiarAlMenu(self, PANTALLA_PAUSA)
-                    # self.director.salirEscena() #Salimos de la escena para
-                    # poder entrar en el menu
+                #--------------VICTORIA-------------------------------
                 elif evento.key == K_v:
                     self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
                 #--------------GAME_OVER-------------------------
