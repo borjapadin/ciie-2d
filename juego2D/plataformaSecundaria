@@ -1,0 +1,13 @@
+# -*- encoding: utf-8 -*-
+import pygame
+import sys
+import os
+import time
+from pygame.locals import *
+from escena import *
+from gestorRecursos import *
+from random import randint
+
+
+
+class 

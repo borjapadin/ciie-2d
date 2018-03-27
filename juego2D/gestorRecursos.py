@@ -6,20 +6,26 @@ class GestorRecursos(object):
     recursos = {}
     
     Nivel_Bosque = {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15), 'OBJETO_PRINCIPAL': ('bidonGasolina',750,1), 'PASAR_FASE': False,
-                    'ENEMIGOS': [('Soldado',300),('Soldado',400),('Zombie',500),('Zombie',700)],
-                    'KIT_CURACION': [(20,450),(70,650)]} #Lo primero es la vida que carga (multiplos de diez, posicionX)
+                   'ENEMIGOS': [('Soldado',300),('Soldado',1000),('Zombie',500),('Zombie',700)],
+                    'KIT_CURACION': [(20,160)],
+                    'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)]} #Lo primero es la vida que carga (multiplos de diez, posicionX)
+                    
     Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'OBJETO_PRINCIPAL':  (None,None,None), 'PASAR_FASE': True, 
                    'ENEMIGOS': [('Soldado',350)],
-                   'KIT_CURACION': [(20,600),(20,120)]}
+                   'KIT_CURACION': [(20,600),(20,120)],
+                   'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)]}
+
     Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': ('llave',300,2), 'PASAR_FASE': False, 
-                     'ENEMIGOS': [('Soldado',600)],
-                     'KIT_CURACION': [(20,10)]}    
-    
+                    'ENEMIGOS': [('Soldado',600),('Boss', 1000)], 
+                     'KIT_CURACION': [(20,10)],
+                     'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)]}    
+
     config = {'teclas': {'ARRIBA': K_w, 'ABAJO': K_s, 'IZQUIERDA': K_a, 'DERECHA': K_d, 'DISPARAR': K_j},
               '1': Nivel_Bosque,
               '2': Nivel_Playa,
               '3': Nivel_Bunker,
               }
+    
     vida = 1000
 
     @classmethod

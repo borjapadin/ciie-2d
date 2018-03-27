@@ -16,6 +16,7 @@ from careto import *
 from vida import *
 from tiempo import *
 from elementosDibujables import *
+from plataforma import *
 #from animaciones import *
 
 
@@ -78,14 +79,11 @@ class Fase(Escena):
         self.crearPersonajePrincipal()
         self.inicializarEnemigos()
         self.crearEnemigos()
-        #self.crearEnemigos(300, self.coordPlataforma[1] +1)
-        #self.crearEnemigos(500, self.coordPlataforma[1] +1)
 
         # Creamos un grupo con las balas.
         #self.grupoBalas = pygame.sprite.Group()
         self.grupoBalasJugador = pygame.sprite.Group()
         self.grupoBalasSoldado = pygame.sprite.Group()
-
         self.grupoSpritesDinamicos = pygame.sprite.Group(
             self.jugador, self.grupoEnemigos)
         # Crear objetos de momento crea la gasolina pero hay que hacerlo generico para que del
@@ -93,8 +91,10 @@ class Fase(Escena):
         # Eduardo Penas.
 
         self.grupoSprites = pygame.sprite.Group(
-            self.plataformaSuelo, self.grupoEnemigos)
+            self.grupoPlataformas, self.grupoEnemigos)
+
         self.crearObjetoPrincipal()
+        #Crear kits curativos
         self.kitsCurativos = self.crearKitCurativo()
         for kitCurativo in iter(self.kitsCurativos):
             self.grupoSprites.add(kitCurativo)
@@ -112,10 +112,6 @@ class Fase(Escena):
         # Ponemos al jugador en la posición inicial
         self.jugador.establecerPosicion((5, self.coordPlataforma[1] + 1))
 
-
-    # TODO: generalizar.
-   # def crearPlataformasSecundarias():
-
     # TODO: generalizar
     def crearElementosBordeSuperior(self, nombreFase):
         self.careto = Careto(nombreFase)
@@ -127,6 +123,15 @@ class Fase(Escena):
         self.grupoSoldados = pygame.sprite.Group()
         self.grupoZombies = pygame.sprite.Group()
 
+    def crearPlataformasSecundarias(self):
+        plataformasSecundarias = []
+        for (datosPlataforma) in iter(GestorRecursos.getConfiguration('PLATAFORMA_SECUNDARIA')):
+            (imagen,posicionX,posicionY) = datosPlataforma
+            plataformaSecundaria = PlataformaSecundaria(imagen)
+            plataformaSecundaria.establecerPosicion((posicionX,posicionY))
+            plataformasSecundarias.append(plataformaSecundaria)
+        return plataformasSecundarias
+
 
     # TODO: generalizar.
     def crearEnemigos(self):
@@ -134,6 +139,9 @@ class Fase(Escena):
             (tipoEnemigo, posicion) = enemigo
             if tipoEnemigo == 'Soldado':
                 enemy = Soldado()
+                self.grupoSoldados.add(enemy)
+            if tipoEnemigo == 'Boss':
+                enemy = Boss()
                 self.grupoSoldados.add(enemy)
             elif tipoEnemigo == 'Zombie':
                 enemy = Zombie()
@@ -154,11 +162,18 @@ class Fase(Escena):
     def determinarPlataforma(self):
         self.coordPlataforma = GestorRecursos.getConfiguration('PLATAFORMA')
 
-
     # TODO: generalizar.
     def crearPlataformas(self, coordenadas):
+        self.grupoPlataformas = pygame.sprite.Group()
         self.plataformaSuelo = Plataforma(pygame.Rect(coordenadas))
-        self.grupoPlataformas = pygame.sprite.Group(self.plataformaSuelo)
+
+        #Crear plataformas secundarias
+        self.plataformasSecundarias = self.crearPlataformasSecundarias()
+        # Recorrerlas y meterlas en el grupo de plataformas.
+        for plataformaSecundaria in iter(self.plataformasSecundarias):
+            self.grupoPlataformas.add(plataformaSecundaria)
+        self.grupoPlataformas.add(self.plataformaSuelo)
+
 
 
     # TODO: generalizar. De momento esto de generico tiene una mierda pero
@@ -171,13 +186,6 @@ class Fase(Escena):
                 nombreObjetoPrincipal, 'ficheroTextoQueActualmenteNoHaceNada', self.numFase)
             self.objeto.establecerPosicion((1000, self.coordPlataforma[1] + 1))
             self.grupoSprites.add(self.objeto)
-
-    def crearKitCurativo(self):
-        kitsCurativos = []
-        kitCurativo = KitCuracion(50)
-        kitCurativo.establecerPosicion((100, self.coordPlataforma[1] + 1))
-        kitsCurativos.append(kitCurativo)
-        return kitsCurativos
 
     # TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
@@ -419,19 +427,7 @@ class Fase(Escena):
         faseNueva = CutScene(self.director, self.numFaseSiguiente)
         self.director.apilarEscena(faseNueva)
 
-# -------------------------------------------------
-# Clase Plataforma
-class Plataforma(MiSprite):
-    def __init__(self, rectangulo):
-        # Primero invocamos al constructor de la clase padre
-        MiSprite.__init__(self)
-        # Rectangulo con las coordenadas en pantalla que ocupara
-        self.rect = rectangulo
-        # Y lo situamos de forma global en esas coordenadas
-        self.establecerPosicion((self.rect.left, self.rect.bottom))
-        # En el caso particular de este juego, las plataformas no se van a ver,
-        # asi que no se carga ninguna imagen
-        self.image = pygame.Surface((0, 0))
+
 
 
 
