@@ -135,6 +135,9 @@ class Fase(Escena):
             if tipoEnemigo == 'Soldado':
                 enemy = Soldado()
                 self.grupoSoldados.add(enemy)
+            if tipoEnemigo == 'Boss':
+                enemy = Boss()
+                self.grupoSoldados.add(enemy)
             elif tipoEnemigo == 'Zombie':
                 enemy = Zombie()
                 self.grupoZombies.add(enemy)

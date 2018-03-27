@@ -17,9 +17,9 @@ ARRIBA = 3
 ABAJO = 4
 DISPARAR = 5
 
-VELOCIDAD_RECARGA_BALA = 20
-VELOCIDAD_RECARGA_BALA_SOLDADO = 200
-VELOCIDAD_RECARGA_BALA_MALO = 60
+VELOCIDAD_RECARGA_BALA_HEROE = 200
+VELOCIDAD_RECARGA_BALA_SOLDADO = 60
+VELOCIDAD_RECARGA_BALA_BOSS = 35
 
 ON = 1
 OFF = 0
@@ -144,7 +144,7 @@ class Personaje(MiSprite):
         self.numPostura = QUIETO
 
         # El rectangulo del Sprite
-        self.rect = pygame.Rect(100, 100, self.coordenadasHoja[self.numPostura][self.numImagenPostura][
+        self.rect = pygame.Rect(120, 120, self.coordenadasHoja[self.numPostura][self.numImagenPostura][
                                 2], self.coordenadasHoja[self.numPostura][self.numImagenPostura][3])
 
         # Las velocidades de caminar y salto
@@ -360,9 +360,16 @@ class Pistolero():
 
     def crearBala(self):
         # Si se ha pulsado que quieres disparar
+        pupita = 0
         if self.disparar == ON:
+            if self.archivoImagen == 'Personajes/rossi.png':
+                pupita = 20
+            elif self.archivoImagen == 'Personajes/SpriteSoldadoFilas.png':
+                pupita = 40
+            else:
+                pupita = 80
             self.bala = BalaHeroe('Personajes/playerBullet.png',
-                                  'Personajes/offsetBala.txt', [1], 1)
+                                  'Personajes/offsetBala.txt', [1], 1, pupita)
             self.disparar = OFF
             if self.archivoImagen == 'Personajes/rossi.png':
                 if self.mirando == IZQUIERDA:
@@ -417,7 +424,7 @@ class Jugador(Pistolero, Personaje):
             Personaje.mover(self, QUIETO)
 
     def decidirSiDisparar(self, tiempo):
-        if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_SOLDADO):
+        if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_HEROE):
             self.dispararBala()
             self.inicializarCountDisparar()
             self.numPostura = SPRITE_DISPARANDO
@@ -500,7 +507,7 @@ class Soldado(Pistolero, NoJugador):
             
             if posicionJugador < posicionEnemigo:
                 if (posicionEnemigo-posicionJugador) < 200: #La distancia es menor de 50
-                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA): #Velocidad recarga bala.
+                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_SOLDADO): #Velocidad recarga bala.
                         self.mirando = IZQUIERDA            
                         self.numPostura = SPRITE_DISPARANDO
                         self.disparar = ON
@@ -512,7 +519,7 @@ class Soldado(Pistolero, NoJugador):
                     Personaje.mover(self,QUIETO)
             elif posicionEnemigo < posicionJugador:
                 if (posicionJugador-posicionEnemigo) < 200: #La distancia es menor de 50 
-                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA): #Velocidad recarga bala.
+                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_SOLDADO): #Velocidad recarga bala.
                         self.mirando = DERECHA
                         self.numPostura = SPRITE_DISPARANDO
                         self.disparar = ON
@@ -550,7 +557,7 @@ class Boss(Pistolero, NoJugador):
                            1, 7, 6, 2, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
         self.establecerVida(400)
         self.inicializarBalas()
-        self.damage = 30
+        self.damage = 20
         self.disparar = OFF
         self.inicializarCountDisparar()
 
@@ -563,7 +570,7 @@ class Boss(Pistolero, NoJugador):
             posicionEnemigo = self.posicion[0]
             if posicionJugador < posicionEnemigo:
                 if (posicionEnemigo-posicionJugador) < 350: #La distancia es menor de 50
-                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_MALO): #Velocidad recarga bala.
+                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_BOSS): #Velocidad recarga bala.
                         self.mirando = IZQUIERDA            
                         self.numPostura = SPRITE_DISPARANDO
                         self.disparar = ON
@@ -575,7 +582,7 @@ class Boss(Pistolero, NoJugador):
                     Personaje.mover(self,QUIETO)
             elif posicionEnemigo < posicionJugador:
                 if (posicionJugador-posicionEnemigo) < 350: #La distancia es menor de 50 
-                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA): #Velocidad recarga bala.
+                    if (self.count_disparar >= VELOCIDAD_RECARGA_BALA_BOSS): #Velocidad recarga bala.
                         self.mirando = DERECHA
                         self.numPostura = SPRITE_DISPARANDO
                         self.disparar = ON
@@ -608,12 +615,12 @@ class Boss(Pistolero, NoJugador):
 
 
 class BalaHeroe(MiSprite):
-    def __init__(self, archivoImagen, archivoCoordenadas, velocidad, direccion):
+    def __init__(self, archivoImagen, archivoCoordenadas, velocidad, direccion, pupa):
 
         MiSprite.__init__(self)
 
         self.mirando = direccion
-        self.damage = 20  # De momento por defecto porque me da pereza buscar
+        self.damage = pupa  # De momento por defecto porque me da pereza buscar
 
         # No le pondria la velocidad porque todas las balas tendran la misma
         # (?)
