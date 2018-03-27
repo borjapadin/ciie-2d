@@ -79,9 +79,8 @@ class Director():
         """El director le da a menu el número de fase indicado por la fase. 
 		Esto es así porque el número de fase es necesario para saber que cutScene crear, y la cutScene
         a su vez tiene el control de que fase llevar."""
-
-	    menu.mostrarPantalla(pantalla)
-	    if (pantalla == PANTALLA_CUTSCENE):
+        menu.mostrarPantalla(pantalla)
+        if (pantalla == PANTALLA_CUTSCENE):
             menu.setNumFaseSiguiente(fase.obtenerNumeroFaseSiguiente())
         self.pila.append(menu)
     

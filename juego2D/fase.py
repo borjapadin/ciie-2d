@@ -172,8 +172,6 @@ class Fase(Escena):
             self.objeto.establecerPosicion((1000, self.coordPlataforma[1] + 1))
             self.grupoSprites.add(self.objeto)
 
-<<<<<<< HEAD
-
     def crearKitCurativo(self):
         kitsCurativos = []
         kitCurativo = KitCuracion(50)
@@ -181,9 +179,6 @@ class Fase(Escena):
         kitsCurativos.append(kitCurativo)
         return kitsCurativos
 
-    
-=======
->>>>>>> origin/master
     # TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
 
@@ -418,21 +413,14 @@ class Fase(Escena):
    
     def obtenerNumeroFaseSiguiente(self):
         return self.numFaseSiguiente
-
-<<<<<<< HEAD
     
     def crearSceneSiguiente(self):
         self.director.salirEscena()
         faseNueva = CutScene(self.director, self.numFaseSiguiente)
         self.director.apilarEscena(faseNueva)
 
-
-=======
 # -------------------------------------------------
 # Clase Plataforma
-class Plataforma(MiSprite):
->>>>>>> origin/master
-
 class Plataforma(MiSprite):
     def __init__(self, rectangulo):
         # Primero invocamos al constructor de la clase padre
