@@ -12,6 +12,7 @@ class ElementosDibujables:
     def agregarElementos(self,elementosDibujable):
         for elementoDibujable in iter(elementosDibujable):
             self.elementosDibujables.append(elementoDibujable)
+    
     def dibujar(self,pantalla):
         for elementoDibujable in iter(self.elementosDibujables):
             elementoDibujable.dibujar(pantalla)

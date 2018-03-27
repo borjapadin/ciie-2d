@@ -30,12 +30,12 @@ class Fase(Escena):
     # Crear Escenas habituales
     def __init__(self, director, numFase):
         self.logger = loggerCreator.getLogger('loger','loger.log')
-        self.logger.info = 'Hola'
         
         self.vidaGestor = GestorRecursos.getVida() 
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
         self.numFaseSiguiente = int(numFase) + 1
+        # El gestor de recursos cargara todos los recursos a partir de ese numero.
         GestorRecursos.setConfiguration(self.numFase)
         self.pasarFase = GestorRecursos.getConfiguration('PASAR_FASE')
 
@@ -48,13 +48,15 @@ class Fase(Escena):
         self.decorado = Decorado("/" + self.numFase)
         self.fondo = Cielo("/" + self.numFase)
         self.elementosDibujables = ElementosDibujables()
-        # Tengo dudas de que hacer con esto una vez tengamos que sea todo
-        # diferente dependiendo de la fase.
         self.inventario = Inventario()
 
         # Aqui reunidos todos los elementos dibujables.
         self.elementosDibujables.agregarElementos(
             [self.fondo, self.decorado, self.vida, self.careto, self.tiempo, self.inventario])
+        # Si tiene boss entonces pintamos su vida y su jepeto
+        if (GestorRecursos.getConfiguration('TIENE_BOSS')):
+            self.listaVidasEnemigo = listaVidasEnemigo()
+            self.elementosDibujables.agregarElemento(self.listaVidasEnemigo)
         # Que parte del decorado estamos visualizando
         self.scrollx = 0
 
@@ -268,11 +270,21 @@ class Fase(Escena):
             enemigo.mover_cpu(self.jugador, tiempo)
             for bala in self.grupoBalasJugador:
                 if pygame.sprite.collide_rect(enemigo, bala):
-                    self.lesionarPersonaje(bala, enemigo)
-                    if not enemigo.tieneVida():
-                        enemigo.kill()
+                    if not enemigo.esUnJefe():
+                        self.lesionarPersonaje(bala, enemigo)
+                        if not enemigo.tieneVida():
+                            enemigo.kill()
+                    else:
+                        self.accionEspecialJefe(enemigo,bala)
             if pygame.sprite.collide_rect(self.jugador, enemigo):
                 self.golpearseEnemigo(enemigo, self.jugador)
+    
+    def accionEspecialJefe(self,boss,bala):
+        if pygame.sprite.collide_rect(boss, bala):
+            self.lesionarPersonaje(bala,boss)
+            self.listaVidasEnemigo.perderVida(bala.damageBala())
+            if not boss.tieneVida():
+                self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
 
     
     def update(self, tiempo):
@@ -280,8 +292,8 @@ class Fase(Escena):
         self.moverBalas(self.grupoBalasJugador)
         self.moverBalas(self.grupoBalasSoldado)
 
-        self.colisionEnemigoBalaAmiga(self.grupoSoldados,tiempo)
-        self.colisionEnemigoBalaAmiga(self.grupoZombies,tiempo)
+        self.colisionEnemigoBalaAmiga(self.grupoSoldados, tiempo)
+        self.colisionEnemigoBalaAmiga(self.grupoZombies, tiempo)
 
         self.cronometro = pygame.time.get_ticks() / 1000 - self.cronometroScene
         self.tiempo.actualizarCronometro(self.cronometro)
@@ -318,12 +330,6 @@ class Fase(Escena):
                 self.inventario.guardarObjeto(objetoInventario)
                 self.objeto.kill()
                 self.pasarFase = True
-        
-        # Si tiene Boss y el boss no tiene vida acaba el juego
-        if GestorRecursos.getConfiguration('TIENE_BOSS'):
-            for enemigo in iter(self.grupoEnemigos): #Solo tiene el boss realmente.
-                if not enemigo.tieneVida():
-                    self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
 
         self.actualizarScroll(self.jugador)
 

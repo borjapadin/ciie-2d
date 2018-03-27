@@ -65,9 +65,7 @@ class Menu(Escena):
 	def ejecutarJuego(self):
 		self.crearCutScene()
 	
-	def crearCutScene(self,primera=True):
-		if not primera:
-			self.director.salirEscena()
+	def crearCutScene(self):
 		#El menú ya sabe cual es la fase siguiente.
 		cutscene = CutScene(self.director,self.numFaseSiguiente)
 		#Puede saberlo porque se ha inicializado con que es la fase inicial o por la información

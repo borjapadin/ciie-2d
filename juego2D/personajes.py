@@ -454,13 +454,15 @@ class NoJugador(Personaje):
     def __init__(self, archivoImagen, archivoCoordenadas, numImagenes, velocidad, velocidadSalto, retardoAnimacion):
         # Primero invocamos al constructor de la clase padre con los parametros
         # pasados
+        self.esJefe = False
         Personaje.__init__(self, archivoImagen, archivoCoordenadas,
                            numImagenes, velocidad, velocidadSalto, retardoAnimacion)
         
     # Aqui vendria la implementacion de la IA segun las posiciones de los jugadores
     # La implementacion por defecto, este metodo deberia de ser implementado en las clases inferiores
     #  mostrando la personalidad de cada enemigo
-                      
+    def esUnJefe(self):
+        return self.esJefe
 
     
 class Zombie(NoJugador):
@@ -560,6 +562,7 @@ class Boss(Pistolero, NoJugador):
         self.damage = 20
         self.disparar = OFF
         self.inicializarCountDisparar()
+        self.esJefe = True
 
     def mover_cpu(self, jugador, tiempo):
         if self.rect.left > 0 and self.rect.right < ANCHO_PANTALLA and self.rect.bottom > 0 and self.rect.top < ALTO_PANTALLA:

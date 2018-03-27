@@ -19,7 +19,7 @@ class Objetos(MiSprite):
     def __init__(self, archivoImagen, primerParametroRect, top, left):
 
         # Primero invocamos al constructor de la clase padre
-        MiSprite.__init__(self);
+        MiSprite.__init__(self)
         self.primerParametroRect = primerParametroRect
         self.top = top
         self.left = left
