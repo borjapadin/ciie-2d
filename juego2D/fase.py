@@ -414,10 +414,6 @@ class Fase(Escena):
         self.jugador.mover(teclasPulsadas, GestorRecursos.getConfigParam('teclas')['ARRIBA'],GestorRecursos.getConfigParam('teclas')['ABAJO'],
         GestorRecursos.getConfigParam('teclas')['IZQUIERDA'], GestorRecursos.getConfigParam('teclas')['DERECHA'], GestorRecursos.getConfigParam('teclas')['DISPARAR'])
 
-    
-    def teclasConfiguracion(self):
-        return
-
    
     def obtenerNumeroFaseSiguiente(self):
         return self.numFaseSiguiente
@@ -538,8 +534,8 @@ class FondoCutScene:
     def dibujar(self, pantalla):
         # Dibujamos primero la imagen de fondo
         pantalla.blit(self.imagen, self.imagen.get_rect())
-        # if self.texto == TITULO:
-        # self.textoTitulo.dibujar(pantalla)                      yo esto lo
+        if self.texto == TITULO:
+            self.textoTitulo.dibujar(pantalla)                   #   yo esto lo
         # quitaría porque se ve el nombre del fichero
         if self.texto == TEXTO:
             for lineaTextoNivel in self.textoNivel:
