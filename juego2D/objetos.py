@@ -16,11 +16,13 @@ class Objetos(MiSprite):
     #  Numero de imagenes en cada postura
     #  Velocidad de caminar y de salto
     #  Retardo para mostrar la animacion del personaje
-    def __init__(self, archivoImagen, archivoCoordenadas):
+    def __init__(self, archivoImagen, primerParametroRect, top, left):
 
         # Primero invocamos al constructor de la clase padre
         MiSprite.__init__(self);
-
+        self.primerParametroRect = primerParametroRect
+        self.top = top
+        self.left = left
         # Se carga la hoja
         self.cambiarImagen(archivoImagen)
         
@@ -29,8 +31,8 @@ class Objetos(MiSprite):
         self.hoja = self.hoja.convert_alpha()
     
         # El rectangulo del Sprite
-        self.rect = pygame.Rect((0,20),[34,40])
-        self.image = self.hoja.subsurface(0,0,34,40)        
+        self.rect = pygame.Rect(self.primerParametroRect,[self.top,self.left])
+        self.image = self.hoja.subsurface(0,0,self.top,self.left)        
     
     def obtenerObjeto():
         return imagen
@@ -40,7 +42,7 @@ class ObjetoPrincipal(Objetos):
     def __init__(self,imagen,archivoCoordenadas,numFase):
         self.imagen = imagen
         direccionImagen = 'Fase/'+numFase+'/Objetos/'+imagen+'.png'
-        Objetos.__init__(self,direccionImagen,archivoCoordenadas)
+        Objetos.__init__(self,direccionImagen,(0,20),34,40)
     
     def crearObjetoInventario(self,num):
         return ObjetoInventario(num,self.imagen)
@@ -49,7 +51,7 @@ class ObjetoPrincipal(Objetos):
 class KitCuracion(Objetos):
     def __init__(self,valorCurativo):
         self.valorCurativo = valorCurativo 
-        Objetos.__init__(self,'Inventario/kitCurativo.png','nada')
+        Objetos.__init__(self,'Inventario/kitCurativo.png',(0,20),34,40)
     
     def getValorCurativo(self):
         return self.valorCurativo
@@ -62,7 +64,11 @@ class KitCuracion(Objetos):
         valorCurativo = self.getValorCurativo()
         return valorCurativo
 
-        
+class PlataformaSecundaria(Objetos):
+    def __init__(self,imagen):
+        imagen = 'Caja.png' #CACA GRANDE
+        Objetos.__init__(self,'PlataformasSecundarias/'+imagen,(0,35),63,50) 
+
     
 
     
