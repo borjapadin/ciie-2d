@@ -30,14 +30,15 @@ class Fase(Escena):
     # Crear Escenas habituales
     def __init__(self, director, numFase):
         self.logger = loggerCreator.getLogger('loger','loger.log')
-        
-        self.vidaGestor = GestorRecursos.getVida()
+
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
         self.numFaseSiguiente = int(numFase) + 1
         # El gestor de recursos cargara todos los recursos a partir de ese numero.
         GestorRecursos.setConfiguration(self.numFase)
         self.pasarFase = GestorRecursos.getConfigParam('teclas')['IZQUIERDA']
+        self.tiempoFase = GestorRecursos.getConfiguration('TIEMPO')+GestorRecursos.getTiempoAcumulado()
+        self.vidaGestor = GestorRecursos.getVida()
 
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
@@ -109,7 +110,7 @@ class Fase(Escena):
     def crearElementosBordeSuperior(self, nombreFase):
         self.careto = Careto(nombreFase)
         self.vida = listaVidas(self.vidaGestor)
-        self.tiempo = Tiempo(0)
+        self.tiempo = Tiempo(self.tiempoFase)
 
     def inicializarEnemigos(self):
         self.grupoEnemigos = pygame.sprite.Group()
@@ -248,8 +249,7 @@ class Fase(Escena):
 
                     # Si hemos llegado a la derecha de todo creamos la escena
                     # siguiente, además de que reseteamos la vida.
-                    GestorRecursos.setVida(self.jugador.devolverVida())
-                    self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
+                    self.cambiarAlCutScene()
 
                     return False  # No se ha actualizado el scroll
 
@@ -318,7 +318,7 @@ class Fase(Escena):
         self.cronometro = pygame.time.get_ticks() / 1000 - self.cronometroScene
         self.tiempo.actualizarCronometro(self.cronometro)
         self.fondo.update(tiempo)
-        if(self.cronometro == 20):
+        if(self.cronometro == self.tiempoFase):
             GestorRecursos.inicializar()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
         
@@ -357,10 +357,16 @@ class Fase(Escena):
         if GestorRecursos.getConfiguration('TIENE_BARCO') == True:
             for barco in self.barco:
                 if pygame.sprite.collide_rect(self.jugador, barco):
-                    self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
+                    self.cambiarAlCutScene()
+                   
 
         self.actualizarScroll(self.jugador)
-
+    
+    def cambiarAlCutScene(self):
+            GestorRecursos.setVida(self.jugador.devolverVida())
+            GestorRecursos.setTiempoAcumulado(self.tiempo.obtenerTiempo())
+            print(self.tiempo.obtenerTiempo())
+            self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
     
     def lesionarPersonaje(self, bala, personaje):
         damage = bala.damageBala()
@@ -421,8 +427,7 @@ class Fase(Escena):
                     self.director.salirPrograma()
                 #-------------CAMBIAR ESCENA (a una cutScena)------------------
                 elif evento.key == K_c:  # Trampa de salir de escena para cambiarla
-                    GestorRecursos.setVida(self.jugador.devolverVida())
-                    self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
+                    self.cambiarAlCutScene()
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p:
                     self.director.cambiarAlMenu(self, PANTALLA_PAUSA)
