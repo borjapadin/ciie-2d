@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
 from constantes import *
 from gestorRecursos import *
+from elementosDibujables import *
 
 
-class Careto:
+class Careto(ElementoDibujable):
     def __init__ (self,nombreFase):
         self.imagen = GestorRecursos.CargarImagen('Fase'+nombreFase+'/Careto/careto.png', -1)
         self.rect = self.imagen.get_rect()
