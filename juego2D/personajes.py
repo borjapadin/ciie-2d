@@ -17,6 +17,8 @@ ARRIBA = 3
 ABAJO = 4
 DISPARAR = 5
 
+DISTANCIA_BALA = 150
+
 VELOCIDAD_RECARGA_BALA_HEROE = 200
 VELOCIDAD_RECARGA_BALA_SOLDADO = 60
 VELOCIDAD_RECARGA_BALA_BOSS = 35
@@ -83,7 +85,6 @@ class MiSprite(pygame.sprite.Sprite):
         incrementox = self.velocidad[0] * tiempo
         incrementoy = self.velocidad[1] * tiempo
         self.incrementarPosicion((incrementox, incrementoy))
-
 
 
 
@@ -634,6 +635,8 @@ class BalaHeroe(MiSprite):
     def __init__(self, archivoImagen, archivoCoordenadas, velocidad, direccion, pupa):
 
         MiSprite.__init__(self)
+        
+        self.distancia = 0
 
         self.mirando = direccion
         self.damage = pupa  # De momento por defecto porque me da pereza buscar
@@ -653,14 +656,18 @@ class BalaHeroe(MiSprite):
         self.mirando = jugador.mirando
 
     def moverBala(self):
-        if self.mirando == DERECHA:
-            # jojoojjojoojoj... efecto rayo laser!!
-            self.incrementarPosicion((self.velocidad, 0))
+        if self.distancia < DISTANCIA_BALA:
+            if self.mirando == DERECHA:
+                # jojoojjojoojoj... efecto rayo laser!!
+                self.incrementarPosicion((self.velocidad, 0))
+            else:
+                self.incrementarPosicion((-self.velocidad, 0))
+            self.distancia += abs(self.velocidad)
         else:
-            self.incrementarPosicion((-self.velocidad, 0))
+            self.destruirBala()
 
     def destruirBala(self):
-        self.hoja.kill()
+        self.kill()
 
     def damageBala(self):
         return self.damage
