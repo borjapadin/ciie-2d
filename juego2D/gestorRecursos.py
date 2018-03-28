@@ -11,14 +11,16 @@ class GestorRecursos(object):
                     'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
                     'POSICION_OBJETO_PRINCIPAL': 1,
                     'COORDENADAS_OBJETO_PRINCIPAL': 300, #Actualmente no se usa
-                    'IMAGEN_OBJETO_PRINCIPAL': 'bidonGasolina'} #Lo primero es la vida que carga (multiplos de diez, posicionX)
+                    'IMAGEN_OBJETO_PRINCIPAL': 'bidonGasolina',
+                    'TIEMPO':30} #Lo primero es la vida que carga (multiplos de diez, posicionX)
                     
     Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'PASAR_FASE': True, 
                    'ENEMIGOS': [('Soldado',350)],
                    'KIT_CURACION': [(20,600),(20,120)],
                    'PLATAFORMA_SECUNDARIA': [('Caja',200,481),('Caja',10,481),('Caja',900,481)],
                    'BARCO': [('Barco',1000,481)],
-                   'TIENE_BARCO': True}
+                   'TIENE_BARCO': True,
+                   'TIEMPO': 20}
 
     Nivel_Pasillo_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True, 
                     'ENEMIGOS': [('Soldado',600)], 
@@ -26,14 +28,16 @@ class GestorRecursos(object):
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,456)],
                      'COORDENADAS_OBJETO_PRINCIPAL': 456, #Actualmente no se usa
                      'IMAGEN_OBJETO_PRINCIPAL': 'llave',
-                     'POSICION_OBJETO_PRINCIPAL': 2}    
+                     'POSICION_OBJETO_PRINCIPAL': 2,
+                     'TIEMPO': 20}    
 
 
     Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 
                     'ENEMIGOS': [('Boss', 1000)], 
                      'KIT_CURACION': [(20,10)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
-                     'TIENE_BOSS': True}    
+                     'TIENE_BOSS': True,
+                     'TIEMPO': 40}    
 
     config = {'teclas': {'ARRIBA': K_w, 'ABAJO': K_s, 'IZQUIERDA': K_a, 'DERECHA': K_d, 'DISPARAR': K_j},
               '1': Nivel_Bosque,
