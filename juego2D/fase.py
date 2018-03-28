@@ -109,7 +109,7 @@ class Fase(Escena):
     def crearElementosBordeSuperior(self, nombreFase):
         self.careto = Careto(nombreFase)
         self.vida = listaVidas(self.vidaGestor)
-        self.tiempo = Tiempo(GestorRecursos.getConfiguration('TIEMPO'))
+        self.tiempo = Tiempo(0)
 
     def inicializarEnemigos(self):
         self.grupoEnemigos = pygame.sprite.Group()
@@ -317,7 +317,8 @@ class Fase(Escena):
 
         self.cronometro = pygame.time.get_ticks() / 1000 - self.cronometroScene
         self.tiempo.actualizarCronometro(self.cronometro)
-        if(self.cronometro == GestorRecursos.getConfiguration('TIEMPO')):
+        self.fondo.update(tiempo)
+        if(self.cronometro == 20):
             GestorRecursos.inicializar()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
         
