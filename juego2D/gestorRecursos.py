@@ -113,7 +113,10 @@ class GestorRecursos(object):
 
     @classmethod
     def getConfiguration(cls,param):
-        return cls.configuration[param]
+        try:
+            return cls.configuration[param]
+        except KeyError:
+            return False
 
     #RETRIEVES A PARAMETER FROM CONFIGURATION PARAMETERS LIST
     @classmethod
