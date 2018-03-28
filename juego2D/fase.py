@@ -287,7 +287,7 @@ class Fase(Escena):
             self.lesionarPersonaje(bala,boss)
             self.listaVidasEnemigo.perderVida(bala.damageBala())
             if not boss.tieneVida():
-                GestorRecursos.inicializarVida()
+                GestorRecursos.inicializar()
                 self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
 
     
@@ -303,7 +303,7 @@ class Fase(Escena):
         self.tiempo.actualizarCronometro(self.cronometro)
         self.fondo.update(tiempo)
         if(self.cronometro == 20):
-            GestorRecursos.inicializarVida()
+            GestorRecursos.inicializar()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
 
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
@@ -316,7 +316,7 @@ class Fase(Escena):
 
         #----------------------Comprobar que el jugador esta muerto
         if not self.jugador.tieneVida():
-            GestorRecursos.inicializarVida()
+            GestorRecursos.inicializar()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
 
         #----------------------Comprobar que el jugador choca con algun kit de curacion
