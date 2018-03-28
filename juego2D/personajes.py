@@ -20,6 +20,10 @@ DISPARAR = 5
 VELOCIDAD_RECARGA_BALA_HEROE = 200
 VELOCIDAD_RECARGA_BALA_SOLDADO = 60
 VELOCIDAD_RECARGA_BALA_BOSS = 35
+#Velocidad de la bala.
+VELOCIDAD_BALA_BOSS = 4
+VELOCIDAD_BALA_JUGADOR = 3
+VELOCIDAD_BALA_SOLDADO = 2
 
 ON = 1
 OFF = 0
@@ -342,6 +346,12 @@ class Pistolero():
     def vaciarPistola(self):
         self.disparar = OFF
         return self.balas
+    
+    def determinarVelocidadBala(self,velocidad):
+        self.velocidadBala = velocidad
+
+    def obtenerVelocidadBala(self):
+        return self.velocidadBala
 
     def vaciarBalas(self):
         self.balas = None
@@ -369,7 +379,7 @@ class Pistolero():
             else:
                 pupita = 80
             self.bala = BalaHeroe('Personajes/playerBullet.png',
-                                  'Personajes/offsetBala.txt', [1], 1, pupita)
+                                  'Personajes/offsetBala.txt', self.obtenerVelocidadBala(), 1, pupita)
             self.disparar = OFF
             if self.archivoImagen == 'Personajes/rossi.png':
                 if self.mirando == IZQUIERDA:
@@ -403,6 +413,7 @@ class Jugador(Pistolero, Personaje):
                            1, 7, 5, 6, 8, 6], VELOCIDAD_JUGADOR, VELOCIDAD_SALTO_JUGADOR, RETARDO_ANIMACION_JUGADOR)
         self.disparar = OFF
         self.inicializarBalas()
+        self.determinarVelocidadBala(VELOCIDAD_BALA_JUGADOR)
         self.count_disparar = 150
         self.establecerVida(vidaActual)
 
@@ -495,6 +506,7 @@ class Soldado(Pistolero, NoJugador):
                            1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
         self.establecerVida(80)
         self.inicializarBalas()
+        self.determinarVelocidadBala(VELOCIDAD_BALA_SOLDADO)
         self.damage = 10
         self.disparar = OFF
         self.inicializarCountDisparar()
@@ -559,6 +571,7 @@ class Boss(Pistolero, NoJugador):
                            1, 7, 6, 2, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
         self.establecerVida(400)
         self.inicializarBalas()
+        self.determinarVelocidadBala(VELOCIDAD_BALA_BOSS)
         self.damage = 20
         self.disparar = OFF
         self.inicializarCountDisparar()
@@ -625,8 +638,6 @@ class BalaHeroe(MiSprite):
         self.mirando = direccion
         self.damage = pupa  # De momento por defecto porque me da pereza buscar
 
-        # No le pondria la velocidad porque todas las balas tendran la misma
-        # (?)
         self.velocidad = velocidad
         self.retardoAnimacion = 5  # No le pondría el retardo de la animación.
 
@@ -644,9 +655,9 @@ class BalaHeroe(MiSprite):
     def moverBala(self):
         if self.mirando == DERECHA:
             # jojoojjojoojoj... efecto rayo laser!!
-            self.incrementarPosicion((3, 0))
+            self.incrementarPosicion((self.velocidad, 0))
         else:
-            self.incrementarPosicion((-3, 0))
+            self.incrementarPosicion((-self.velocidad, 0))
 
     def destruirBala(self):
         self.hoja.kill()
