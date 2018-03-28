@@ -5,26 +5,32 @@ from pygame.locals import *
 class GestorRecursos(object):
     recursos = {}
     
-    Nivel_Bosque = {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15), 'OBJETO_PRINCIPAL': ('bidonGasolina',750,1), 'PASAR_FASE': False,
+    Nivel_Bosque = {'NOMBRE': 'BOSQUE', 'PLATAFORMA': (0, 400, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True, 'PASAR_FASE': False,
                    'ENEMIGOS': [('Soldado',300),('Soldado',1000),('Zombie',500),('Zombie',700)],
                     'KIT_CURACION': [(20,160)],
                     'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
-                    'TIENE_BOSS': False} #Lo primero es la vida que carga (multiplos de diez, posicionX)
+                    'TIENE_BOSS': False,
+                    'POSICION_OBJETO_PRINCIPAL': 1,
+                    'COORDENADAS_OBJETO_PRINCIPAL': 300, #Actualmente no se usa
+                    'IMAGEN_OBJETO_PRINCIPAL': 'bidonGasolina'} #Lo primero es la vida que carga (multiplos de diez, posicionX)
                     
-    Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'OBJETO_PRINCIPAL':  (None,None,None), 'PASAR_FASE': True, 
+    Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'TIENE_OBJETO_PRINCIPAL':  False, 'PASAR_FASE': True, 
                    'ENEMIGOS': [('Soldado',350)],
                    'KIT_CURACION': [(20,600),(20,120)],
                    'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
                    'TIENE_BOSS': False}
 
-    Nivel_Pasillo_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': ('llave',300,2), 'PASAR_FASE': False, 
+    Nivel_Pasillo_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True, 'PASAR_FASE': False, 
                     'ENEMIGOS': [('Soldado',600)], 
                      'KIT_CURACION': [(20,10)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,401)],
-                     'TIENE_BOSS': False}    
+                     'TIENE_BOSS': False,
+                     'COORDENADAS_OBJETO_PRINCIPAL': 400, #Actualmente no se usa
+                     'IMAGEN_OBJETO_PRINCIPAL': 'llave',
+                     'POSICION_OBJETO_PRINCIPAL': 2}    
 
 
-    Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'OBJETO_PRINCIPAL': (None,None,None), 'PASAR_FASE': False, 
+    Nivel_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': False, 'PASAR_FASE': False, 
                     'ENEMIGOS': [('Boss', 1000)], 
                      'KIT_CURACION': [(20,10)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
@@ -38,6 +44,7 @@ class GestorRecursos(object):
               }
     
     vida = 1000
+    inventario = ['bidonGasolinaSinConseguir','llaveSinConseguir']
 
     @classmethod
     def CargarImagen(cls, nombre, colorClave=None):
@@ -51,7 +58,7 @@ class GestorRecursos(object):
                 print 'No se ha podido cargar', nombreEntero
                 raise SystemExit, message
             imag = imag.convert()
-            if colorClave is not None: #Puse esto (?) aunque no estaba (?) no se si no estaba por algo (?) pero Uxía me mando.
+            if colorClave is not None: 
                 if colorClave is -1:
                     colorClave = imag.get_at((0,0)) #obtenemos el color base
                 imag.set_colorkey(colorClave, RLEACCEL)
@@ -129,5 +136,20 @@ class GestorRecursos(object):
     @classmethod
     def getVida(cls):
         return cls.vida
+
+    @classmethod
+    def inicializar(cls):
+        cls.vida = 1000
+        cls.inventario = ['bidonGasolinaSinConseguir','llaveSinConseguir']
+
+    @classmethod
+    def ponerObjeto(cls,posicion,nombreObjeto):
+        cls.inventario[posicion] = nombreObjeto
+
+    @classmethod
+    def getInventario(cls):
+        return cls.inventario
+
+
 
 

@@ -53,7 +53,7 @@ class listaVidas(listaVidasGenerico):
         #Cuanto esta lleno el último corazón
         ultimoCachitoUltimoCorazon = vidaAcumulada % 100 
         if ultimoCachitoUltimoCorazon != 0:
-            self.listaVidas.append(Vida(posicionVertical+30,self.y,ultimoCachitoUltimoCorazon))
+            self.listaVidas.append(Vida(posicionVertical+30,self.y,ultimoCachitoUltimoCorazon,self.devolverImagenCorazon()))
 
     
     def dibujar(self,pantalla):

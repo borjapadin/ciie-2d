@@ -4,13 +4,19 @@ from gestorRecursos import *
 from elementosDibujables import *
 
 class Inventario(ElementosDibujables):
-        def __init__ (self):
+        def __init__ (self,inventario):
                 self.listObjetos = []
+               # nombreListaObjetos = ['bidonGasolinaSinConseguir','llaveSinConseguir']
                 nombreListaObjetos = ['bidonGasolinaSinConseguir','llaveSinConseguir']
                 posicionVertical = 600
-                for i in range(0,2):
+                for i in range(0,len(nombreListaObjetos)):
                         posicionVertical += 35
-                        self.listObjetos.append(ObjetoInventario(i+1,nombreListaObjetos[i]))                
+                        self.listObjetos.append(ObjetoInventario(i+1,nombreListaObjetos[i]))        
+
+                posicionVertical = 600
+                for i in range(0,len(nombreListaObjetos)):
+                        posicionVertical += 35
+                        self.listObjetos.append(ObjetoInventario(i+1,inventario[i]))           
     
         def dibujar(self, pantalla):
                 for objeto in self.listObjetos:

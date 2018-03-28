@@ -31,13 +31,13 @@ class Fase(Escena):
     def __init__(self, director, numFase):
         self.logger = loggerCreator.getLogger('loger','loger.log')
         
-        self.vidaGestor = GestorRecursos.getVida() 
+        self.vidaGestor = GestorRecursos.getVida()
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
         self.numFaseSiguiente = int(numFase) + 1
         # El gestor de recursos cargara todos los recursos a partir de ese numero.
         GestorRecursos.setConfiguration(self.numFase)
-        self.pasarFase = GestorRecursos.getConfiguration('PASAR_FASE')
+        self.pasarFase = GestorRecursos.getConfigParam('teclas')['IZQUIERDA']
 
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
@@ -48,7 +48,7 @@ class Fase(Escena):
         self.decorado = Decorado("/" + self.numFase)
         self.fondo = Cielo("/" + self.numFase)
         self.elementosDibujables = ElementosDibujables()
-        self.inventario = Inventario()
+        self.inventario = Inventario(GestorRecursos.getInventario())
 
         # Aqui reunidos todos los elementos dibujables.
         self.elementosDibujables.agregarElementos(
@@ -165,13 +165,16 @@ class Fase(Escena):
     # TODO: generalizar. De momento esto de generico tiene una mierda pero
     # dejemoslo asi.
     def crearObjetoPrincipal(self):
-        (nombreObjetoPrincipal,posicionX,posInventario) = GestorRecursos.getConfiguration('OBJETO_PRINCIPAL')
-        # En caso de existir se añade pero en caso de que no se añade nada.
-        if nombreObjetoPrincipal != None:
-            self.objeto = ObjetoPrincipal(
-                nombreObjetoPrincipal, 'ficheroTextoQueActualmenteNoHaceNada', self.numFase)
-            self.objeto.establecerPosicion((1000, self.coordPlataforma[1] + 1))
-            self.grupoSprites.add(self.objeto)
+        if (GestorRecursos.getConfiguration('TIENE_OBJETO_PRINCIPAL')):
+            posicionX = GestorRecursos.getConfiguration('COORDENADAS_OBJETO_PRINCIPAL')
+            nombreObjetoPrincipal = GestorRecursos.getConfiguration('IMAGEN_OBJETO_PRINCIPAL')
+            posicionObjetoPrincipalInventario = GestorRecursos.getConfiguration('POSICION_OBJETO_PRINCIPAL')
+            # En caso de existir se añade pero en caso de que no se añade nada.
+            if nombreObjetoPrincipal != None:
+                self.objeto = ObjetoPrincipal(
+                    nombreObjetoPrincipal, int(posicionObjetoPrincipalInventario))
+                self.objeto.establecerPosicion((1000, self.coordPlataforma[1] + 1))
+                self.grupoSprites.add(self.objeto)
 
     # TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
@@ -284,6 +287,7 @@ class Fase(Escena):
             self.lesionarPersonaje(bala,boss)
             self.listaVidasEnemigo.perderVida(bala.damageBala())
             if not boss.tieneVida():
+                GestorRecursos.inicializarVida()
                 self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
 
     
@@ -299,6 +303,7 @@ class Fase(Escena):
         self.tiempo.actualizarCronometro(self.cronometro)
         self.fondo.update(tiempo)
         if(self.cronometro == 20):
+            GestorRecursos.inicializarVida()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
 
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
@@ -307,11 +312,11 @@ class Fase(Escena):
         for bala in self.grupoBalasSoldado:
             if pygame.sprite.collide_rect(self.jugador, bala):
                 # Si chocan se lesiona al personaje.
-                #print(self.jugador.devolverVida())
                 self.lesionarPersonaje(bala, self.jugador)
 
         #----------------------Comprobar que el jugador esta muerto
         if not self.jugador.tieneVida():
+            GestorRecursos.inicializarVida()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
 
         #----------------------Comprobar que el jugador choca con algun kit de curacion
@@ -323,11 +328,13 @@ class Fase(Escena):
                 kitCurativo.vaciar()
 
         # ---------------------Comprobamos si hay colision entre algun jugador y el objeto principal
-        if GestorRecursos.getConfiguration('OBJETO_PRINCIPAL') != (None,None,None):
+        if GestorRecursos.getConfiguration('TIENE_OBJETO_PRINCIPAL') == True:
             if pygame.sprite.collide_rect(self.jugador, self.objeto):
-                objetoInventario = self.objeto.crearObjetoInventario(
-                    int(self.numFase))
+                nombreObjeto = GestorRecursos.getConfiguration('IMAGEN_OBJETO_PRINCIPAL')
+                posicion = GestorRecursos.getConfiguration('POSICION_OBJETO_PRINCIPAL')
+                objetoInventario = self.objeto.crearObjetoInventario(nombreObjeto)
                 self.inventario.guardarObjeto(objetoInventario)
+                GestorRecursos.ponerObjeto(posicion-1,nombreObjeto)
                 self.objeto.kill()
                 self.pasarFase = True
 
@@ -396,9 +403,11 @@ class Fase(Escena):
                     self.director.cambiarAlMenu(self, PANTALLA_PAUSA)
                 #--------------VICTORIA-------------------------------
                 elif evento.key == K_v:
+                    GestorRecursos.inicializar()
                     self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
                 #--------------GAME_OVER-------------------------
                 elif evento.key == K_g:
+                    GestorRecursos.inicializar()
                     self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
                 #---------------DISPARAR--------------------------
                 """elif evento.key == K_t:

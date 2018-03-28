@@ -39,13 +39,14 @@ class Objetos(MiSprite):
     
 
 class ObjetoPrincipal(Objetos):
-    def __init__(self,imagen,archivoCoordenadas,numFase):
+    def __init__(self,imagen,posicionInventario):
         self.imagen = imagen
-        direccionImagen = 'Fase/'+numFase+'/Objetos/'+imagen+'.png'
+        self.posicionInventario = posicionInventario
+        direccionImagen = 'Inventario/'+imagen+'.png'
         Objetos.__init__(self,direccionImagen,(0,20),34,40)
     
-    def crearObjetoInventario(self,num):
-        return ObjetoInventario(num,self.imagen)
+    def crearObjetoInventario(self,imagen):
+        return ObjetoInventario(self.posicionInventario,self.imagen)
 
 
 class KitCuracion(Objetos):
