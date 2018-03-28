@@ -61,9 +61,10 @@ class Fase(Escena):
         self.scrollx = 0
 
         self.determinarPlataforma()
-        self.crearPlataformas(self.coordPlataforma)
-        if self.numFase == 2:
+        if GestorRecursos.getConfiguration('TIENE_BARCO') == True:
+            self.barco = pygame.sprite.Group()
             self.crearBarco()
+        self.crearPlataformas(self.coordPlataforma)
         self.crearPersonajePrincipal()
         self.inicializarEnemigos()
         self.crearEnemigos()
@@ -123,12 +124,12 @@ class Fase(Escena):
         return plataformasSecundarias
 
     def crearBarco(self):
-        self.barco = pygame.sprite.Group()
+        
         for (datosBarco) in iter(GestorRecursos.getConfiguration('BARCO')):
             (imagen,posicionX,posicionY) = datosBarco
-            Barco = PlataformaSecundaria(imagen)
-            Barco.establecerPosicion((posicionX,posicionY))
-            self.barco.append(plata)
+            barcoTemp = Barco(imagen)
+            barcoTemp.establecerPosicion((posicionX,posicionY))
+            self.barco.add(barcoTemp)
 
     # TODO: generalizar.
     def crearEnemigos(self):
@@ -170,6 +171,8 @@ class Fase(Escena):
         for plataformaSecundaria in iter(self.plataformasSecundarias):
             self.grupoPlataformas.add(plataformaSecundaria)
         self.grupoPlataformas.add(self.plataformaSuelo)
+        if GestorRecursos.getConfiguration('TIENE_BARCO') == True:
+            self.grupoPlataformas.add(self.barco)
 
 
 
@@ -316,11 +319,8 @@ class Fase(Escena):
         if(self.cronometro == 20):
             GestorRecursos.inicializar()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
-
-        if GestorRecursos.getConfiguration('TIENE_BARCO') == True:
-            self.grupoSpritesDinamicos.update(self.grupoPlataformas,self.barco, tiempo)
-        else:
-            self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+        
+        self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
         #--------------------- Comprobamos si hay colisión entre algún jugador
         for bala in self.grupoBalasSoldado:
@@ -374,7 +374,7 @@ class Fase(Escena):
 
         # Luego pintamos la plataforma
         self.grupoPlataformas.draw(pantalla)
-        if self.numFase == 2:
+        if GestorRecursos.getConfiguration('TIENE_BARCO') == True:
             self.barco.draw(pantalla)
         # Para pintar las balas como un sprite tienen que estar en el grupo de sprites
         # pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
