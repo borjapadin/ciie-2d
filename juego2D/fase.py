@@ -25,19 +25,22 @@ MINIMO_X_JUGADOR = 50
 MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 
 
-
 class Fase(Escena):
     # Crear Escenas habituales
+
     def __init__(self, director, numFase):
-        self.logger = loggerCreator.getLogger('loger','loger.log')
-        
+        self.logger = loggerCreator.getLogger('loger', 'loger.log')
+
         self.vidaGestor = GestorRecursos.getVida()
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
         self.numFaseSiguiente = int(numFase) + 1
-        # El gestor de recursos cargara todos los recursos a partir de ese numero.
+        # El gestor de recursos cargara todos los recursos a partir de ese
+        # numero.
         GestorRecursos.setConfiguration(self.numFase)
-        self.pasarFase = GestorRecursos.getConfigParam('teclas')['IZQUIERDA']
+        self.pasarFase = GestorRecursos.getConfigParam('PASAR_FASE')
+        self.tiempoFase = GestorRecursos.getConfiguration(
+            'TIEMPO') + GestorRecursos.getTiempoAcumulado()
 
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
@@ -85,17 +88,14 @@ class Fase(Escena):
             self.grupoSPrites.add(self.barco)
 
         self.crearObjetoPrincipal()
-        #Crear kits curativos
+        # Crear kits curativos
         self.kitsCurativos = self.crearKitCurativo()
         for kitCurativo in iter(self.kitsCurativos):
             self.grupoSprites.add(kitCurativo)
-        #self.grupoSprites.add(self.jugador)
-
-
+        # self.grupoSprites.add(self.jugador)
 
     def condicionesPasarFase(self):
         return self.pasarFase
-
 
     # TODO: generalizar.
     def crearPersonajePrincipal(self,):
@@ -109,7 +109,7 @@ class Fase(Escena):
     def crearElementosBordeSuperior(self, nombreFase):
         self.careto = Careto(nombreFase)
         self.vida = listaVidas(self.vidaGestor)
-        self.tiempo = Tiempo(0)
+        self.tiempo = Tiempo(self.tiempoFase)
 
     def inicializarEnemigos(self):
         self.grupoEnemigos = pygame.sprite.Group()
@@ -119,18 +119,18 @@ class Fase(Escena):
     def crearPlataformasSecundarias(self):
         plataformasSecundarias = []
         for (datosPlataforma) in iter(GestorRecursos.getConfiguration('PLATAFORMA_SECUNDARIA')):
-            (imagen,posicionX,posicionY) = datosPlataforma
+            (imagen, posicionX, posicionY) = datosPlataforma
             plataformaSecundaria = PlataformaSecundaria(imagen)
-            plataformaSecundaria.establecerPosicion((posicionX,posicionY))
+            plataformaSecundaria.establecerPosicion((posicionX, posicionY))
             plataformasSecundarias.append(plataformaSecundaria)
         return plataformasSecundarias
 
     def crearBarco(self):
-        
+
         for (datosBarco) in iter(GestorRecursos.getConfiguration('BARCO')):
-            (imagen,posicionX,posicionY) = datosBarco
+            (imagen, posicionX, posicionY) = datosBarco
             barcoTemp = Barco(imagen)
-            barcoTemp.establecerPosicion((posicionX,posicionY))
+            barcoTemp.establecerPosicion((posicionX, posicionY))
             self.barco.add(barcoTemp)
 
     # TODO: generalizar.
@@ -152,12 +152,12 @@ class Fase(Escena):
     def crearKitCurativo(self):
         kitsCurativos = []
         for (kitCurativoConfig) in iter(GestorRecursos.getConfiguration('KIT_CURACION')):
-            (vida,posicionX) = kitCurativoConfig
+            (vida, posicionX) = kitCurativoConfig
             kitCurativo = KitCuracion(vida)
-            kitCurativo.establecerPosicion(((posicionX),self.coordPlataforma[1] + 5))
+            kitCurativo.establecerPosicion(
+                ((posicionX), self.coordPlataforma[1] + 5))
             kitsCurativos.append(kitCurativo)
         return kitsCurativos
-
 
     def determinarPlataforma(self):
         self.coordPlataforma = GestorRecursos.getConfiguration('PLATAFORMA')
@@ -167,7 +167,7 @@ class Fase(Escena):
         self.grupoPlataformas = pygame.sprite.Group()
         self.plataformaSuelo = Plataforma(pygame.Rect(coordenadas))
 
-        #Crear plataformas secundarias
+        # Crear plataformas secundarias
         self.plataformasSecundarias = self.crearPlataformasSecundarias()
         # Recorrerlas y meterlas en el grupo de plataformas.
         for plataformaSecundaria in iter(self.plataformasSecundarias):
@@ -176,20 +176,22 @@ class Fase(Escena):
         if GestorRecursos.getConfiguration('TIENE_BARCO') == True:
             self.grupoPlataformas.add(self.barco)
 
-
-
     # TODO: generalizar. De momento esto de generico tiene una mierda pero
     # dejemoslo asi.
     def crearObjetoPrincipal(self):
         if (GestorRecursos.getConfiguration('TIENE_OBJETO_PRINCIPAL')):
-            posicionX = GestorRecursos.getConfiguration('COORDENADAS_OBJETO_PRINCIPAL')
-            nombreObjetoPrincipal = GestorRecursos.getConfiguration('IMAGEN_OBJETO_PRINCIPAL')
-            posicionObjetoPrincipalInventario = GestorRecursos.getConfiguration('POSICION_OBJETO_PRINCIPAL')
+            posicionX = GestorRecursos.getConfiguration(
+                'COORDENADAS_OBJETO_PRINCIPAL')
+            nombreObjetoPrincipal = GestorRecursos.getConfiguration(
+                'IMAGEN_OBJETO_PRINCIPAL')
+            posicionObjetoPrincipalInventario = GestorRecursos.getConfiguration(
+                'POSICION_OBJETO_PRINCIPAL')
             # En caso de existir se añade pero en caso de que no se añade nada.
             if nombreObjetoPrincipal != None:
                 self.objeto = ObjetoPrincipal(
                     nombreObjetoPrincipal, int(posicionObjetoPrincipalInventario))
-                self.objeto.establecerPosicion((1000, self.coordPlataforma[1] + 1))
+                self.objeto.establecerPosicion(
+                    (1000, self.coordPlataforma[1] + 1))
                 self.grupoSprites.add(self.objeto)
 
     # TODO repasar los comentarios por que no corresponden de los scrolls
@@ -248,8 +250,7 @@ class Fase(Escena):
 
                     # Si hemos llegado a la derecha de todo creamos la escena
                     # siguiente, además de que reseteamos la vida.
-                    GestorRecursos.setVida(self.jugador.devolverVida())
-                    self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
+                    self.cambiarAlCutScene()
 
                     return False  # No se ha actualizado el scroll
 
@@ -265,7 +266,6 @@ class Fase(Escena):
         # hace nada
         return False
 
-   
     def actualizarScroll(self, jugador):
         self.actualizarScrollOrdenados(jugador)
         # Actualizamos la posición en pantalla de todos los Sprites según el
@@ -277,14 +277,12 @@ class Fase(Escena):
         # distinta
         self.decorado.update(self.scrollx)
 
-   
     def moverBalas(self, grupoBalas):
         if grupoBalas != None:
             for bala in iter(grupoBalas):
                 bala.moverBala()
 
-
-    def colisionEnemigoBalaAmiga(self,grupoEnemigos,tiempo):
+    def colisionEnemigoBalaAmiga(self, grupoEnemigos, tiempo):
         for enemigo in iter(grupoEnemigos):
             enemigo.mover_cpu(self.jugador, tiempo)
             for bala in self.grupoBalasJugador:
@@ -294,19 +292,18 @@ class Fase(Escena):
                         if not enemigo.tieneVida():
                             enemigo.kill()
                     else:
-                        self.accionEspecialJefe(enemigo,bala)
+                        self.accionEspecialJefe(enemigo, bala)
             if pygame.sprite.collide_rect(self.jugador, enemigo):
                 self.golpearseEnemigo(enemigo, self.jugador)
-    
-    def accionEspecialJefe(self,boss,bala):
+
+    def accionEspecialJefe(self, boss, bala):
         if pygame.sprite.collide_rect(boss, bala):
-            self.lesionarPersonaje(bala,boss)
+            self.lesionarPersonaje(bala, boss)
             self.listaVidasEnemigo.perderVida(bala.damageBala())
             if not boss.tieneVida():
                 GestorRecursos.inicializar()
                 self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
 
-    
     def update(self, tiempo):
         # Primero, se indican las acciones que van a hacer las balas.
         self.moverBalas(self.grupoBalasJugador)
@@ -321,7 +318,7 @@ class Fase(Escena):
         if(self.cronometro == 20):
             GestorRecursos.inicializar()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
-        
+
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
         #--------------------- Comprobamos si hay colisión entre algún jugador
@@ -346,11 +343,14 @@ class Fase(Escena):
         # ---------------------Comprobamos si hay colision entre algun jugador y el objeto principal
         if GestorRecursos.getConfiguration('TIENE_OBJETO_PRINCIPAL') == True:
             if pygame.sprite.collide_rect(self.jugador, self.objeto):
-                nombreObjeto = GestorRecursos.getConfiguration('IMAGEN_OBJETO_PRINCIPAL')
-                posicion = GestorRecursos.getConfiguration('POSICION_OBJETO_PRINCIPAL')
-                objetoInventario = self.objeto.crearObjetoInventario(nombreObjeto)
+                nombreObjeto = GestorRecursos.getConfiguration(
+                    'IMAGEN_OBJETO_PRINCIPAL')
+                posicion = GestorRecursos.getConfiguration(
+                    'POSICION_OBJETO_PRINCIPAL')
+                objetoInventario = self.objeto.crearObjetoInventario(
+                    nombreObjeto)
                 self.inventario.guardarObjeto(objetoInventario)
-                GestorRecursos.ponerObjeto(posicion-1,nombreObjeto)
+                GestorRecursos.ponerObjeto(posicion - 1, nombreObjeto)
                 self.objeto.kill()
                 self.pasarFase = True
         #-------Collide Barco-------------------------------------------
@@ -361,7 +361,6 @@ class Fase(Escena):
 
         self.actualizarScroll(self.jugador)
 
-    
     def lesionarPersonaje(self, bala, personaje):
         damage = bala.damageBala()
         bala.kill()
@@ -369,13 +368,11 @@ class Fase(Escena):
         if (personaje == self.jugador):
             self.vida.perderVida(damage)
 
-    
     def golpearseEnemigo(self, enemigo, personaje):
         damage = enemigo.damageEnemigo()
         personaje.perderVida(damage)
         self.vida.perderVida(damage)
 
-    
     def dibujar(self, pantalla):
         self.elementosDibujables.dibujar(pantalla)
 
@@ -399,7 +396,6 @@ class Fase(Escena):
         # sacamos jugador y comprobamos con una variable los sprites que tiene
         # y agregamos al grupo deSprites
 
-    
     def agregarDisparosEscena(self, pistolero, grupo):
         if (pistolero.tieneBalas()):  # Si hay balas.
             balas = pistolero.balasLanzar()
@@ -410,7 +406,6 @@ class Fase(Escena):
             self.grupoSprites.add(disparo)
             pistolero.vaciarBalas()
 
-    
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
         for evento in lista_eventos:
@@ -421,8 +416,7 @@ class Fase(Escena):
                     self.director.salirPrograma()
                 #-------------CAMBIAR ESCENA (a una cutScena)------------------
                 elif evento.key == K_c:  # Trampa de salir de escena para cambiarla
-                    GestorRecursos.setVida(self.jugador.devolverVida())
-                    self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
+                    self.cambiarAlCutScene()
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p:
                     self.director.cambiarAlMenu(self, PANTALLA_PAUSA)
@@ -441,17 +435,20 @@ class Fase(Escena):
                 self.director.salirPrograma()
 
         teclasPulsadas = pygame.key.get_pressed()
-        self.jugador.mover(teclasPulsadas, GestorRecursos.getConfigParam('teclas')['ARRIBA'],GestorRecursos.getConfigParam('teclas')['ABAJO'],
-        GestorRecursos.getConfigParam('teclas')['IZQUIERDA'], GestorRecursos.getConfigParam('teclas')['DERECHA'], GestorRecursos.getConfigParam('teclas')['DISPARAR'])
+        self.jugador.mover(teclasPulsadas, GestorRecursos.getConfigParam('teclas')['ARRIBA'], GestorRecursos.getConfigParam('teclas')['ABAJO'],
+                           GestorRecursos.getConfigParam('teclas')['IZQUIERDA'], GestorRecursos.getConfigParam('teclas')['DERECHA'], GestorRecursos.getConfigParam('teclas')['DISPARAR'])
 
-   
     def obtenerNumeroFaseSiguiente(self):
         return self.numFaseSiguiente
 
-
+    def cambiarAlCutScene(self):
+        GestorRecursos.setVida(self.jugador.devolverVida())
+        GestorRecursos.setTiempoAcumulado(self.tiempo.obtenerTiempo())
+        self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
 
 
 class CutScene(Escena):
+
     def __init__(self, director, numFase):
         Escena.__init__(self, director)
         # Necesito que sea string para ponerlo en la ruta.
@@ -464,7 +461,6 @@ class CutScene(Escena):
         self.texto = TITULO
         # Velocidad a la que ira el texto de titulo.
         self.movimientoPosicion = 2
-
 
     def eventos(self, lista_eventos):
         # Miramos a ver si hay algun evento de salir del programa
@@ -480,22 +476,18 @@ class CutScene(Escena):
             if evento.type == pygame.QUIT:
                 self.director.salirPrograma()
 
-
     def update(self, tiempo):
         self.actualizarTextoTituloNivel()
-
 
     def dibujar(self, pantalla):
         # Ponemos primero el fondo
         self.fondoCutScene.dibujar(pantalla)
-
 
     def crearSceneSiguiente(self):
         self.director.salirEscena()
         faseNueva = Fase(self.director, self.numFase)
         faseNueva.cronometroScene = pygame.time.get_ticks() / 1000
         self.director.apilarEscena(faseNueva)
-
 
     def actualizarTextoTituloNivel(self):
         # Actualizar el texto que corresponda.
@@ -504,7 +496,6 @@ class CutScene(Escena):
         if posicion > 400:  # Cuando llega más o menos a la mitad del texto el titulo...:
             self.mostrarTexto()  # Se muestra el otro texto.
             self.movimientoPosicion = 1  # Se baja la velocidad
-
 
     # Dependiendo de cual de estas funciones sean se muestra el texto texto o
     # texto de titulo.
@@ -515,8 +506,8 @@ class CutScene(Escena):
         self.texto = TITULO
 
 
-
 class FondoCutScene:
+
     def __init__(self, nombreFase):
         self.imagen = GestorRecursos.CargarImagen(
             'Cutscene' + nombreFase + '/Nivel.jpg', 1)
@@ -538,13 +529,11 @@ class FondoCutScene:
         self.texto = TITULO
         self.tiempoCutScene = pygame.time.get_ticks() / 1000
 
-
     def leerArchivo(self, nombreFase):
         datos = GestorRecursos.CargarArchivoCoordenadas(
             'Cutscene' + nombreFase + '/Texto.txt')
         datos = datos.splitlines()
         return datos[::-1]  # Hacerla reverse porque se lee del reves.
-
 
     def update(self, movimientoPosicion, texto):
         self.texto = texto
@@ -559,15 +548,15 @@ class FondoCutScene:
         # Dibujamos primero la imagen de fondo
         pantalla.blit(self.imagen, self.imagen.get_rect())
         if self.texto == TITULO:
-            self.textoTitulo.dibujar(pantalla)                   #   yo esto lo
+            self.textoTitulo.dibujar(pantalla)  # yo esto lo
         # quitaría porque se ve el nombre del fichero
         if self.texto == TEXTO:
             for lineaTextoNivel in self.textoNivel:
                 lineaTextoNivel.dibujar(pantalla)
 
 
-
 class TextoTituloNivel(TextoGUI):
+
     def __init__(self, pantalla, nombreFase):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 50)
@@ -576,6 +565,7 @@ class TextoTituloNivel(TextoGUI):
 
 
 class TextoNivel(TextoGUI):
+
     def __init__(self, pantalla, nombreFase, coordenada):
         fuente = pygame.font.SysFont('impact', 30)
         TextoGUI.__init__(self, pantalla, fuente, BLANCO,
