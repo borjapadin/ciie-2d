@@ -80,7 +80,7 @@ class Fase(Escena):
         # Eduardo Penas.
 
         self.grupoSprites = pygame.sprite.Group(
-            self.grupoPlataformas)
+            self.grupoPlataformas,self.grupoEnemigos)
         if self.numFase == 2:
             self.grupoSPrites.add(self.barco)
 
@@ -89,7 +89,7 @@ class Fase(Escena):
         self.kitsCurativos = self.crearKitCurativo()
         for kitCurativo in iter(self.kitsCurativos):
             self.grupoSprites.add(kitCurativo)
-        #self.grupoSprites.add(self.jugador)
+        self.grupoSprites.add(self.jugador)
 
 
 
@@ -248,8 +248,9 @@ class Fase(Escena):
 
                     # Si hemos llegado a la derecha de todo creamos la escena
                     # siguiente, además de que reseteamos la vida.
-                    GestorRecursos.setVida(self.jugador.devolverVida())
-                    self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
+                    if GestorRecursos.getConfiguration('TIENE_BOSS') != True:
+                        GestorRecursos.setVida(self.jugador.devolverVida())
+                        self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
 
                     return False  # No se ha actualizado el scroll
 
@@ -393,9 +394,11 @@ class Fase(Escena):
             self.agregarDisparosEscena(enemigo, self.grupoBalasSoldado)
 
         # Finalmente se pinta el grupo de sprites.
-        self.grupoSprites.draw(pantalla)
+        #self.grupoSprites.draw(pantalla)
         self.grupoEnemigos.draw(pantalla)
         self.grupoJugador.draw(pantalla)
+        self.grupoBalasJugador.draw(pantalla)
+        self.grupoBalasSoldado.draw(pantalla)
         # sacamos jugador y comprobamos con una variable los sprites que tiene
         # y agregamos al grupo deSprites
 
