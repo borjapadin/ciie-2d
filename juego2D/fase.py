@@ -62,6 +62,8 @@ class Fase(Escena):
 
         self.determinarPlataforma()
         self.crearPlataformas(self.coordPlataforma)
+        if self.numFase == 2:
+            self.crearBarco()
         self.crearPersonajePrincipal()
         self.inicializarEnemigos()
         self.crearEnemigos()
@@ -78,6 +80,8 @@ class Fase(Escena):
 
         self.grupoSprites = pygame.sprite.Group(
             self.grupoPlataformas, self.grupoEnemigos)
+        if self.numFase == 2:
+            self.grupoSPrites.add(self.barco)
 
         self.crearObjetoPrincipal()
         #Crear kits curativos
@@ -118,6 +122,13 @@ class Fase(Escena):
             plataformasSecundarias.append(plataformaSecundaria)
         return plataformasSecundarias
 
+    def crearBarco(self):
+        self.barco = pygame.sprite.Group()
+        for (datosBarco) in iter(GestorRecursos.getConfiguration('BARCO')):
+            (imagen,posicionX,posicionY) = datosBarco
+            Barco = PlataformaSecundaria(imagen)
+            Barco.establecerPosicion((posicionX,posicionY))
+            self.barco.append(plata)
 
     # TODO: generalizar.
     def crearEnemigos(self):
@@ -306,7 +317,10 @@ class Fase(Escena):
             GestorRecursos.inicializar()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
 
-        self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+        if GestorRecursos.getConfiguration('TIENE_BARCO') == True:
+            self.grupoSpritesDinamicos.update(self.grupoPlataformas,self.barco, tiempo)
+        else:
+            self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
 
         #--------------------- Comprobamos si hay colisión entre algún jugador
         for bala in self.grupoBalasSoldado:
@@ -360,6 +374,8 @@ class Fase(Escena):
 
         # Luego pintamos la plataforma
         self.grupoPlataformas.draw(pantalla)
+        if self.numFase == 2:
+            self.barco.draw(pantalla)
         # Para pintar las balas como un sprite tienen que estar en el grupo de sprites
         # pero es el jugador quien gestiona la existencia de cada uno, por tanto, de grupoSPrites
         # En caso de existir disparos por parte del jugador se dibujan.

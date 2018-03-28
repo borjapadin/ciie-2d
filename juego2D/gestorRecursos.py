@@ -17,15 +17,17 @@ class GestorRecursos(object):
     Nivel_Playa = {'NOMBRE': 'PLAYA', 'PLATAFORMA': (0, 480, 1200, 15), 'TIENE_OBJETO_PRINCIPAL':  False, 'PASAR_FASE': True, 
                    'ENEMIGOS': [('Soldado',350)],
                    'KIT_CURACION': [(20,600),(20,120)],
-                   'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
-                   'TIENE_BOSS': False}
+                   'PLATAFORMA_SECUNDARIA': [('Caja',200,481),('Caja',10,481),('Caja',900,481)],
+                   'BARCO': [('Barco',1000,481)],
+                   'TIENE_BOSS': False,
+                   'TIENE_BARCO': True}
 
     Nivel_Pasillo_Bunker =  {'NOMBRE': 'BUNKER', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True, 'PASAR_FASE': False, 
                     'ENEMIGOS': [('Soldado',600)], 
                      'KIT_CURACION': [(20,10)],
-                     'PLATAFORMA_SECUNDARIA': [('Caja',200,401)],
+                     'PLATAFORMA_SECUNDARIA': [('Caja',200,456)],
                      'TIENE_BOSS': False,
-                     'COORDENADAS_OBJETO_PRINCIPAL': 400, #Actualmente no se usa
+                     'COORDENADAS_OBJETO_PRINCIPAL': 456, #Actualmente no se usa
                      'IMAGEN_OBJETO_PRINCIPAL': 'llave',
                      'POSICION_OBJETO_PRINCIPAL': 2}    
 

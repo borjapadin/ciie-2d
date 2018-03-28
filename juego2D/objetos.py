@@ -67,9 +67,12 @@ class KitCuracion(Objetos):
 
 class PlataformaSecundaria(Objetos):
     def __init__(self,imagen):
-        imagen = 'Caja.png' #CACA GRANDE
-        Objetos.__init__(self,'PlataformasSecundarias/'+imagen,(0,35),63,50) 
-
+        #imagen == 'Caja': #CACA GRANDE
+        Objetos.__init__(self,'PlataformasSecundarias/'+imagen+'.png',(0,35),63,50) 
+        
+class Barco(Objetos):
+    def __init__(self,imagen):
+        Objetos.__init__(self,'PlataformasSecundarias/'+imagen+'.png',(0,102),213,102) 
     
 
     
