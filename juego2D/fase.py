@@ -80,7 +80,7 @@ class Fase(Escena):
         # Eduardo Penas.
 
         self.grupoSprites = pygame.sprite.Group(
-            self.grupoPlataformas, self.grupoEnemigos)
+            self.grupoPlataformas)
         if self.numFase == 2:
             self.grupoSPrites.add(self.barco)
 
@@ -89,7 +89,7 @@ class Fase(Escena):
         self.kitsCurativos = self.crearKitCurativo()
         for kitCurativo in iter(self.kitsCurativos):
             self.grupoSprites.add(kitCurativo)
-        self.grupoSprites.add(self.jugador)
+        #self.grupoSprites.add(self.jugador)
 
 
 
@@ -99,7 +99,9 @@ class Fase(Escena):
 
     # TODO: generalizar.
     def crearPersonajePrincipal(self,):
+        self.grupoJugador = pygame.sprite.Group()
         self.jugador = Jugador(self.vidaGestor)
+        self.grupoJugador.add(self.jugador)
         # Ponemos al jugador en la posición inicial
         self.jugador.establecerPosicion((5, self.coordPlataforma[1] + 1))
 
@@ -392,6 +394,8 @@ class Fase(Escena):
 
         # Finalmente se pinta el grupo de sprites.
         self.grupoSprites.draw(pantalla)
+        self.grupoEnemigos.draw(pantalla)
+        self.grupoJugador.draw(pantalla)
         # sacamos jugador y comprobamos con una variable los sprites que tiene
         # y agregamos al grupo deSprites
 
