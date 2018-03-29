@@ -13,7 +13,8 @@ class GestorRecursos(object):
                     'COORDENADAS_OBJETO_PRINCIPAL': 300, #Actualmente no se usa
                     'IMAGEN_OBJETO_PRINCIPAL': 'bidonGasolina',
                     'TIEMPO': 20,
-                    'DURACION_CUTSCENE':1400} #Lo primero es la vida que carga (multiplos de diez, posicionX)
+                    'DURACION_CUTSCENE':1400,
+                    'TIENE_OBJETO_PRINCIPAL': True} #Lo primero es la vida que carga (multiplos de diez, posicionX)
                     
     Nivel_Playa = {'NOMBRE': 'Playa', 'PLATAFORMA': (0, 480, 1200, 15), 'PASAR_FASE': True, 
                    'ENEMIGOS': [('Soldado',350)],
@@ -24,7 +25,8 @@ class GestorRecursos(object):
                    'TIEMPO':100,
                    'DURACION_CUTSCENE': 1400}
 
-    Nivel_Pasillo_Bunker =  {'NOMBRE': 'Bunker', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True, 
+    Nivel_Pasillo_Bunker =  {'NOMBRE': 'Bunker', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True,
+                    'PASAR_FASE': False,
                     'ENEMIGOS': [('Soldado',600)], 
                      'KIT_CURACION': [(20,10)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,456)],
@@ -35,7 +37,7 @@ class GestorRecursos(object):
                      'DURACION_CUTSCENE': 1600}    
 
 
-    Nivel_Bunker =  {'NOMBRE': 'Sala del boss', 'PLATAFORMA': (0, 455, 1200, 15), 
+    Nivel_Bunker =  {'NOMBRE': 'Sala del boss', 'PLATAFORMA': (0, 455, 1200, 15), 'PASAR_FASE':False,
                     'ENEMIGOS': [('Boss', 1000)], 
                      'KIT_CURACION': [(20,10)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],

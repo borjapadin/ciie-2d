@@ -28,9 +28,11 @@ MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 
 class Fase(Escena):
     # Crear Escenas habituales
-    def __init__(self, director, numFase):
+    def __init__(self, director, numFase, cronometroScene):
+        self.cronometroScene = cronometroScene
+        self.tiempoAntesDePausa = 0
+        self.tiempoEnPausa = 0
         self.logger = loggerCreator.getLogger('loger','loger.log')
-        
         self.vidaGestor = GestorRecursos.getVida()
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
@@ -92,7 +94,7 @@ class Fase(Escena):
             self.grupoSprites.add(kitCurativo)
         self.grupoSprites.add(self.jugador)
 
-
+        self.cronometro = pygame.time.get_ticks() / 1000 - self.cronometroScene
 
     def condicionesPasarFase(self):
         return self.pasarFase
@@ -319,14 +321,21 @@ class Fase(Escena):
         self.colisionEnemigoBalaAmiga(self.grupoSoldados, tiempo)
         self.colisionEnemigoBalaAmiga(self.grupoZombies, tiempo)
 
-        self.cronometro = pygame.time.get_ticks() / 1000 - self.cronometroScene
+        #Cronometro 
+        self.cronometro = pygame.time.get_ticks() / 1000 - self.cronometroScene - self.tiempoEnPausa
+        if self.cronometro < 0:
+            self.cronometro = 0
+
         self.tiempo.actualizarCronometro(self.cronometro)
-        self.fondo.update(tiempo)
+
         if(self.cronometro == self.tiempoFase):
             GestorRecursos.inicializar()
             self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
         
         self.grupoSpritesDinamicos.update(self.grupoPlataformas, tiempo)
+
+        #Fondo
+        self.fondo.update(tiempo)
 
         #--------------------- Comprobamos si hay colisión entre algún jugador
         for bala in self.grupoBalasSoldado:
@@ -432,6 +441,7 @@ class Fase(Escena):
                     self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p:
+                    self.tiempoAntesDePausa = pygame.time.get_ticks() / 1000 - self.cronometroScene
                     self.director.cambiarAlMenu(self, PANTALLA_PAUSA)
                 #--------------VICTORIA-------------------------------
                 elif evento.key == K_v:

@@ -65,8 +65,7 @@ class CutScene(Escena):
     # Además sale de está pantalla de cutScene e inicializa el cronómetro de la fase nueva.
     def crearSceneSiguiente(self):
         self.director.salirEscena()
-        faseNueva = Fase(self.director, self.numFase)
-        faseNueva.cronometroScene = pygame.time.get_ticks() / 1000
+        faseNueva = Fase(self.director, self.numFase, pygame.time.get_ticks() / 1000)
         self.director.apilarEscena(faseNueva)
 
     #Actualiza la posición del texto del título de nivel.

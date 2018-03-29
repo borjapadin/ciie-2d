@@ -41,7 +41,7 @@ class TextoContinuar(TextoGUI):
     def __init__(self, pantalla):
         # La fuente la debería cargar el estor de recursos
         fuente = pygame.font.SysFont('impact', 30);
-        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Continuar', (120, 495))
+        TextoGUI.__init__(self, pantalla, fuente, BLANCO, 'Continuar', (75, 495))
 
 
 class TextoVolverJuego(TextoGUI):

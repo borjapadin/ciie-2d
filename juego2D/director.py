@@ -109,10 +109,16 @@ class Director():
 
     # --- Menu Pausa ---
     def escenaPausada(self,fase):
+        # El tiempo que tenía antes de entrar en pausa
+        self.tiempoAntesDePausa = fase.tiempoAntesDePausa
         self.fase = fase
     
 
     def devolverEscenaPausada(self):
+        # El tiempo que es ahora
+        tiempoAhora = pygame.time.get_ticks() / 1000
+        # Aquí el tiempo que estuvo en pausa.
+        self.fase.tiempoEnPausa += tiempoAhora-self.tiempoAntesDePausa
         return self.fase
     
     
