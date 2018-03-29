@@ -6,9 +6,10 @@ class GestorRecursos(object):
     recursos = {}
     
     Nivel_Bosque = {'NOMBRE': 'Bosque', 'PLATAFORMA': (0, 400, 1200, 15), 'PASAR_FASE': False,
-                   'ENEMIGOS': [('Soldado',200,300),('Soldado',1000,100),('Zombie',500,100),('Zombie',700,100)],
-                    'KIT_CURACION': [(20,160,200)], # VIDA, X, Y
-                    'PLATAFORMA_SECUNDARIA': [('Caja',200,200),('Caja',10,401),('Caja',900,401)],
+                   'ENEMIGOS': [('Soldado',200,401),('Soldado',390,363),('Soldado',500,401),
+                                ('Soldado',750,401),('Soldado',900,401),('Soldado',930,363)],
+                    'KIT_CURACION': [(10,390,333),(10,520,401)], # VIDA, X, Y
+                    'PLATAFORMA_SECUNDARIA': [('Caja',210,411),('Caja',380,411),('Caja',380,374),('Caja',900,411)],
                     'POSICION_OBJETO_PRINCIPAL': 1,
                     'COORDENADAS_OBJETO_PRINCIPAL': 300, #Actualmente no se usa
                     'IMAGEN_OBJETO_PRINCIPAL': 'bidonGasolina',
@@ -18,7 +19,7 @@ class GestorRecursos(object):
                     'POSICION_DECORADO' : (1200, 400)} #Lo primero es la vida que carga (multiplos de diez, posicionX)
                     
     Nivel_Playa = {'NOMBRE': 'Playa', 'PLATAFORMA': (0, 480, 1200, 15), 'PASAR_FASE': True, 
-                   'ENEMIGOS': [('Soldado',350,100)],
+                   'ENEMIGOS': [('Zombie',500,100),('Zombie',700,100)],
                    'KIT_CURACION': [(20,600,200),(20,120,200)], # VIDA, X, Y
                    'PLATAFORMA_SECUNDARIA': [('Caja',200,481),('Caja',10,481),('Caja',900,481)],
                    'BARCO': [('Barco',1000,481)],
