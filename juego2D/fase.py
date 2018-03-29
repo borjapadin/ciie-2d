@@ -370,6 +370,8 @@ class Fase(Escena):
         if GestorRecursos.getConfiguration('TIENE_BARCO') == True:
             for barco in self.barco:
                 if pygame.sprite.collide_rect(self.jugador, barco):
+                    GestorRecursos.setVida(self.jugador.devolverVida())
+                    GestorRecursos.setTiempoAcumulado(self.tiempo.obtenerTiempo())
                     self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
 
         self.actualizarScroll(self.jugador)
