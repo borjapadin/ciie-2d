@@ -481,7 +481,7 @@ class Zombie(NoJugador):
     def __init__(self):
         NoJugador.__init__(self, 'Personajes/Zombie.png', 'Personajes/OffsetZombie.txt', [
                             1, 6, 4], VELOCIDAD_ZOMBIE, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
-        self.establecerVida(20)
+        self.establecerVida(40)
         self.damage = 10
 
     def mover_cpu(self, jugador, tiempo):
@@ -505,7 +505,7 @@ class Soldado(Pistolero, NoJugador):
     def __init__(self):
         NoJugador.__init__(self, 'Personajes/SpriteSoldadoFilas.png', 'Personajes/offsetsSoldado.txt', [
                            1, 9, 8, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
-        self.establecerVida(80)
+        self.establecerVida(120)
         self.inicializarBalas()
         self.determinarVelocidadBala(VELOCIDAD_BALA_SOLDADO)
         self.damage = 10

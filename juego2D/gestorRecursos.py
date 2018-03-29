@@ -19,9 +19,12 @@ class GestorRecursos(object):
                     'POSICION_DECORADO' : (1200, 400)} #Lo primero es la vida que carga (multiplos de diez, posicionX)
                     
     Nivel_Playa = {'NOMBRE': 'Playa', 'PLATAFORMA': (0, 480, 1200, 15), 'PASAR_FASE': True, 
-                   'ENEMIGOS': [('Zombie',500,100),('Zombie',700,100)],
-                   'KIT_CURACION': [(20,600,200),(20,120,200)], # VIDA, X, Y
-                   'PLATAFORMA_SECUNDARIA': [('Caja',200,481),('Caja',10,481),('Caja',900,481)],
+                   'ENEMIGOS': [('Soldado',380,440),('Soldado',530,481),('Soldado',730,440),
+                                ('Soldado',880,481),('Zombie',300,480),
+                                ('Zombie',400,481),('Zombie',500,481),('Zombie',600,481),
+                                ('Zombie',700,481)],
+                   'KIT_CURACION': [(10,370,450),(10,720,450)], # VIDA, X, Y
+                   'PLATAFORMA_SECUNDARIA': [('Caja',350,490),('Caja',700,490)],
                    'BARCO': [('Barco',1000,481)],
                    'TIENE_BARCO': True,
                    'TIEMPO':100,
