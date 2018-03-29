@@ -40,7 +40,7 @@ class BotonVolverJuego(Boton):
 
 class BotonReanudar(Boton):
     def __init__(self, pantalla, director):
-        Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (60, 500))
+        Boton.__init__(self, pantalla, 'Menu/BotonGranada.png', (20, 500))
         self.director = director
         
     def accion(self):
