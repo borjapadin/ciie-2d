@@ -22,7 +22,7 @@ class GestorRecursos(object):
                    'ENEMIGOS': [('Soldado',380,440),('Soldado',530,481),('Soldado',730,440),
                                 ('Soldado',880,481),('Zombie',300,480),
                                 ('Zombie',400,481),('Zombie',500,481),('Zombie',600,481),
-                                ('Zombie',700,481)],
+                                ('Zombie',700,481),('Zombie',750,481),('Zombie',800,481)],
                    'KIT_CURACION': [(10,370,450),(10,720,450)], # VIDA, X, Y
                    'PLATAFORMA_SECUNDARIA': [('Caja',350,490),('Caja',700,490)],
                    'BARCO': [('Barco',1000,481)],
