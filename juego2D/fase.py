@@ -236,29 +236,30 @@ class Fase(Escena):
 
         # Si el jugador se encuentra más allá de la derecha.
         if (jugador.rect.right > MAXIMO_X_JUGADOR/2):
+
             # Se calcula cuantos pixeles esta fuera del borde
             desplazamiento = jugador.rect.right - MAXIMO_X_JUGADOR/2
 
             # Si el escenario ya está a la derecha del todo, no lo movemos mas
             if self.scrollx + ANCHO_PANTALLA >= self.decorado.rect.right:
                 self.scrollx = self.decorado.rect.right - ANCHO_PANTALLA
-                # En su lugar, colocamos al jugador que esté más a la derecha a
-                # la derecha de todo
-           #     jugador.establecerPosicion(
-            #        (self.scrollx + MAXIMO_X_JUGADOR - jugador.rect.width, jugador.posicion[1]))
-                if (self.condicionesPasarFase()):  # Si se cumplen las condiciones para pasar fase
+                
+                if (jugador.rect.right > MAXIMO_X_JUGADOR):
+                    jugador.establecerPosicion((self.scrollx + MAXIMO_X_JUGADOR - jugador.rect.width, jugador.posicion[1]))
 
-                    # Si hemos llegado a la derecha de todo creamos la escena
-                    # siguiente, además de que reseteamos la vida.
-                    if GestorRecursos.getConfiguration('TIENE_BOSS') != True:
-                        # ESTO TIENE QUE IR PAH UNA FUNCION
-                        GestorRecursos.setVida(self.jugador.devolverVida())
-                        GestorRecursos.setTiempoAcumulado(self.tiempo.obtenerTiempo())
-                        self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
+                    if (self.condicionesPasarFase()):  # Si se cumplen las condiciones para pasar fase
 
-                    return False  # No se ha actualizado el scroll
+                        # Si hemos llegado a la derecha de todo creamos la escena
+                        # siguiente, además de que reseteamos la vida.
+                        if GestorRecursos.getConfiguration('TIENE_BOSS') != True:
+                            # ESTO TIENE QUE IR PAH UNA FUNCION
+                            GestorRecursos.setVida(self.jugador.devolverVida())
+                            GestorRecursos.setTiempoAcumulado(self.tiempo.obtenerTiempo())
+                            self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
 
-                # Si se puede hacer scroll a la derecha
+                        return False  # No se ha actualizado el scroll
+
+                    # Si se puede hacer scroll a la derecha
             else:
 
                 # Calculamos el nivel de scroll actual: el anterior + desplazamiento
