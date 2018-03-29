@@ -6,9 +6,9 @@ class GestorRecursos(object):
     recursos = {}
     
     Nivel_Bosque = {'NOMBRE': 'Bosque', 'PLATAFORMA': (0, 400, 1200, 15), 'PASAR_FASE': False,
-                   'ENEMIGOS': [('Soldado',300),('Soldado',1000),('Zombie',500),('Zombie',700)],
-                    'KIT_CURACION': [(20,160)],
-                    'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
+                   'ENEMIGOS': [('Soldado',200,300),('Soldado',1000,100),('Zombie',500,100),('Zombie',700,100)],
+                    'KIT_CURACION': [(20,160,200)], # VIDA, X, Y
+                    'PLATAFORMA_SECUNDARIA': [('Caja',200,200),('Caja',10,401),('Caja',900,401)],
                     'POSICION_OBJETO_PRINCIPAL': 1,
                     'COORDENADAS_OBJETO_PRINCIPAL': 300, #Actualmente no se usa
                     'IMAGEN_OBJETO_PRINCIPAL': 'bidonGasolina',
@@ -18,8 +18,8 @@ class GestorRecursos(object):
                     'POSICION_DECORADO' : (1200, 400)} #Lo primero es la vida que carga (multiplos de diez, posicionX)
                     
     Nivel_Playa = {'NOMBRE': 'Playa', 'PLATAFORMA': (0, 480, 1200, 15), 'PASAR_FASE': True, 
-                   'ENEMIGOS': [('Soldado',350)],
-                   'KIT_CURACION': [(20,600),(20,120)],
+                   'ENEMIGOS': [('Soldado',350,100)],
+                   'KIT_CURACION': [(20,600,200),(20,120,200)], # VIDA, X, Y
                    'PLATAFORMA_SECUNDARIA': [('Caja',200,481),('Caja',10,481),('Caja',900,481)],
                    'BARCO': [('Barco',1000,481)],
                    'TIENE_BARCO': True,
@@ -29,8 +29,8 @@ class GestorRecursos(object):
 
     Nivel_Pasillo_Bunker =  {'NOMBRE': 'Bunker', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True,
                     'PASAR_FASE': False,
-                    'ENEMIGOS': [('Soldado',600)], 
-                     'KIT_CURACION': [(20,10)],
+                    'ENEMIGOS': [('Soldado',600,100)], 
+                     'KIT_CURACION': [(20,10,200)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,456)],
                      'COORDENADAS_OBJETO_PRINCIPAL': 456, #Actualmente no se usa
                      'IMAGEN_OBJETO_PRINCIPAL': 'llave',
@@ -41,8 +41,8 @@ class GestorRecursos(object):
 
 
     Nivel_Bunker =  {'NOMBRE': 'Sala del boss', 'PLATAFORMA': (0, 455, 1200, 15), 'PASAR_FASE':False,
-                    'ENEMIGOS': [('Boss', 1000)], 
-                     'KIT_CURACION': [(20,10)],
+                    'ENEMIGOS': [('Boss', 1000, 100)], 
+                     'KIT_CURACION': [(20,10,100)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
                      'TIENE_BOSS': True,
                      'TIEMPO':30,

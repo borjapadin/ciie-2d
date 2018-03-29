@@ -141,7 +141,7 @@ class Fase(Escena):
     # TODO: generalizar.
     def crearEnemigos(self):
         for (enemigo) in iter(GestorRecursos.getConfiguration('ENEMIGOS')):
-            (tipoEnemigo, posicion) = enemigo
+            (tipoEnemigo, posicionX, posicionY) = enemigo
             if tipoEnemigo == 'Soldado':
                 enemy = Soldado()
                 self.grupoSoldados.add(enemy)
@@ -151,15 +151,15 @@ class Fase(Escena):
             elif tipoEnemigo == 'Zombie':
                 enemy = Zombie()
                 self.grupoZombies.add(enemy)
-            enemy.establecerPosicion((posicion, self.coordPlataforma[1] + 1))
+            enemy.establecerPosicion((posicionX, posicionY))
             self.grupoEnemigos.add(enemy)
 
     def crearKitCurativo(self):
         kitsCurativos = []
         for (kitCurativoConfig) in iter(GestorRecursos.getConfiguration('KIT_CURACION')):
-            (vida,posicionX) = kitCurativoConfig
+            (vida,posicionX,posicionY) = kitCurativoConfig
             kitCurativo = KitCuracion(vida)
-            kitCurativo.establecerPosicion(((posicionX),self.coordPlataforma[1] + 5))
+            kitCurativo.establecerPosicion((posicionX,posicionY))
             kitsCurativos.append(kitCurativo)
         return kitsCurativos
 
