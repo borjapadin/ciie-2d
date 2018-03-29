@@ -48,10 +48,11 @@ class GestorRecursos(object):
                      'POSICION_DECORADO' :  (1200, 350)}    
 
 
-    Nivel_Bunker =  {'NOMBRE': 'Sala del boss', 'PLATAFORMA': (0, 455, 1200, 15), 'PASAR_FASE':False,
-                    'ENEMIGOS': [('Boss', 1000, 100)], 
-                     'KIT_CURACION': [(20,10,100)],
-                     'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
+    Nivel_Bunker =  {'NOMBRE': 'Sala del boss', 'PLATAFORMA': (0, 440, 1200, 15), 'PASAR_FASE':False,
+                    'ENEMIGOS': [('Boss', 700, 441)], 
+                     'KIT_CURACION': [(20,114,368),(20,614,368),(20,1114,368)],
+                     'PLATAFORMA_SECUNDARIA': [('Caja',100,445),('Caja',100,409),('Caja',600,445),
+                                            ('Caja',600,409),('Caja',1100,445),('Caja',1100,409)],
                      'TIENE_BOSS': True,
                      'TIEMPO':30,
                      'DURACION_CUTSCENE':1100,
