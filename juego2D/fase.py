@@ -238,7 +238,7 @@ class Fase(Escena):
                 return True  # Se ha actualizado el scroll
 
         # Si el jugador se encuentra más allá de la derecha.
-        if (jugador.rect.right > MAXIMO_X_JUGADOR/2):
+        if (jugador.rect.right >= MAXIMO_X_JUGADOR/2):
 
             # Se calcula cuantos pixeles esta fuera del borde
             desplazamiento = jugador.rect.right - MAXIMO_X_JUGADOR/2
