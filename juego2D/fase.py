@@ -84,6 +84,7 @@ class Fase(Escena):
 
         self.grupoSprites = pygame.sprite.Group(
             self.grupoPlataformas,self.grupoEnemigos)
+        self .grupoObjetos = pygame.sprite.Group()
         if self.numFase == 2:
             self.grupoSPrites.add(self.barco)
 
@@ -92,6 +93,7 @@ class Fase(Escena):
         self.kitsCurativos = self.crearKitCurativo()
         for kitCurativo in iter(self.kitsCurativos):
             self.grupoSprites.add(kitCurativo)
+            self.grupoObjetos.add(kitCurativo)
         self.grupoSprites.add(self.jugador)
 
         self.cronometro = pygame.time.get_ticks() / 1000 - self.cronometroScene
@@ -194,6 +196,7 @@ class Fase(Escena):
                     nombreObjetoPrincipal, int(posicionObjetoPrincipalInventario))
                 self.objeto.establecerPosicion((1000, self.coordPlataforma[1] + 1))
                 self.grupoSprites.add(self.objeto)
+                self.grupoObjetos.add(self.objeto)
 
     # TODO repasar los comentarios por que no corresponden de los scrolls
     def actualizarScrollOrdenados(self, jugador):
@@ -409,6 +412,7 @@ class Fase(Escena):
 
         # Finalmente se pinta el grupo de sprites.
         #self.grupoSprites.draw(pantalla)
+        self.grupoObjetos.draw(pantalla)
         self.grupoEnemigos.draw(pantalla)
         self.grupoJugador.draw(pantalla)
         self.grupoBalasJugador.draw(pantalla)
