@@ -33,9 +33,13 @@ class GestorRecursos(object):
 
     Nivel_Pasillo_Bunker =  {'NOMBRE': 'Bunker', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True,
                     'PASAR_FASE': False,
-                    'ENEMIGOS': [('Soldado',600,100)], 
-                     'KIT_CURACION': [(20,10,200)],
-                     'PLATAFORMA_SECUNDARIA': [('Caja',200,456)],
+                    'ENEMIGOS': [('Soldado',200,455),('Soldado',425,405),('Soldado',600,455),('Soldado',825,405),
+                                ('Soldado',1025,371),('Soldado',1025,405),
+                                ('Zombie',300,455),('Zombie',350,455),('Zombie',400,405),('Zombie',450,455),
+                                ('Zombie',500,455),('Zombie',550,455),('Zombie',600,455),('Zombie',650,455),
+                                ('Zombie',900,455),('Zombie',920,455),('Zombie',950,455),('Zombie',970,455)], 
+                     'KIT_CURACION': [(20,440,456)],
+                     'PLATAFORMA_SECUNDARIA': [('Caja',400,456),('Caja',800,456),('Caja',800,420),('Caja',1000,456),('Caja',1000,420)],
                      'COORDENADAS_OBJETO_PRINCIPAL': 456, #Actualmente no se usa
                      'IMAGEN_OBJETO_PRINCIPAL': 'llave',
                      'POSICION_OBJETO_PRINCIPAL': 2,
