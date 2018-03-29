@@ -570,7 +570,7 @@ class Boss(Pistolero, NoJugador):
     def __init__(self):
         NoJugador.__init__(self, 'Personajes/BossHorizontal.png', 'Personajes/offsetsMalo.txt', [
                            1, 7, 6, 2, 8], VELOCIDAD_SOLDADO, VELOCIDAD_SALTO_SOLDADO, RETARDO_ANIMACION_SOLDADO)
-        self.establecerVida(400)
+        self.establecerVida(600)
         self.inicializarBalas()
         self.determinarVelocidadBala(VELOCIDAD_BALA_BOSS)
         self.damage = 20
