@@ -30,7 +30,7 @@ class listaVidasEnemigo(listaVidasGenerico):
     def __init__(self):
         listaVidasGenerico.__init__(self,'VidaEnemigo')
         # Altura a la que esta el corazón
-        self.y = 500
+        self.y = 550
         #Cuantos corazones enteros tenemos que dibujar
         posicionVertical = 700
         for i in range(0,4):

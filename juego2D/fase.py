@@ -38,7 +38,7 @@ class Fase(Escena):
         self.numFase = numFase
         self.numFaseSiguiente = int(numFase) + 1
         # El gestor de recursos cargara todos los recursos a partir de ese numero.
-        self.pasarFase = GestorRecursos.getConfigParam('PASAR_FASE')
+        self.pasarFase = GestorRecursos.getConfiguration('PASAR_FASE')
         self.tiempoFase = GestorRecursos.getConfiguration(
             'TIEMPO') + GestorRecursos.getTiempoAcumulado()
 
@@ -48,7 +48,7 @@ class Fase(Escena):
         self.crearElementosBordeSuperior("/" + self.numFase)
 
         # Creamos el decorado y el fondo
-        self.decorado = Decorado("/" + self.numFase)
+        self.decorado = Decorado("/" + self.numFase, GestorRecursos.getConfiguration('POSICION_DECORADO'))
         self.fondo = Cielo("/" + self.numFase)
         self.elementosDibujables = ElementosDibujables()
         self.inventario = Inventario(GestorRecursos.getInventario())
@@ -272,7 +272,7 @@ class Fase(Escena):
                 return True  # Se ha actualizado el scroll
         # Si ambos jugadores están entre los dos límites de la pantalla, no se
         # hace nada
-        
+
         if (jugador.rect.right < MAXIMO_X_JUGADOR/2):
 
             # Se calcula cuantos pixeles esta fuera del borde

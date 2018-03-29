@@ -5,9 +5,9 @@ from elementosDibujables import *
 
 
 class Decorado(ElementoDibujable):
-    def __init__(self,nombreFase):
+    def __init__(self,nombreFase, posicion):
         self.imagen = GestorRecursos.CargarImagen('Fase'+nombreFase+'/decorado.png', -1)
-        self.imagen = pygame.transform.scale(self.imagen, (1200, 400))
+        self.imagen = pygame.transform.scale(self.imagen, posicion)
 
         self.rect = self.imagen.get_rect()
         self.rect.bottom = ALTO_PANTALLA

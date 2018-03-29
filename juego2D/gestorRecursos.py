@@ -14,7 +14,8 @@ class GestorRecursos(object):
                     'IMAGEN_OBJETO_PRINCIPAL': 'bidonGasolina',
                     'TIEMPO': 20,
                     'DURACION_CUTSCENE':1400,
-                    'TIENE_OBJETO_PRINCIPAL': True} #Lo primero es la vida que carga (multiplos de diez, posicionX)
+                    'TIENE_OBJETO_PRINCIPAL': True,
+                    'POSICION_DECORADO' : (1200, 400)} #Lo primero es la vida que carga (multiplos de diez, posicionX)
                     
     Nivel_Playa = {'NOMBRE': 'Playa', 'PLATAFORMA': (0, 480, 1200, 15), 'PASAR_FASE': True, 
                    'ENEMIGOS': [('Soldado',350)],
@@ -23,7 +24,8 @@ class GestorRecursos(object):
                    'BARCO': [('Barco',1000,481)],
                    'TIENE_BARCO': True,
                    'TIEMPO':100,
-                   'DURACION_CUTSCENE': 1400}
+                   'DURACION_CUTSCENE': 1400,
+                   'POSICION_DECORADO' : (1200, 400)}
 
     Nivel_Pasillo_Bunker =  {'NOMBRE': 'Bunker', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True,
                     'PASAR_FASE': False,
@@ -34,7 +36,8 @@ class GestorRecursos(object):
                      'IMAGEN_OBJETO_PRINCIPAL': 'llave',
                      'POSICION_OBJETO_PRINCIPAL': 2,
                      'TIEMPO':30,
-                     'DURACION_CUTSCENE': 1600}    
+                     'DURACION_CUTSCENE': 1600,
+                     'POSICION_DECORADO' :  (1200, 350)}    
 
 
     Nivel_Bunker =  {'NOMBRE': 'Sala del boss', 'PLATAFORMA': (0, 455, 1200, 15), 'PASAR_FASE':False,
@@ -43,7 +46,8 @@ class GestorRecursos(object):
                      'PLATAFORMA_SECUNDARIA': [('Caja',200,401),('Caja',10,401),('Caja',900,401)],
                      'TIENE_BOSS': True,
                      'TIEMPO':30,
-                     'DURACION_CUTSCENE':1100
+                     'DURACION_CUTSCENE':1100,
+                     'POSICION_DECORADO' :  (1200, 350)
                      }    
 
     config = {'teclas': {'ARRIBA': K_w, 'ABAJO': K_s, 'IZQUIERDA': K_a, 'DERECHA': K_d, 'DISPARAR': K_j},
