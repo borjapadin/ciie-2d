@@ -11,7 +11,7 @@ class GestorRecursos(object):
                     'KIT_CURACION': [(10,390,333),(10,520,401)], # VIDA, X, Y
                     'PLATAFORMA_SECUNDARIA': [('Caja',210,411),('Caja',380,411),('Caja',380,374),('Caja',900,411)],
                     'POSICION_OBJETO_PRINCIPAL': 1,
-                    'COORDENADAS_OBJETO_PRINCIPAL': 300, #Actualmente no se usa
+                    'COORDENADAS_OBJETO_PRINCIPAL': (300,402), #Actualmente no se usa
                     'IMAGEN_OBJETO_PRINCIPAL': 'bidonGasolina',
                     'TIEMPO': 20,
                     'DURACION_CUTSCENE':1400,
@@ -40,7 +40,7 @@ class GestorRecursos(object):
                                 ('Zombie',900,455),('Zombie',920,455),('Zombie',950,455),('Zombie',970,455)], 
                      'KIT_CURACION': [(20,440,456)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',400,456),('Caja',800,456),('Caja',800,420),('Caja',1000,456),('Caja',1000,420)],
-                     'COORDENADAS_OBJETO_PRINCIPAL': 456, #Actualmente no se usa
+                     'COORDENADAS_OBJETO_PRINCIPAL': (455,456), #Actualmente no se usa
                      'IMAGEN_OBJETO_PRINCIPAL': 'llave',
                      'POSICION_OBJETO_PRINCIPAL': 2,
                      'TIEMPO':30,

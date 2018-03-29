@@ -187,14 +187,14 @@ class Fase(Escena):
     # dejemoslo asi.
     def crearObjetoPrincipal(self):
         if (GestorRecursos.getConfiguration('TIENE_OBJETO_PRINCIPAL')):
-            posicionX = GestorRecursos.getConfiguration('COORDENADAS_OBJETO_PRINCIPAL')
+            (posicionX,posicionY) = GestorRecursos.getConfiguration('COORDENADAS_OBJETO_PRINCIPAL')
             nombreObjetoPrincipal = GestorRecursos.getConfiguration('IMAGEN_OBJETO_PRINCIPAL')
             posicionObjetoPrincipalInventario = GestorRecursos.getConfiguration('POSICION_OBJETO_PRINCIPAL')
             # En caso de existir se añade pero en caso de que no se añade nada.
             if nombreObjetoPrincipal != None:
                 self.objeto = ObjetoPrincipal(
                     nombreObjetoPrincipal, int(posicionObjetoPrincipalInventario))
-                self.objeto.establecerPosicion((1000, self.coordPlataforma[1] + 1))
+                self.objeto.establecerPosicion((posicionX,posicionY))
                 self.grupoSprites.add(self.objeto)
                 self.grupoObjetos.add(self.objeto)
 

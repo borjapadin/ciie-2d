@@ -33,7 +33,7 @@ class listaVidasEnemigo(listaVidasGenerico):
         self.y = 550
         #Cuantos corazones enteros tenemos que dibujar
         posicionVertical = 700
-        for i in range(0,4):
+        for i in range(0,6):
             posicionVertical -= 30
             self.listaVidas.append(Vida(posicionVertical,self.y,100,self.devolverImagenCorazon())) #Primeros coraazones enteritos
 
