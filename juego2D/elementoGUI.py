@@ -27,6 +27,12 @@ class ElementoGUI:
             return True
         else:
             return False
+
+    def posicionX(self):
+        return self.rect.left
+
+    def posicionY(self):
+        return self.rect.bottom
         
 
     def moverPosicion(self,x=0,y=0):

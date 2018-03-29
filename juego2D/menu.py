@@ -9,6 +9,7 @@ from fase import *
 from time import *
 from constantes import *
 from pantalla import *
+from cutscene import *
 
 ANCHO_PANTALLA = 800
 ALTO_PANTALLA =  600
