@@ -272,6 +272,20 @@ class Fase(Escena):
                 return True  # Se ha actualizado el scroll
         # Si ambos jugadores están entre los dos límites de la pantalla, no se
         # hace nada
+        
+        if (jugador.rect.right < MAXIMO_X_JUGADOR/2):
+
+            # Se calcula cuantos pixeles esta fuera del borde
+            desplazamiento = jugador.rect.right - MAXIMO_X_JUGADOR/2
+
+            # Si el escenario ya está a la izquierda del todo, no lo movemos mas
+            if not self.scrollx <= 2:
+                # Calculamos el nivel de scroll actual: el anterior + desplazamiento
+                #  (desplazamos a la derecha)
+                self.scrollx = self.scrollx + desplazamiento
+
+                return True  # Se ha actualizado el scroll
+        return False
         return False
 
    
