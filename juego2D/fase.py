@@ -19,7 +19,7 @@ from elementosDibujables import *
 from plataforma import *
 from loggerCreator import *
 
-ULTIMA_FASE = 3
+
 # Los bordes de la pantalla para hacer scroll horizontal
 MINIMO_X_JUGADOR = 50
 MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
@@ -42,7 +42,7 @@ class Fase(Escena):
         self.tiempoFase = GestorRecursos.getConfiguration(
             'TIEMPO') + GestorRecursos.getTiempoAcumulado()
 
-        if GestorRecursos.getConfiguration('ULTIMA_FASE'):
+        if GestorRecursos.getConfiguration('CURAR_VIDA'):
               self.vidaGestor = 1000
         else:
               self.vidaGestor = GestorRecursos.getVida()
