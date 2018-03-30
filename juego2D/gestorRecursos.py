@@ -8,10 +8,10 @@ class GestorRecursos(object):
     Nivel_Bosque = {'NOMBRE': 'Bosque', 'PLATAFORMA': (0, 400, 1200, 15), 'PASAR_FASE': False,
                    'ENEMIGOS': [('Soldado',200,401),('Soldado',390,363),('Soldado',500,401),
                                 ('Soldado',750,401),('Soldado',900,401),('Soldado',930,363)],
-                    'KIT_CURACION': [(10,390,333),(10,520,401)], # VIDA, X, Y
+                    'KIT_CURACION': [(100,390,333),(100,520,401)], # VIDA, X, Y
                     'PLATAFORMA_SECUNDARIA': [('Caja',210,411),('Caja',380,411),('Caja',380,374),('Caja',900,411)],
                     'POSICION_OBJETO_PRINCIPAL': 1,
-                    'COORDENADAS_OBJETO_PRINCIPAL': (300,402), #Actualmente no se usa
+                    'COORDENADAS_OBJETO_PRINCIPAL': (850,402), #Actualmente no se usa
                     'IMAGEN_OBJETO_PRINCIPAL': 'bidonGasolina',
                     'TIEMPO': 20,
                     'DURACION_CUTSCENE':1400,
@@ -27,23 +27,23 @@ class GestorRecursos(object):
                    'PLATAFORMA_SECUNDARIA': [('Caja',350,490),('Caja',700,490)],
                    'BARCO': [('Barco',1000,481)],
                    'TIENE_BARCO': True,
-                   'TIEMPO':100,
+                   'TIEMPO':20,
                    'DURACION_CUTSCENE': 1400,
                    'POSICION_DECORADO' : (1200, 400)}
 
     Nivel_Pasillo_Bunker =  {'NOMBRE': 'Bunker', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True,
                     'PASAR_FASE': False,
                     'ENEMIGOS': [('Soldado',200,455),('Soldado',425,405),('Soldado',600,455),('Soldado',825,405),
-                                ('Soldado',1025,371),('Soldado',1025,405),
+                                ('Soldado',825,371),('Soldado',825,455),('Soldado',1025,455),('Soldado',1025,371),('Soldado',1025,405),
                                 ('Zombie',300,455),('Zombie',350,455),('Zombie',400,405),('Zombie',450,455),
                                 ('Zombie',500,455),('Zombie',550,455),('Zombie',600,455),('Zombie',650,455),
                                 ('Zombie',900,455),('Zombie',920,455),('Zombie',950,455),('Zombie',970,455)], 
-                     'KIT_CURACION': [(20,440,456)],
+                     'KIT_CURACION': [(20,440,456), (20,800,456)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',400,456),('Caja',800,456),('Caja',800,420),('Caja',1000,456),('Caja',1000,420)],
-                     'COORDENADAS_OBJETO_PRINCIPAL': (455,456), #Actualmente no se usa
+                     'COORDENADAS_OBJETO_PRINCIPAL': (925,452), #Actualmente no se usa
                      'IMAGEN_OBJETO_PRINCIPAL': 'llave',
                      'POSICION_OBJETO_PRINCIPAL': 2,
-                     'TIEMPO':30,
+                     'TIEMPO':50,
                      'DURACION_CUTSCENE': 1600,
                      'POSICION_DECORADO' :  (1200, 350)}    
 
