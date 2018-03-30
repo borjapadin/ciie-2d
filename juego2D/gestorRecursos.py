@@ -23,7 +23,7 @@ class GestorRecursos(object):
                                 ('Soldado',880,481),('Zombie',300,480),
                                 ('Zombie',400,481),('Zombie',500,481),('Zombie',600,481),
                                 ('Zombie',700,481),('Zombie',750,481),('Zombie',800,481)],
-                   'KIT_CURACION': [(10,370,450),(10,720,450)], # VIDA, X, Y
+                   'KIT_CURACION': [(100,370,450),(100,720,450)], # VIDA, X, Y
                    'PLATAFORMA_SECUNDARIA': [('Caja',350,490),('Caja',700,490)],
                    'BARCO': [('Barco',1000,481)],
                    'TIENE_BARCO': True,
@@ -38,23 +38,23 @@ class GestorRecursos(object):
                                 ('Zombie',300,455),('Zombie',350,455),('Zombie',400,405),('Zombie',450,455),
                                 ('Zombie',500,455),('Zombie',550,455),('Zombie',600,455),('Zombie',650,455),
                                 ('Zombie',900,455),('Zombie',920,455),('Zombie',950,455),('Zombie',970,455)], 
-                     'KIT_CURACION': [(20,440,456), (20,800,456)],
+                     'KIT_CURACION': [(100,440,456), (100,800,456)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',400,456),('Caja',800,456),('Caja',800,420),('Caja',1000,456),('Caja',1000,420)],
                      'COORDENADAS_OBJETO_PRINCIPAL': (925,452), #Actualmente no se usa
                      'IMAGEN_OBJETO_PRINCIPAL': 'llave',
                      'POSICION_OBJETO_PRINCIPAL': 2,
-                     'TIEMPO':50,
+                     'TIEMPO':40,
                      'DURACION_CUTSCENE': 1600,'CURAR_VIDA':True,
                      'POSICION_DECORADO' :  (1200, 350)}    
 
 
     Nivel_Bunker =  {'NOMBRE': 'Sala del boss', 'PLATAFORMA': (0, 440, 1200, 15), 'PASAR_FASE':False,
                     'ENEMIGOS': [('Boss', 700, 441)], 
-                     'KIT_CURACION': [(20,114,368),(20,614,368),(20,1114,368)],
+                     'KIT_CURACION': [(100,114,368),(100,614,368),(100,1114,368)],
                      'PLATAFORMA_SECUNDARIA': [('Caja',100,445),('Caja',100,409),('Caja',600,445),
                                             ('Caja',600,409),('Caja',1100,445),('Caja',1100,409)],
                      'TIENE_BOSS': True,
-                     'TIEMPO':30,
+                     'TIEMPO':40,
                      'DURACION_CUTSCENE':1100,
                      'POSICION_DECORADO' :  (1200, 350)
                      }    
