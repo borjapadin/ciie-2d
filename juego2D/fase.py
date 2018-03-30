@@ -32,10 +32,8 @@ class Fase(Escena):
         self.cronometroScene = cronometroScene
         self.tiempoAntesDePausa = 0
         self.tiempoEnPausa = 0
-        if numFase != ULTIMA_FASE:
-            self.vidaGestor = GestorRecursos.getVida()
-        else:
-            self.vidaGestor = 1000
+        GestorRecursos.setConfiguration(numFase)
+     
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
         self.numFaseSiguiente = int(numFase) + 1
@@ -44,6 +42,11 @@ class Fase(Escena):
         self.tiempoFase = GestorRecursos.getConfiguration(
             'TIEMPO') + GestorRecursos.getTiempoAcumulado()
 
+        if GestorRecursos.getConfiguration('ULTIMA_FASE'):
+              self.vidaGestor = 1000
+        else:
+              self.vidaGestor = GestorRecursos.getVida()
+          
         # Primero invocamos al constructor de la clase padre
         Escena.__init__(self, director)
         #  En ese caso solo hay scroll horizontal

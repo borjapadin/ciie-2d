@@ -56,7 +56,8 @@ class GestorRecursos(object):
                      'TIENE_BOSS': True,
                      'TIEMPO':30,
                      'DURACION_CUTSCENE':1100,
-                     'POSICION_DECORADO' :  (1200, 350)
+                     'POSICION_DECORADO' :  (1200, 350),
+                     'ULTIMA_FASE':True
                      }    
 
     config = {'teclas': {'ARRIBA': K_w, 'ABAJO': K_s, 'IZQUIERDA': K_a, 'DERECHA': K_d, 'DISPARAR': K_j},
