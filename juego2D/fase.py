@@ -32,8 +32,10 @@ class Fase(Escena):
         self.cronometroScene = cronometroScene
         self.tiempoAntesDePausa = 0
         self.tiempoEnPausa = 0
-        self.logger = loggerCreator.getLogger('loger','loger.log')
-        self.vidaGestor = GestorRecursos.getVida()
+        if numFase != ULTIMA_FASE:
+            self.vidaGestor = GestorRecursos.getVida()
+        else:
+            self.vidaGestor = 1000
         # Necesito que sea string para ponerlo en la ruta.
         self.numFase = numFase
         self.numFaseSiguiente = int(numFase) + 1
