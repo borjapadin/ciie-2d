@@ -29,6 +29,8 @@ MAXIMO_X_JUGADOR = ANCHO_PANTALLA - MINIMO_X_JUGADOR
 class Fase(Escena):
     # Crear Escenas habituales
     def __init__(self, director, numFase, cronometroScene):
+        pygame.mixer.init()
+
         self.cronometroScene = cronometroScene
         self.tiempoAntesDePausa = 0
         self.tiempoEnPausa = 0

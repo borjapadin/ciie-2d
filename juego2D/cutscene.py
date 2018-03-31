@@ -28,7 +28,7 @@ class CutScene(Escena):
         self.numFase = str(numFase)
         # self.numFaseSiguiente = numFase+1 #Para saber el numero de la fase siguiente
         # Primero invocamos al constructor de la clase padr
-
+      
         # Creamos el decorado y el fondo
         self.fondoCutScene = FondoCutScene("/" + self.numFase)
         self.texto = TITULO
@@ -94,6 +94,8 @@ class CutScene(Escena):
 class FondoCutScene:
     def __init__(self, nombreFase):
         GestorRecursos.setConfiguration(nombreFase[1])
+        sonido = GestorRecursos.CargarMusica(GestorRecursos.getConfiguration('MUSICA_AMBIENTE'))
+        pygame.mixer.music.play(-1)
         self.imagen = GestorRecursos.CargarImagen(
             'Cutscene' + nombreFase + '/Nivel.jpg', 1)
         self.imagen = pygame.transform.scale(

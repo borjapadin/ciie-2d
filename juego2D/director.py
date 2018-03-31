@@ -71,6 +71,8 @@ class Director():
 
     def cambiarAlMenu(self,fase,pantalla):
         self.escenaPausada(fase)
+        #Cuando pausemos la escena paramos la música
+        pygame.mixer.music.stop()
         self.salirEscena()
         
         #Modificar parámetro del menu.
@@ -115,6 +117,7 @@ class Director():
     
 
     def devolverEscenaPausada(self):
+        pygame.mixer.music.play(-1)
         # El tiempo que es ahora
         tiempoAhora = pygame.time.get_ticks() / 1000
         # Aquí el tiempo que estuvo en pausa.

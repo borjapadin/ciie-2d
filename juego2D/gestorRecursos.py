@@ -16,7 +16,8 @@ class GestorRecursos(object):
                     'TIEMPO': 20,
                     'DURACION_CUTSCENE':1400,
                     'TIENE_OBJETO_PRINCIPAL': True,
-                    'POSICION_DECORADO' : (1200, 400)} #Lo primero es la vida que carga (multiplos de diez, posicionX)
+                    'POSICION_DECORADO' : (1200, 400),
+                    'MUSICA_AMBIENTE': 'Nivel_1_Bosque.mp3'} #Lo primero es la vida que carga (multiplos de diez, posicionX)
                     
     Nivel_Playa = {'NOMBRE': 'Playa', 'PLATAFORMA': (0, 480, 1200, 15), 'PASAR_FASE': True, 
                    'ENEMIGOS': [('Soldado',380,440),('Soldado',530,481),('Soldado',730,440),
@@ -29,7 +30,8 @@ class GestorRecursos(object):
                    'TIENE_BARCO': True,
                    'TIEMPO':20,
                    'DURACION_CUTSCENE': 1400,
-                   'POSICION_DECORADO' : (1200, 400)}
+                   'POSICION_DECORADO' : (1200, 400),
+                   'MUSICA_AMBIENTE': 'Nivel_2_Playa.mp3'}
 
     Nivel_Pasillo_Bunker =  {'NOMBRE': 'Bunker', 'PLATAFORMA': (0, 455, 1200, 15), 'TIENE_OBJETO_PRINCIPAL': True,
                     'PASAR_FASE': False,
@@ -45,7 +47,8 @@ class GestorRecursos(object):
                      'POSICION_OBJETO_PRINCIPAL': 2,
                      'TIEMPO':40,
                      'DURACION_CUTSCENE': 1600,'CURAR_VIDA':True,
-                     'POSICION_DECORADO' :  (1200, 350)}    
+                     'POSICION_DECORADO' :  (1200, 350),
+                     'MUSICA_AMBIENTE': 'Nivel_3_Bunker.mp3'}    
 
 
     Nivel_Bunker =  {'NOMBRE': 'Sala del boss', 'PLATAFORMA': (0, 440, 1200, 15), 'PASAR_FASE':False,
@@ -56,7 +59,8 @@ class GestorRecursos(object):
                      'TIENE_BOSS': True,
                      'TIEMPO':40,
                      'DURACION_CUTSCENE':1100,
-                     'POSICION_DECORADO' :  (1200, 350)
+                     'POSICION_DECORADO' :  (1200, 350),
+                     'MUSICA_AMBIENTE': 'Nivel_4_Boss.mp3'
                      }    
 
     config = {'teclas': {'ARRIBA': K_w, 'ABAJO': K_s, 'IZQUIERDA': K_a, 'DERECHA': K_d, 'DISPARAR': K_j},
@@ -103,13 +107,13 @@ class GestorRecursos(object):
             return datos #lo devolvemos
 
     @classmethod
-    def CargarSonido(cls, nombre):
+    def CargarMusica(cls, nombre):
         if nombre in cls.recursos:
                 return cls.recursos[nombre]
         else:
-            nombreEntero = os.path.join('sounds', nombre)
+            nombreEntero = os.path.join('musica', nombre)
             try:
-                sound = pygame.mixer.Sound(nombreEntero)
+                sound = pygame.mixer.music.load(nombreEntero)
             except pygame.error, message:
                 print 'Cannot load sound:', nombreEntero
                 raise SystemExit, message
