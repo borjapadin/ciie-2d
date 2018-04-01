@@ -462,22 +462,22 @@ class Fase(Escena):
                 if evento.key == K_ESCAPE:
                     self.director.salirPrograma()
                 #-------------CAMBIAR ESCENA (a una cutScena)------------------
-                elif evento.key == K_c:  # Trampa de salir de escena para cambiarla
-                    GestorRecursos.setVida(self.jugador.devolverVida())
-                    GestorRecursos.setTiempoAcumulado(self.tiempo.obtenerTiempo())
-                    self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
+                #elif evento.key == K_c:  # Trampa de salir de escena para cambiarla
+                #    GestorRecursos.setVida(self.jugador.devolverVida())
+                #    GestorRecursos.setTiempoAcumulado(self.tiempo.obtenerTiempo())
+                #    self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p:
                     self.tiempoAntesDePausa = pygame.time.get_ticks() / 1000
                     self.director.cambiarAlMenu(self, PANTALLA_PAUSA)
                 #--------------VICTORIA-------------------------------
-                elif evento.key == K_v:
-                    GestorRecursos.inicializar()
-                    self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
+                #elif evento.key == K_v:
+                #    GestorRecursos.inicializar()
+                #    self.director.cambiarAlMenu(self, PANTALLA_VICTORIA)
                 #--------------GAME_OVER-------------------------
-                elif evento.key == K_g:
-                    GestorRecursos.inicializar()
-                    self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
+                #elif evento.key == K_g:
+                #    GestorRecursos.inicializar()
+                #    self.director.cambiarAlMenu(self, PANTALLA_GAMEOVER)
                 #---------------DISPARAR--------------------------
                 """elif evento.key == K_t:
 		    self.jugador.dispararBala()"""
