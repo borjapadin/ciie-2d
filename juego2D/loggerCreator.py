@@ -15,6 +15,7 @@ class loggerCreator(object):
 	    hdlr.setFormatter(formatter)
 	    logger.addHandler(hdlr) 
 	    ##SETS THE LOGGING LEVEL
-	    logger.setLevel(logging.DEBUG)  
+	    logger.setLevel(logging.DEBUG)
+		##logger.setLevel(logging.INFO)
 	    return logger  
     

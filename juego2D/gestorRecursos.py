@@ -1,10 +1,12 @@
 # -*- encoding: utf-8 -*-
 import pygame, sys, os
 from pygame.locals import *
+from loggerCreator import *
 
 class GestorRecursos(object):
     recursos = {}
-    
+    logger = loggerCreator.getLogger('gestorRecursos','gestorRecursos.log')
+
     Nivel_Bosque = {'NOMBRE': 'Bosque', 'PLATAFORMA': (0, 400, 1200, 15), 'PASAR_FASE': False,
                    'ENEMIGOS': [('Soldado',200,401),('Soldado',390,363),('Soldado',500,401),
                                 ('Soldado',750,401),('Soldado',900,401),('Soldado',930,363)],
@@ -78,13 +80,14 @@ class GestorRecursos(object):
     @classmethod
     def CargarImagen(cls, nombre, colorClave=None):
         if nombre in cls.recursos: #Si ya está cargado
+            cls.logger.debug('Imagen %s cargada de recursos disponibles',nombre)
             return cls.recursos[nombre] #Se devuelve
         else: #si no
             nombreEntero = os.path.join('imagenes/', nombre) #Se carga
             try:
                 imag = pygame.image.load(nombreEntero) #intentamos cargar
             except pygame.error, message:
-                print 'No se ha podido cargar', nombreEntero
+                cls.logger.info('No se ha podido cargar %s', nombreEntero)
                 raise SystemExit, message
             imag = imag.convert()
             if colorClave is not None: 
@@ -92,11 +95,13 @@ class GestorRecursos(object):
                     colorClave = imag.get_at((0,0)) #obtenemos el color base
                 imag.set_colorkey(colorClave, RLEACCEL)
             cls.recursos[nombre] = imag #almacenamos
+            cls.logger.debug('Imagen %s cargada como nuevo recurso',nombre)
             return imag # lo devolvemos
 
     @classmethod
     def CargarArchivoCoordenadas(cls,nombre):
         if nombre in cls.recursos: #si ya esta cargado
+            cls.logger.debug('Archivo coordenadas: %s cargado de recursos disponibles',nombre)
             return cls.recursos[nombre] #se devuelve
         else: #si no ha sido cargado
             nombreEntero = os.path.join('imagenes', nombre)#se carga
@@ -104,6 +109,7 @@ class GestorRecursos(object):
             datos = pathfile.read() #lo leemos
             pathfile.close() #lo cerramos
             cls.recursos[nombre] = datos #almacenamos
+            cls.logger.debug('Archivo coordenadas: %s cargado como nuevo recurso',nombre)
             return datos #lo devolvemos
 
     @classmethod
@@ -115,9 +121,10 @@ class GestorRecursos(object):
             try:
                 sound = pygame.mixer.music.load(nombreEntero)
             except pygame.error, message:
-                print 'Cannot load sound:', nombreEntero
+                cls.logger.error('Cannot load sound: %s', nombreEntero)
                 raise SystemExit, message
             cls.recursos[nombre] = sound
+            cls.logger.debug('Cargado sonido: %s',nombre)
             return sound
 
 
@@ -131,7 +138,7 @@ class GestorRecursos(object):
             with open(confFile, 'r') as fp:
                 cls.config = json.load(fp)
         except IOError, message:
-                print 'Cannot load configuration file:', confFile, ' Creating default file config!'
+                cls.logger.info('Cannot load configuration file: %s  Creating default file config!', confFile)
                 cls.SaveConfig()
 
     @classmethod
