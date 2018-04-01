@@ -468,7 +468,7 @@ class Fase(Escena):
                     self.director.cambiarAlMenu(self, PANTALLA_CUTSCENE)
                 #--------------MENU PAUSA-------------------------
                 elif evento.key == K_p:
-                    self.tiempoAntesDePausa = pygame.time.get_ticks() / 1000 - self.cronometroScene
+                    self.tiempoAntesDePausa = pygame.time.get_ticks() / 1000
                     self.director.cambiarAlMenu(self, PANTALLA_PAUSA)
                 #--------------VICTORIA-------------------------------
                 elif evento.key == K_v:
